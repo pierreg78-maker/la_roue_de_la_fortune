@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>La Roue de la Fortune</title>
     <style>
         :root {
@@ -14,32 +14,46 @@
             --red: #8B0000;
         }
 
+        * { box-sizing: border-box; }
+
         body {
             font-family: 'Georgia', serif;
             background-color: var(--bg-color);
             color: var(--cream);
             margin: 0;
-            overflow: hidden;
             height: 100vh;
+            height: 100dvh; 
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
         }
 
         #game-container {
             display: flex;
-            width: 90%;
+            flex-direction: column; 
+            width: 100%;
+            height: 100%;
             max-width: 1200px;
-            height: 80vh;
             background: linear-gradient(145deg, #4a2c1a, #2c1810);
-            border: 8px solid var(--wood-light);
-            border-radius: 20px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(0,0,0,0.5);
-            padding: 20px;
+            border: 4px solid var(--wood-light);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
             position: relative;
+            padding: 10px;
         }
 
-        /* Partie Gauche : Roue */
+        /* Mode Ordinateur (écran large) */
+        @media (min-width: 768px) {
+            #game-container {
+                flex-direction: row;
+                height: 90vh;
+                border-width: 8px;
+                border-radius: 20px;
+                padding: 20px;
+            }
+        }
+
+        /* Partie Gauche / Haute : Roue */
         #left-panel {
             flex: 1;
             display: flex;
@@ -47,38 +61,45 @@
             align-items: center;
             justify-content: center;
             position: relative;
+            padding: 10px 0;
         }
 
         #wheel-container {
             position: relative;
-            width: 350px;
-            height: 350px;
+            width: 280px;
+            height: 280px;
         }
 
-        /* Le curseur de la roue */
+        @media (min-width: 768px) {
+            #wheel-container { width: 350px; height: 350px; }
+            canvas { width: 350px !important; height: 350px !important; }
+        }
+
         #pointer {
             position: absolute;
-            top: -15px;
+            top: -10px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 30px solid var(--gold);
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-top: 25px solid var(--gold);
             z-index: 10;
-            filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.5));
+            filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.8));
         }
 
         canvas {
+            width: 280px;
+            height: 280px;
             border-radius: 50%;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            box-shadow: 0 0 15px rgba(0,0,0,0.6);
         }
 
         #spin-btn {
-            margin-top: 20px;
-            padding: 15px 40px;
-            font-size: 24px;
+            margin-top: 15px;
+            padding: 12px 30px;
+            font-size: 20px;
             font-family: 'Georgia', serif;
             font-weight: bold;
             color: var(--wood-dark);
@@ -88,25 +109,22 @@
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             transition: transform 0.1s;
+            z-index: 5;
         }
 
         #spin-btn:disabled {
-            background: linear-gradient(to bottom, #888, #555);
+            background: linear-gradient(to bottom, #666, #444);
             color: #aaa;
             cursor: not-allowed;
-        }
-
-        #spin-btn:active:not(:disabled) {
-            transform: scale(0.95);
         }
 
         /* Guirlandes */
         #garland {
             position: absolute;
-            top: -20px;
-            left: -20px;
-            right: -20px;
-            height: 40px;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 25px;
             display: flex;
             justify-content: space-around;
             pointer-events: none;
@@ -114,106 +132,125 @@
         }
 
         .bulb {
-            width: 15px;
-            height: 15px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-            background-color: #444;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+            background-color: #333;
+            box-shadow: inset 0 0 3px rgba(0,0,0,0.8);
             transition: all 0.3s;
         }
+        .bulb.on { background-color: var(--gold); box-shadow: 0 0 8px var(--gold); }
+        .bulb.red.on { background-color: #ff3333; box-shadow: 0 0 8px #ff3333; }
+        .bulb.green.on { background-color: #33ff33; box-shadow: 0 0 8px #33ff33; }
+        .bulb.blue.on { background-color: #3399ff; box-shadow: 0 0 8px #3399ff; }
 
-        .bulb.on {
-            background-color: var(--gold);
-            box-shadow: 0 0 10px var(--gold), 0 0 20px var(--gold);
-        }
-        .bulb.red.on { background-color: #ff3333; box-shadow: 0 0 10px #ff3333, 0 0 20px #ff3333; }
-        .bulb.green.on { background-color: #33ff33; box-shadow: 0 0 10px #33ff33, 0 0 20px #33ff33; }
-        .bulb.blue.on { background-color: #3399ff; box-shadow: 0 0 10px #3399ff, 0 0 20px #3399ff; }
-
-        /* Partie Droite : Expression */
+        /* Partie Droite / Basse : Expression */
         #right-panel {
             flex: 1.2;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding-left: 40px;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        @media (min-width: 768px) {
+            #right-panel { padding-left: 40px; }
         }
 
         #phrase-display {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 40px;
+            gap: 6px;
+            margin-bottom: 20px;
         }
 
         .letter-box {
-            width: 40px;
-            height: 50px;
-            border-bottom: 4px solid var(--gold);
+            width: 28px;
+            height: 36px;
+            border-bottom: 3px solid var(--gold);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 32px;
+            font-size: 22px;
             font-weight: bold;
             color: var(--gold);
-            text-transform: uppercase;
+        }
+        @media (min-width: 768px) {
+            .letter-box { width: 40px; height: 50px; font-size: 32px; }
+            #phrase-display { gap: 10px; }
         }
 
-        .space-box {
-            width: 20px;
-            border-bottom: none;
-        }
+        .space-box { width: 14px; border-bottom: none; }
+        @media (min-width: 768px) { .space-box { width: 20px; } }
 
         #message {
-            height: 30px;
-            font-size: 20px;
+            height: 40px;
+            font-size: 16px;
             color: #ff9999;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             text-align: center;
+            padding: 0 10px;
         }
+        @media (min-width: 768px) { #message { font-size: 20px; margin-bottom: 20px; } }
 
         #bottom-panel {
             position: absolute;
-            bottom: 20px;
-            right: 40px;
+            bottom: 10px;
+            right: 15px;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
+            z-index: 5;
         }
 
         #score-display {
-            font-size: 28px;
+            font-size: 20px;
             color: var(--gold);
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            margin-bottom: 8px;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
         }
+        @media (min-width: 768px) { #score-display { font-size: 28px; margin-bottom: 15px; } }
 
+        /* Bouton Rose "Retour au village" */
         #quit-btn {
-            padding: 10px 20px;
+            display: inline-block;
+            padding: 8px 15px;
             font-family: 'Georgia', serif;
-            font-size: 16px;
-            background: transparent;
-            color: var(--cream);
-            border: 1px solid var(--cream);
-            border-radius: 5px;
-            cursor: pointer;
+            font-size: 14px;
+            background-color: #FF69B4; /* Rose vif */
+            color: #fff;
+            border: 2px solid #FF1493; /* Bordure rose foncé */
+            border-radius: 20px;
+            text-decoration: none;
+            text-align: center;
             transition: 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        #quit-btn:hover { 
+            background-color: #FF1493; 
+            color: #fff; 
         }
 
-        #quit-btn:hover {
-            background: var(--cream);
-            color: var(--bg-color);
+        /* Champ texte invisible pour déclencher le clavier mobile */
+        #mobile-input {
+            position: absolute;
+            left: -9999px;
+            opacity: 0;
+            width: 1px;
+            height: 1px;
         }
-
     </style>
 </head>
 <body>
 
 <div id="game-container">
-    <!-- Guirlande en haut de la gauche -->
     <div id="garland"></div>
+    
+    <!-- Input invisible pour le clavier tactile -->
+    <input type="text" id="mobile-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 
     <div id="left-panel">
         <div id="wheel-container">
@@ -225,17 +262,18 @@
 
     <div id="right-panel">
         <div id="phrase-display"></div>
-        <div id="message">Appuyez sur "Tourner" pour commencer !</div>
+        <div id="message">Appuyez sur "Tourner" !</div>
     </div>
 
     <div id="bottom-panel">
-        <div id="score-display">Pièces d'or : 0</div>
-        <button id="quit-btn" onclick="resetGame()">Retour au Village</button>
+        <div id="score-display">Pièces : 0</div>
+        <!-- Lien modifié avec la couleur et l'URL demandées -->
+        <a id="quit-btn" href="https://pierreg78-maker.github.io/village/">Retour au Village</a>
     </div>
 </div>
 
 <script>
-    // --- CONFIGURATION & DONNÉES ---
+    // --- CONFIGURATION ---
     const expressions = [
         "Le champagne est à la bouche ce que le clair de lune est au cœur",
         "Une hirondelle ne fait pas le printemps",
@@ -247,9 +285,13 @@
         "En avoir ras le bol"
     ];
 
-    // Segments de la roue : 0, 1, 2, 5, 10, Banqueroute (dupliqués pour faire 12 cases)
-    const segments = [0, 1, 1, 2, 2, 5, 5, 10, 10, "Banqueroute", "Banqueroute", 0];
-    const colors = ["#8B0000", "#006400", "#00008B", "#8B8B00", "#4B0082", "#8B4513", "#2F4F4F", "#B22222", "#556B2F", "#191970", "#8B0000", "#006400"];
+    // 12 cases dans l'ordre exact demandé
+    // X représente la banqueroute pour prendre moins de place visuellement sur la roue
+    const segments = [0, 10, "X", 5, 1, 2, 0, 10, "X", 5, 1, 2];
+    
+    // Couleurs associées pour bien distinguer les valeurs
+    // Gris=0, Vert=10, Rouge=X, Bleu=5, Jaune=1, Violet=2
+    const colors = ["#555555", "#006400", "#800000", "#00008B", "#808000", "#4B0082", "#666666", "#228B22", "#B22222", "#191970", "#BDB76B", "#6A0DAD"];
     
     const voyelles = ["a", "e", "i", "o", "u", "y"];
 
@@ -263,7 +305,7 @@
     let isSpinning = false;
     let gameWon = false;
 
-    // --- INITIALISATION ROUE (Canvas) ---
+    // --- ROUE (Canvas) ---
     const canvas = document.getElementById("wheel");
     const ctx = canvas.getContext("2d");
     const radius = canvas.width / 2;
@@ -281,7 +323,6 @@
         for (let i = 0; i < numSegments; i++) {
             const angle = i * arcSize;
             
-            // Dessin du segment
             ctx.beginPath();
             ctx.arc(0, 0, radius - 5, angle, angle + arcSize);
             ctx.lineTo(0, 0);
@@ -289,36 +330,36 @@
             ctx.fillStyle = colors[i];
             ctx.fill();
             ctx.strokeStyle = "#FFD700";
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 3;
             ctx.stroke();
 
-            // Texte du segment
             ctx.save();
             ctx.rotate(angle + arcSize / 2);
             ctx.textAlign = "right";
             ctx.fillStyle = "#fff";
-            ctx.font = "bold 16px Georgia";
+            ctx.font = "bold 22px Georgia";
             ctx.shadowColor = "black";
             ctx.shadowBlur = 4;
             
-            let text = segments[i] === "Banqueroute" ? "X" : segments[i];
-            ctx.fillText(text, radius - 20, 5);
+            // Affiche directement la valeur (0, 1, 2, 5, 10, ou X)
+            ctx.fillText(segments[i], radius - 25, 8);
             ctx.restore();
         }
         ctx.restore();
     }
 
-    // --- MÉCANIQUE DE LA ROUE ---
+    // --- MÉCANIQUE ROUE ---
     function spinWheel() {
         if (isSpinning || gameWon) return;
         isSpinning = true;
         canGuess = false;
         document.getElementById("spin-btn").disabled = true;
         document.getElementById("message").innerText = "La roue tourne...";
+        
+        document.getElementById("mobile-input").blur();
 
-        // Vitesse et friction aléatoires
         let spinVelocity = Math.random() * 0.3 + 0.3; 
-        const friction = 0.985;
+        const friction = 0.988;
 
         function animate() {
             spinVelocity *= friction;
@@ -328,7 +369,6 @@
             if (spinVelocity > 0.002) {
                 requestAnimationFrame(animate);
             } else {
-                // Arrêt de la roue
                 isSpinning = false;
                 determinePrize();
             }
@@ -339,35 +379,34 @@
     function determinePrize() {
         const numSegments = segments.length;
         const arcSize = (2 * Math.PI) / numSegments;
-        // Le curseur est en haut (angle -PI/2 par rapport au canvas de base)
-        // On calcule l'angle normalisé pour trouver la case
-        let normalizedAngle = (2 * Math.PI - (startAngle % (2 * Math.PI))) + Math.PI / 2;
-        normalizedAngle = normalizedAngle % (2 * Math.PI);
         
-        const index = Math.floor(normalizedAngle / arcSize);
+        let pointerAngleInWheelFrame = (-Math.PI / 2 - startAngle) % (2 * Math.PI);
+        if (pointerAngleInWheelFrame < 0) pointerAngleInWheelFrame += 2 * Math.PI;
+        
+        const index = Math.floor(pointerAngleInWheelFrame / arcSize);
         currentWheelValue = segments[index];
 
-        if (currentWheelValue === "Banqueroute") {
+        // On vérifie maintenant si la valeur est "X" (Banqueroute)
+        if (currentWheelValue === "X") {
             score = 0;
             updateScoreDisplay();
-            document.getElementById("message").innerText = "Banqueroute ! Vous perdez tout vos pièces.";
+            document.getElementById("message").innerText = "Banqueroute ! Vous perdez tout.";
             document.getElementById("spin-btn").disabled = false;
         } else {
-            document.getElementById("message").innerText = `Valeur : ${currentWheelValue} pièce(s). Proposez une lettre !`;
+            document.getElementById("message").innerText = `Valeur : ${currentWheelValue} pièce(s). Tapez une lettre !`;
             canGuess = true;
+            document.getElementById("mobile-input").focus();
         }
     }
 
-    // --- GESTION DES EXPRESSIONS & LETTRES ---
+    // --- EXPRESSIONS & LETTRES ---
     function normalizeString(str) {
-        // Met en minuscules, enlève les accents, remplace ç par c
         return str.toLowerCase()
-                  .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                  .replace(/ç/g, "c");
+                  .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
+                  .replace(/ç/g, "c"); 
     }
 
     function initGame() {
-        // Choix aléatoire de la phrase
         currentExpression = expressions[Math.floor(Math.random() * expressions.length)];
         normalizedExpression = normalizeString(currentExpression);
         revealedLetters = new Array(currentExpression.length).fill(false);
@@ -379,10 +418,12 @@
         updateScoreDisplay();
         renderPhrase();
         drawWheel();
-        
-        document.getElementById("message").innerText = 'Appuyez sur "Tourner" pour commencer !';
-        document.getElementById("spin-btn").disabled = false;
         turnOffGarland();
+        
+        document.getElementById("message").innerText = 'Appuyez sur "Tourner" !';
+        document.getElementById("spin-btn").disabled = false;
+        document.getElementById("mobile-input").value = "";
+        document.getElementById("mobile-input").blur();
     }
 
     function renderPhrase() {
@@ -399,9 +440,8 @@
             } else {
                 const box = document.createElement("div");
                 box.className = "letter-box";
-                // Si la lettre est révélée, on affiche le caractère original (avec son accent)
                 if (revealedLetters[i]) {
-                    box.innerText = char.toUpperCase();
+                    box.innerText = char.toUpperCase(); 
                 }
                 container.appendChild(box);
             }
@@ -412,23 +452,20 @@
         if (!canGuess || gameWon) return;
 
         letter = letter.toLowerCase();
-        // Sécurité : on ne joue que les lettres de l'alphabet latin de base
-        if (!/^[a-z]$/.test(letter)) return;
+        if (!/^[a-z]$/.test(letter)) return; 
 
         const isVowel = voyelles.includes(letter);
         let countInPhrase = 0;
 
-        // 1. Gérer l'achat de voyelle
         if (isVowel) {
             if (score < 5) {
-                document.getElementById("message").innerText = "Il vous faut au moins 5 pièces d'or pour acheter une voyelle !";
+                document.getElementById("message").innerText = "Il faut 5 pièces pour une voyelle !";
                 return;
             }
             score -= 5;
             updateScoreDisplay();
         }
 
-        // 2. Révéler les lettres et compter les occurrences
         for (let i = 0; i < normalizedExpression.length; i++) {
             if (normalizedExpression[i] === letter && !revealedLetters[i]) {
                 revealedLetters[i] = true;
@@ -436,57 +473,64 @@
             }
         }
 
-        // 3. Calculer les gains / afficher le résultat
         if (countInPhrase > 0) {
             if (!isVowel) {
                 const gain = countInPhrase * currentWheelValue;
                 score += gain;
                 updateScoreDisplay();
-                document.getElementById("message").innerText = `Trouvé ${countInPhrase} fois ! +${gain} pièces d'or.`;
+                document.getElementById("message").innerText = `Trouvé ${countInPhrase} fois ! +${gain} pièces.`;
             } else {
-                document.getElementById("message").innerText = `Voyelle achetée (-5 pièces). Trouvé ${countInPhrase} fois.`;
+                document.getElementById("message").innerText = `Voyelle (-5 pcs). Trouvé ${countInPhrase} fois.`;
             }
         } else {
-            document.getElementById("message").innerText = `Pas de "${letter.toUpperCase()}" dans cette expression.`;
+            document.getElementById("message").innerText = `Pas de "${letter.toUpperCase()}".`;
         }
 
         renderPhrase();
-
-        // 4. Vérifier la victoire
         checkWin();
         
-        // 5. Préparer le prochain tour
         canGuess = false;
+        document.getElementById("mobile-input").value = "";
+        
         if (!gameWon) {
             document.getElementById("spin-btn").disabled = false;
+            document.getElementById("mobile-input").blur(); 
         }
     }
 
     function checkWin() {
-        // Gagne si toute la phrase normalisée (sans les espaces) est révélée
         const isFullyRevealed = normalizedExpression.split("").every((char, index) => {
             return char === " " || revealedLetters[index] === true;
         });
 
         if (isFullyRevealed) {
             gameWon = true;
-            document.getElementById("message").innerText = "FÉLICITATIONS ! Vous avez trouvé l'expression !";
+            document.getElementById("message").innerText = "FÉLICITATIONS ! Vous avez trouvé !";
             document.getElementById("spin-btn").disabled = true;
+            document.getElementById("mobile-input").blur();
             animateGarland();
         }
     }
 
     function updateScoreDisplay() {
-        document.getElementById("score-display").innerText = `Pièces d'or : ${score}`;
+        document.getElementById("score-display").innerText = `Pièces : ${score}`;
     }
 
-    // --- ÉCOUTE DU CLAVIER ---
-    document.addEventListener("keydown", (e) => {
-        // Si c'est une lettre
-        if (e.key.length === 1 && e.key.match(/[a-zA-ZàâäéèêëïîôùûüÿçÀÂÄÉÈÊËÏÎÔÙÛÜŸÇ]/)) {
-            // On normalise la touche tapée pour la comparer (ex: si on tape é, ça devient e)
-            const normalizedKey = normalizeString(e.key);
+    // --- GESTION DU CLAVIER ---
+    const mobileInput = document.getElementById("mobile-input");
+    
+    mobileInput.addEventListener("input", (e) => {
+        const val = e.target.value;
+        if (val.length > 0) {
+            const lastChar = val[val.length - 1]; 
+            const normalizedKey = normalizeString(lastChar);
             guessLetter(normalizedKey);
+        }
+    });
+
+    mobileInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
         }
     });
 
@@ -494,7 +538,7 @@
     function createGarland() {
         const garland = document.getElementById("garland");
         const colors = ['', 'red', 'green', 'blue'];
-        for (let i = 0; i < 25; i++) {
+        for (let i = 0; i < 20; i++) {
             const bulb = document.createElement("div");
             bulb.className = `bulb ${colors[i % colors.length]}`;
             garland.appendChild(bulb);
@@ -508,26 +552,17 @@
     function animateGarland() {
         const bulbs = document.querySelectorAll('.bulb');
         let index = 0;
-        // Allumage chenillard
         const interval = setInterval(() => {
             turnOffGarland();
             bulbs[index].classList.add('on');
-            bulbs[(index + 5) % bulbs.length].classList.add('on'); // Allume un autre pour plus de rythme
+            bulbs[(index + 5) % bulbs.length].classList.add('on');
             index = (index + 1) % bulbs.length;
         }, 100);
 
-        // Après 3 secondes, on laisse tout allumé fixe
         setTimeout(() => {
             clearInterval(interval);
             bulbs.forEach(b => b.classList.add('on'));
         }, 3000);
-    }
-
-    // --- BOUTON RETOUR AU VILLAGE ---
-    function resetGame() {
-        if(confirm("Êtes-vous sûr de vouloir retourner au village ? (La partie sera perdue)")) {
-            initGame();
-        }
     }
 
     // --- DÉMARRAGE ---
