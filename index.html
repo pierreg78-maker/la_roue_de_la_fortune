@@ -14,7 +14,7 @@
             --red: #8B0000;
         }
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Georgia', serif;
@@ -22,7 +22,7 @@
             color: var(--cream);
             margin: 0;
             height: 100vh;
-            height: 100dvh; 
+            height: 100dvh; /* dvh empêche le clavier de détruire la mise en page */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -42,7 +42,6 @@
             padding: 10px;
         }
 
-        /* Mode Ordinateur (écran large) */
         @media (min-width: 768px) {
             #game-container {
                 flex-direction: row;
@@ -53,7 +52,6 @@
             }
         }
 
-        /* Partie Gauche / Haute : Roue */
         #left-panel {
             flex: 1;
             display: flex;
@@ -80,8 +78,7 @@
             top: -10px;
             left: 50%;
             transform: translateX(-50%);
-            width: 0;
-            height: 0;
+            width: 0; height: 0;
             border-left: 12px solid transparent;
             border-right: 12px solid transparent;
             border-top: 25px solid var(--gold);
@@ -90,8 +87,7 @@
         }
 
         canvas {
-            width: 280px;
-            height: 280px;
+            width: 280px; height: 280px;
             border-radius: 50%;
             box-shadow: 0 0 15px rgba(0,0,0,0.6);
         }
@@ -108,7 +104,6 @@
             border-radius: 50px;
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            transition: transform 0.1s;
             z-index: 5;
         }
 
@@ -118,12 +113,9 @@
             cursor: not-allowed;
         }
 
-        /* Guirlandes */
         #garland {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             height: 25px;
             display: flex;
             justify-content: space-around;
@@ -132,8 +124,7 @@
         }
 
         .bulb {
-            width: 10px;
-            height: 10px;
+            width: 10px; height: 10px;
             border-radius: 50%;
             background-color: #333;
             box-shadow: inset 0 0 3px rgba(0,0,0,0.8);
@@ -144,7 +135,7 @@
         .bulb.green.on { background-color: #33ff33; box-shadow: 0 0 8px #33ff33; }
         .bulb.blue.on { background-color: #3399ff; box-shadow: 0 0 8px #3399ff; }
 
-        /* Partie Droite / Basse : Expression */
+        /* --- PARTIE DROITE / BASSE --- */
         #right-panel {
             flex: 1.2;
             display: flex;
@@ -153,10 +144,12 @@
             justify-content: center;
             padding: 10px;
             overflow-y: auto;
+            /* Indicateur visuel subtil pour dire "cliquez/moi touchez ici" sur mobile */
+            cursor: pointer; 
         }
 
         @media (min-width: 768px) {
-            #right-panel { padding-left: 40px; }
+            #right-panel { padding-left: 40px; cursor: default; }
         }
 
         #phrase-display {
@@ -168,8 +161,7 @@
         }
 
         .letter-box {
-            width: 28px;
-            height: 36px;
+            width: 28px; height: 36px;
             border-bottom: 3px solid var(--gold);
             display: flex;
             justify-content: center;
@@ -214,33 +206,37 @@
         }
         @media (min-width: 768px) { #score-display { font-size: 28px; margin-bottom: 15px; } }
 
-        /* Bouton Rose "Retour au village" */
         #quit-btn {
             display: inline-block;
             padding: 8px 15px;
             font-family: 'Georgia', serif;
             font-size: 14px;
-            background-color: #FF69B4; /* Rose vif */
+            background-color: #FF69B4;
             color: #fff;
-            border: 2px solid #FF1493; /* Bordure rose foncé */
+            border: 2px solid #FF1493;
             border-radius: 20px;
             text-decoration: none;
             text-align: center;
             transition: 0.2s;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
-        #quit-btn:hover { 
-            background-color: #FF1493; 
-            color: #fff; 
-        }
+        #quit-btn:hover { background-color: #FF1493; color: #fff; }
 
-        /* Champ texte invisible pour déclencher le clavier mobile */
+        /* --- CHAMP INVISIBLE POUR MOBILE --- */
         #mobile-input {
             position: absolute;
-            left: -9999px;
-            opacity: 0;
+            bottom: 60px; /* On le garde dans la zone visible de l'écran */
+            left: 50%;
+            transform: translateX(-50%);
             width: 1px;
             height: 1px;
+            opacity: 0; /* Invisible pour l'utilisateur */
+            z-index: -1; /* Mais cliquable sans bloquer le reste */
+            border: none;
+            outline: none;
+            font-size: 16px; /* Très important : 16px minimum sur iOS pour éviter le zoom automatique */
+            padding: 0;
+            margin: 0;
         }
     </style>
 </head>
@@ -249,7 +245,6 @@
 <div id="game-container">
     <div id="garland"></div>
     
-    <!-- Input invisible pour le clavier tactile -->
     <input type="text" id="mobile-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 
     <div id="left-panel">
@@ -267,13 +262,11 @@
 
     <div id="bottom-panel">
         <div id="score-display">Pièces : 0</div>
-        <!-- Lien modifié avec la couleur et l'URL demandées -->
         <a id="quit-btn" href="https://pierreg78-maker.github.io/village/">Retour au Village</a>
     </div>
 </div>
 
 <script>
-    // --- CONFIGURATION ---
     const expressions = [
         "Le champagne est à la bouche ce que le clair de lune est au cœur",
         "Une hirondelle ne fait pas le printemps",
@@ -285,17 +278,10 @@
         "En avoir ras le bol"
     ];
 
-    // 12 cases dans l'ordre exact demandé
-    // X représente la banqueroute pour prendre moins de place visuellement sur la roue
     const segments = [0, 10, "X", 5, 1, 2, 0, 10, "X", 5, 1, 2];
-    
-    // Couleurs associées pour bien distinguer les valeurs
-    // Gris=0, Vert=10, Rouge=X, Bleu=5, Jaune=1, Violet=2
     const colors = ["#555555", "#006400", "#800000", "#00008B", "#808000", "#4B0082", "#666666", "#228B22", "#B22222", "#191970", "#BDB76B", "#6A0DAD"];
-    
     const voyelles = ["a", "e", "i", "o", "u", "y"];
 
-    // --- ÉTAT DU JEU ---
     let currentExpression = "";
     let normalizedExpression = "";
     let revealedLetters = [];
@@ -305,7 +291,6 @@
     let isSpinning = false;
     let gameWon = false;
 
-    // --- ROUE (Canvas) ---
     const canvas = document.getElementById("wheel");
     const ctx = canvas.getContext("2d");
     const radius = canvas.width / 2;
@@ -340,15 +325,12 @@
             ctx.font = "bold 22px Georgia";
             ctx.shadowColor = "black";
             ctx.shadowBlur = 4;
-            
-            // Affiche directement la valeur (0, 1, 2, 5, 10, ou X)
             ctx.fillText(segments[i], radius - 25, 8);
             ctx.restore();
         }
         ctx.restore();
     }
 
-    // --- MÉCANIQUE ROUE ---
     function spinWheel() {
         if (isSpinning || gameWon) return;
         isSpinning = true;
@@ -356,6 +338,7 @@
         document.getElementById("spin-btn").disabled = true;
         document.getElementById("message").innerText = "La roue tourne...";
         
+        // Fermer le clavier pendant la rotation
         document.getElementById("mobile-input").blur();
 
         let spinVelocity = Math.random() * 0.3 + 0.3; 
@@ -386,20 +369,19 @@
         const index = Math.floor(pointerAngleInWheelFrame / arcSize);
         currentWheelValue = segments[index];
 
-        // On vérifie maintenant si la valeur est "X" (Banqueroute)
         if (currentWheelValue === "X") {
             score = 0;
             updateScoreDisplay();
             document.getElementById("message").innerText = "Banqueroute ! Vous perdez tout.";
             document.getElementById("spin-btn").disabled = false;
         } else {
-            document.getElementById("message").innerText = `Valeur : ${currentWheelValue} pièce(s). Tapez une lettre !`;
+            // MODIFICATION ICI : On n'ouvre plus le clavier automatiquement !
+            // On invite le joueur à toucher l'écran.
+            document.getElementById("message").innerHTML = `Valeur : ${currentWheelValue} pièce(s).<br><span style="font-size:0.8em; color:#ccc;">Touchez ici pour taper une lettre</span>`;
             canGuess = true;
-            document.getElementById("mobile-input").focus();
         }
     }
 
-    // --- EXPRESSIONS & LETTRES ---
     function normalizeString(str) {
         return str.toLowerCase()
                   .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
@@ -494,6 +476,7 @@
         
         if (!gameWon) {
             document.getElementById("spin-btn").disabled = false;
+            // On ferme le clavier pour laisser le bouton "Tourner" visible et cliquable
             document.getElementById("mobile-input").blur(); 
         }
     }
@@ -519,6 +502,7 @@
     // --- GESTION DU CLAVIER ---
     const mobileInput = document.getElementById("mobile-input");
     
+    // 1. Le clavier mobile tape dans le champ invisible
     mobileInput.addEventListener("input", (e) => {
         const val = e.target.value;
         if (val.length > 0) {
@@ -529,8 +513,15 @@
     });
 
     mobileInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
+        if (e.key === "Enter" || e.key === " ") e.preventDefault();
+    });
+
+    // 2. AJOUT MAJEUR POUR MOBILE : 
+    // Quand on clique/touche la zone de l'expression, on donne le focus au champ invisible.
+    // Comme c'est une vraie action de l'utilisateur, le téléphone acceptera d'ouvrir le clavier !
+    document.getElementById("right-panel").addEventListener("click", function() {
+        if (canGuess && !gameWon) {
+            mobileInput.focus();
         }
     });
 
