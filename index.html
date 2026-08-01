@@ -123,7 +123,6 @@
             cursor: not-allowed;
         }
 
-        /* Zone de proposition de solution */
         #proposal-group {
             display: none;
             flex-direction: column;
@@ -181,7 +180,6 @@
         .bulb.green.on { background-color: #33ff33; box-shadow: 0 0 8px #33ff33; }
         .bulb.blue.on { background-color: #3399ff; box-shadow: 0 0 8px #3399ff; }
 
-        /* --- PARTIE DROITE / BASSE --- */
         #right-panel {
             flex: 1.2;
             display: flex;
@@ -199,16 +197,16 @@
 
         #phrase-display {
             display: flex;
-            flex-wrap: wrap; /* Le retour à la ligne se fait ici */
+            flex-wrap: wrap; 
             justify-content: center;
             margin-bottom: 20px;
-            gap: 10px; /* Espace vertical entre les lignes de mots */
+            row-gap: 15px; /* Espace vertical entre les lignes */
         }
 
-        /* La magie pour ne pas couper les mots : inline-flex interdit le retour à la ligne à l'intérieur */
         .word-wrapper {
             display: inline-flex;
-            margin-right: 15px; /* Simule l'espace entre les mots */
+            gap: 6px; /* CORRECTION ICI : Espace entre les lettres d'un même mot */
+            margin-right: 15px; /* Espace horizontal entre les mots */
         }
 
         .letter-box {
@@ -223,7 +221,7 @@
         }
         @media (min-width: 768px) {
             .letter-box { width: 40px; height: 50px; font-size: 32px; }
-            .word-wrapper { margin-right: 20px; }
+            .word-wrapper { margin-right: 20px; gap: 10px; } /* Espace plus grand sur PC */
         }
 
         #message {
@@ -270,7 +268,6 @@
         }
         #quit-btn:hover { background-color: #FF1493; color: #fff; }
 
-        /* Champ invisible pour lettres mobile */
         #mobile-input {
             position: absolute;
             bottom: 60px; 
@@ -345,7 +342,7 @@
     let canGuess = false;
     let isSpinning = false;
     let gameWon = false;
-    let isProposing = false; // Nouvel état pour le mode proposition
+    let isProposing = false;
 
     const canvas = document.getElementById("wheel");
     const ctx = canvas.getContext("2d");
@@ -433,7 +430,7 @@
         } else {
             document.getElementById("message").innerHTML = `Valeur : ${currentWheelValue} pièce(s).<br><span style="font-size:0.8em; color:#ccc;">Touchez l'expression pour taper une lettre</span>`;
             canGuess = true;
-            document.getElementById("propose-btn").disabled = false; // On peut aussi proposer à ce moment là
+            document.getElementById("propose-btn").disabled = false;
         }
     }
 
@@ -441,7 +438,7 @@
         return str.toLowerCase()
                   .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
                   .replace(/ç/g, "c")
-                  .trim(); // trim() pour enlever les espaces en début/fin de réponse
+                  .trim();
     }
 
     function initGame() {
@@ -458,7 +455,7 @@
         renderPhrase();
         drawWheel();
         turnOffGarland();
-        cancelProposal(); // Remet les boutons dans le bon état
+        cancelProposal();
         
         document.getElementById("message").innerText = 'Appuyez sur "Tourner" !';
         enableTurnButtons();
@@ -471,7 +468,6 @@
         document.getElementById("propose-btn").disabled = false;
     }
 
-    // --- NOUVELLE GESTION DES MOTS (Pas de coupure) ---
     function renderPhrase() {
         const container = document.getElementById("phrase-display");
         container.innerHTML = "";
@@ -483,9 +479,7 @@
             const char = currentExpression[i];
             
             if (char === " ") {
-                // Fin du mot, on l'ajoute au conteneur
                 container.appendChild(currentWordWrapper);
-                // On crée un nouveau mot pour la suite
                 currentWordWrapper = document.createElement("div");
                 currentWordWrapper.className = "word-wrapper";
             } else {
@@ -497,7 +491,6 @@
                 currentWordWrapper.appendChild(box);
             }
         }
-        // Ajouter le dernier mot
         container.appendChild(currentWordWrapper);
     }
 
@@ -563,7 +556,7 @@
 
     function triggerWin() {
         gameWon = true;
-        revealedLetters.fill(true); // Révèle tout
+        revealedLetters.fill(true);
         renderPhrase();
         document.getElementById("message").innerText = "FÉLICITATIONS ! Vous avez trouvé !";
         document.getElementById("spin-btn").disabled = true;
@@ -573,7 +566,6 @@
         animateGarland();
     }
 
-    // --- LOGIQUE DE PROPOSITION ---
     function startProposal() {
         if (gameWon || isSpinning) return;
         isProposing = true;
@@ -585,7 +577,6 @@
         document.getElementById("proposal-input").value = "";
         document.getElementById("message").innerText = "Tapez votre solution :";
         
-        // Focus direct sur le champ visible (fonctionne très bien sur mobile)
         setTimeout(() => document.getElementById("proposal-input").focus(), 100);
     }
 
@@ -612,11 +603,10 @@
             triggerWin();
         } else {
             document.getElementById("message").innerText = "Mauvaise réponse ! Vous pouvez retenter.";
-            cancelProposal(); // Retour au jeu normal
+            cancelProposal();
         }
     }
 
-    // Permettre de valider avec la touche "Entrée" du clavier mobile dans le champ de proposition
     document.getElementById("proposal-input").addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
@@ -628,7 +618,6 @@
         document.getElementById("score-display").innerText = `Pièces : ${score}`;
     }
 
-    // --- GESTION DU CLAVIER POUR LES LETTRES ---
     const mobileInput = document.getElementById("mobile-input");
     
     mobileInput.addEventListener("input", (e) => {
@@ -644,15 +633,12 @@
         if (e.key === "Enter" || e.key === " ") e.preventDefault();
     });
 
-    // Clic sur la zone de droite pour faire apparaître le clavier (lettres)
     document.getElementById("right-panel").addEventListener("click", function() {
-        // N'ouvre le clavier caché QUE si on est en mode "deviner une lettre"
         if (canGuess && !gameWon && !isProposing) {
             mobileInput.focus();
         }
     });
 
-    // --- GUIRLANDES ---
     function createGarland() {
         const garland = document.getElementById("garland");
         const colors = ['', 'red', 'green', 'blue'];
@@ -683,7 +669,6 @@
         }, 3000);
     }
 
-    // --- DÉMARRAGE ---
     createGarland();
     initGame();
 
