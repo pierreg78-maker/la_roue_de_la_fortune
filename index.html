@@ -22,7 +22,7 @@
             color: var(--cream);
             margin: 0;
             height: 100vh;
-            height: 100dvh; /* dvh empêche le clavier de détruire la mise en page */
+            height: 100dvh; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -92,26 +92,72 @@
             box-shadow: 0 0 15px rgba(0,0,0,0.6);
         }
 
-        #spin-btn {
-            margin-top: 15px;
-            padding: 12px 30px;
-            font-size: 20px;
+        .game-btn {
+            margin-top: 10px;
+            padding: 10px 25px;
+            font-size: 18px;
             font-family: 'Georgia', serif;
             font-weight: bold;
-            color: var(--wood-dark);
-            background: linear-gradient(to bottom, var(--gold), #daa520);
-            border: 2px solid var(--wood-dark);
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            z-index: 5;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            border: 2px solid var(--wood-dark);
+            transition: 0.2s;
         }
 
-        #spin-btn:disabled {
-            background: linear-gradient(to bottom, #666, #444);
-            color: #aaa;
+        #spin-btn {
+            color: var(--wood-dark);
+            background: linear-gradient(to bottom, var(--gold), #daa520);
+        }
+
+        #propose-btn {
+            color: var(--gold);
+            background: transparent;
+            border-color: var(--gold);
+        }
+
+        .game-btn:disabled {
+            background: linear-gradient(to bottom, #444, #222) !important;
+            color: #666 !important;
+            border-color: #444 !important;
             cursor: not-allowed;
         }
+
+        /* Zone de proposition de solution */
+        #proposal-group {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 15px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        #proposal-input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            font-family: 'Georgia', serif;
+            background: #1a0f0a;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            border-radius: 8px;
+            text-align: center;
+            outline: none;
+            margin-bottom: 10px;
+        }
+
+        .small-btn {
+            padding: 6px 15px;
+            font-size: 14px;
+            border-radius: 20px;
+            font-family: 'Georgia', serif;
+            cursor: pointer;
+            border: 1px solid;
+            margin: 0 5px;
+        }
+        #validate-btn { background: #228B22; color: white; border-color: #006400; }
+        #cancel-btn { background: transparent; color: #ccc; border-color: #ccc; }
 
         #garland {
             position: absolute;
@@ -144,7 +190,6 @@
             justify-content: center;
             padding: 10px;
             overflow-y: auto;
-            /* Indicateur visuel subtil pour dire "cliquez/moi touchez ici" sur mobile */
             cursor: pointer; 
         }
 
@@ -154,10 +199,16 @@
 
         #phrase-display {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: wrap; /* Le retour à la ligne se fait ici */
             justify-content: center;
-            gap: 6px;
             margin-bottom: 20px;
+            gap: 10px; /* Espace vertical entre les lignes de mots */
+        }
+
+        /* La magie pour ne pas couper les mots : inline-flex interdit le retour à la ligne à l'intérieur */
+        .word-wrapper {
+            display: inline-flex;
+            margin-right: 15px; /* Simule l'espace entre les mots */
         }
 
         .letter-box {
@@ -172,11 +223,8 @@
         }
         @media (min-width: 768px) {
             .letter-box { width: 40px; height: 50px; font-size: 32px; }
-            #phrase-display { gap: 10px; }
+            .word-wrapper { margin-right: 20px; }
         }
-
-        .space-box { width: 14px; border-bottom: none; }
-        @media (min-width: 768px) { .space-box { width: 20px; } }
 
         #message {
             height: 40px;
@@ -222,21 +270,18 @@
         }
         #quit-btn:hover { background-color: #FF1493; color: #fff; }
 
-        /* --- CHAMP INVISIBLE POUR MOBILE --- */
+        /* Champ invisible pour lettres mobile */
         #mobile-input {
             position: absolute;
-            bottom: 60px; /* On le garde dans la zone visible de l'écran */
+            bottom: 60px; 
             left: 50%;
             transform: translateX(-50%);
-            width: 1px;
-            height: 1px;
-            opacity: 0; /* Invisible pour l'utilisateur */
-            z-index: -1; /* Mais cliquable sans bloquer le reste */
-            border: none;
-            outline: none;
-            font-size: 16px; /* Très important : 16px minimum sur iOS pour éviter le zoom automatique */
-            padding: 0;
-            margin: 0;
+            width: 1px; height: 1px;
+            opacity: 0; 
+            z-index: -1; 
+            border: none; outline: none;
+            font-size: 16px; 
+            padding: 0; margin: 0;
         }
     </style>
 </head>
@@ -252,7 +297,17 @@
             <div id="pointer"></div>
             <canvas id="wheel" width="350" height="350"></canvas>
         </div>
-        <button id="spin-btn" onclick="spinWheel()">TOURNER</button>
+        
+        <button id="spin-btn" class="game-btn" onclick="spinWheel()">TOURNER</button>
+        <button id="propose-btn" class="game-btn" onclick="startProposal()">PROPOSER</button>
+        
+        <div id="proposal-group">
+            <input type="text" id="proposal-input" placeholder="Tapez votre solution..." autocomplete="off">
+            <div>
+                <button id="validate-btn" class="small-btn" onclick="submitProposal()">Valider</button>
+                <button id="cancel-btn" class="small-btn" onclick="cancelProposal()">Annuler</button>
+            </div>
+        </div>
     </div>
 
     <div id="right-panel">
@@ -268,7 +323,14 @@
 
 <script>
     const expressions = [
-        "Avoir le cafard", "Se creuser la cervelle", "Avoir un chat dans la gorge", "Coûter les yeux de la tête", "Avoir le vent en poupe", "Mettre les pieds dans le plat", "Perdre la boule", "Avoir le cœur sur la main", "Tourner autour du pot", "Avoir la frite", "Poser un lapin", "Avoir d'autres chats à fouetter", "Revenir à ses moutons", "Avaler des couleuvres", "Faire l'autruche", "Avoir une faim de loup", "Être un cordon-bleu", "Chanter comme une casserole", "Poule mouillée", "Quand les poules auront des dents", "Voir la vie en rose", "Être blanc comme neige", "Raconter des salades", "Pédaler dans la choucroute", "C'est la fin des haricots", "Haut comme trois pommes", "Être dans de beaux draps", "Vendre la mèche", "Mettre de l'eau dans son vin", "Appeler un chat un chat", "Battre le fer tant qu'il est chaud", "Avoir le pain sur la planche", "Prendre le taureau par les cornes", "Jeter l'éponge", "Ne pas être né de la dernière pluie", "Faire d'une pierre deux coups", "Mettre la main à la pâte", "Broyer du noir", "Passer l'éponge", "Tirer les vers du nez", "C'est la mer à boire", "Se mettre le doigt dans l'œil", "Avoir le dos large", "Tomber des nues", "Vivre d'amour et d'eau fraîche", "Avoir un poil dans la main", "Chercher midi à quatorze heures", "Courir plusieurs lièvres à la fois", "Crier sur tous les toits", "Être logé à la même enseigne"
+        "Le champagne est à la bouche ce que le clair de lune est au cœur",
+        "Une hirondelle ne fait pas le printemps",
+        "Petit à petit l'oiseau fait son nid",
+        "Quand les poules auront des dents",
+        "C'est la cerise sur le gâteau",
+        "Avoir le cafard",
+        "Tomber dans les pommes",
+        "En avoir ras le bol"
     ];
 
     const segments = [0, 10, "X", 5, 1, 2, 0, 10, "X", 5, 1, 2];
@@ -283,6 +345,7 @@
     let canGuess = false;
     let isSpinning = false;
     let gameWon = false;
+    let isProposing = false; // Nouvel état pour le mode proposition
 
     const canvas = document.getElementById("wheel");
     const ctx = canvas.getContext("2d");
@@ -325,13 +388,13 @@
     }
 
     function spinWheel() {
-        if (isSpinning || gameWon) return;
+        if (isSpinning || gameWon || isProposing) return;
         isSpinning = true;
         canGuess = false;
         document.getElementById("spin-btn").disabled = true;
+        document.getElementById("propose-btn").disabled = true;
         document.getElementById("message").innerText = "La roue tourne...";
         
-        // Fermer le clavier pendant la rotation
         document.getElementById("mobile-input").blur();
 
         let spinVelocity = Math.random() * 0.3 + 0.3; 
@@ -366,19 +429,19 @@
             score = 0;
             updateScoreDisplay();
             document.getElementById("message").innerText = "Banqueroute ! Vous perdez tout.";
-            document.getElementById("spin-btn").disabled = false;
+            enableTurnButtons();
         } else {
-            // MODIFICATION ICI : On n'ouvre plus le clavier automatiquement !
-            // On invite le joueur à toucher l'écran.
-            document.getElementById("message").innerHTML = `Valeur : ${currentWheelValue} pièce(s).<br><span style="font-size:0.8em; color:#ccc;">Touchez ici pour taper une lettre</span>`;
+            document.getElementById("message").innerHTML = `Valeur : ${currentWheelValue} pièce(s).<br><span style="font-size:0.8em; color:#ccc;">Touchez l'expression pour taper une lettre</span>`;
             canGuess = true;
+            document.getElementById("propose-btn").disabled = false; // On peut aussi proposer à ce moment là
         }
     }
 
     function normalizeString(str) {
         return str.toLowerCase()
                   .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
-                  .replace(/ç/g, "c"); 
+                  .replace(/ç/g, "c")
+                  .trim(); // trim() pour enlever les espaces en début/fin de réponse
     }
 
     function initGame() {
@@ -388,43 +451,58 @@
         score = 0;
         gameWon = false;
         canGuess = false;
+        isProposing = false;
         currentWheelValue = 0;
         
         updateScoreDisplay();
         renderPhrase();
         drawWheel();
         turnOffGarland();
+        cancelProposal(); // Remet les boutons dans le bon état
         
         document.getElementById("message").innerText = 'Appuyez sur "Tourner" !';
-        document.getElementById("spin-btn").disabled = false;
+        enableTurnButtons();
         document.getElementById("mobile-input").value = "";
         document.getElementById("mobile-input").blur();
     }
 
+    function enableTurnButtons() {
+        document.getElementById("spin-btn").disabled = false;
+        document.getElementById("propose-btn").disabled = false;
+    }
+
+    // --- NOUVELLE GESTION DES MOTS (Pas de coupure) ---
     function renderPhrase() {
         const container = document.getElementById("phrase-display");
         container.innerHTML = "";
+        
+        let currentWordWrapper = document.createElement("div");
+        currentWordWrapper.className = "word-wrapper";
         
         for (let i = 0; i < currentExpression.length; i++) {
             const char = currentExpression[i];
             
             if (char === " ") {
-                const space = document.createElement("div");
-                space.className = "letter-box space-box";
-                container.appendChild(space);
+                // Fin du mot, on l'ajoute au conteneur
+                container.appendChild(currentWordWrapper);
+                // On crée un nouveau mot pour la suite
+                currentWordWrapper = document.createElement("div");
+                currentWordWrapper.className = "word-wrapper";
             } else {
                 const box = document.createElement("div");
                 box.className = "letter-box";
                 if (revealedLetters[i]) {
                     box.innerText = char.toUpperCase(); 
                 }
-                container.appendChild(box);
+                currentWordWrapper.appendChild(box);
             }
         }
+        // Ajouter le dernier mot
+        container.appendChild(currentWordWrapper);
     }
 
     function guessLetter(letter) {
-        if (!canGuess || gameWon) return;
+        if (!canGuess || gameWon || isProposing) return;
 
         letter = letter.toLowerCase();
         if (!/^[a-z]$/.test(letter)) return; 
@@ -468,8 +546,7 @@
         document.getElementById("mobile-input").value = "";
         
         if (!gameWon) {
-            document.getElementById("spin-btn").disabled = false;
-            // On ferme le clavier pour laisser le bouton "Tourner" visible et cliquable
+            enableTurnButtons();
             document.getElementById("mobile-input").blur(); 
         }
     }
@@ -480,22 +557,80 @@
         });
 
         if (isFullyRevealed) {
-            gameWon = true;
-            document.getElementById("message").innerText = "FÉLICITATIONS ! Vous avez trouvé !";
-            document.getElementById("spin-btn").disabled = true;
-            document.getElementById("mobile-input").blur();
-            animateGarland();
+            triggerWin();
         }
     }
+
+    function triggerWin() {
+        gameWon = true;
+        revealedLetters.fill(true); // Révèle tout
+        renderPhrase();
+        document.getElementById("message").innerText = "FÉLICITATIONS ! Vous avez trouvé !";
+        document.getElementById("spin-btn").disabled = true;
+        document.getElementById("propose-btn").disabled = true;
+        document.getElementById("mobile-input").blur();
+        document.getElementById("proposal-group").style.display = "none";
+        animateGarland();
+    }
+
+    // --- LOGIQUE DE PROPOSITION ---
+    function startProposal() {
+        if (gameWon || isSpinning) return;
+        isProposing = true;
+        canGuess = false;
+        
+        document.getElementById("spin-btn").disabled = true;
+        document.getElementById("propose-btn").disabled = true;
+        document.getElementById("proposal-group").style.display = "flex";
+        document.getElementById("proposal-input").value = "";
+        document.getElementById("message").innerText = "Tapez votre solution :";
+        
+        // Focus direct sur le champ visible (fonctionne très bien sur mobile)
+        setTimeout(() => document.getElementById("proposal-input").focus(), 100);
+    }
+
+    function cancelProposal() {
+        isProposing = false;
+        document.getElementById("proposal-group").style.display = "none";
+        document.getElementById("proposal-input").blur();
+        if (!gameWon && !isSpinning) {
+            enableTurnButtons();
+            document.getElementById("message").innerText = "Tournez la roue ou proposez une solution.";
+        }
+    }
+
+    function submitProposal() {
+        const inputElement = document.getElementById("proposal-input");
+        const playerGuess = normalizeString(inputElement.value);
+
+        if (playerGuess === "") {
+            document.getElementById("message").innerText = "Veuillez taper une expression.";
+            return;
+        }
+
+        if (playerGuess === normalizedExpression) {
+            triggerWin();
+        } else {
+            document.getElementById("message").innerText = "Mauvaise réponse ! Vous pouvez retenter.";
+            cancelProposal(); // Retour au jeu normal
+        }
+    }
+
+    // Permettre de valider avec la touche "Entrée" du clavier mobile dans le champ de proposition
+    document.getElementById("proposal-input").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            submitProposal();
+        }
+    });
 
     function updateScoreDisplay() {
         document.getElementById("score-display").innerText = `Pièces : ${score}`;
     }
 
-    // --- GESTION DU CLAVIER ---
+    // --- GESTION DU CLAVIER POUR LES LETTRES ---
     const mobileInput = document.getElementById("mobile-input");
     
-    // 1. Le clavier mobile tape dans le champ invisible
     mobileInput.addEventListener("input", (e) => {
         const val = e.target.value;
         if (val.length > 0) {
@@ -509,11 +644,10 @@
         if (e.key === "Enter" || e.key === " ") e.preventDefault();
     });
 
-    // 2. AJOUT MAJEUR POUR MOBILE : 
-    // Quand on clique/touche la zone de l'expression, on donne le focus au champ invisible.
-    // Comme c'est une vraie action de l'utilisateur, le téléphone acceptera d'ouvrir le clavier !
+    // Clic sur la zone de droite pour faire apparaître le clavier (lettres)
     document.getElementById("right-panel").addEventListener("click", function() {
-        if (canGuess && !gameWon) {
+        // N'ouvre le clavier caché QUE si on est en mode "deviner une lettre"
+        if (canGuess && !gameWon && !isProposing) {
             mobileInput.focus();
         }
     });
