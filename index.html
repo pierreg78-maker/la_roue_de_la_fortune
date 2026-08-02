@@ -757,7 +757,7 @@
                 else { b.disabled = isSpinning || gameWon; b.classList.remove("used-correct", "used-wrong"); }
             });
             guessBtnEl.disabled = isSpinning || gameWon;
-            spinBtnEl.disabled = isSpinning || gameWon;
+            spinBtnEl.disabled = isSpinning || canChooseConsonant || gameWon;
         }
 
         function chooseConsonant(letter) {
