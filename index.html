@@ -142,7 +142,6 @@
             50% { opacity: 0.25; filter: brightness(0.5); }
         }
 
-        /* Célébration */
         body.celebrating .garland-bulb {
             animation: bulbCelebration 0.2s ease-in-out infinite !important;
             transform: scale(1.6);
@@ -232,12 +231,12 @@
             letter-spacing: 3px;
         }
 
-        /* ============ PHRASE ============ */
+        /* ============ PHRASE — MOTS NON COUPABLES ============ */
         .phrase-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 4px;
+            gap: 6px;
             margin-bottom: 26px;
             min-height: 54px;
             padding: 18px 14px;
@@ -246,27 +245,36 @@
             border-radius: 12px;
         }
 
+        /* Chaque mot est un groupe insécable */
+        .word-group {
+            display: inline-flex;
+            flex-wrap: nowrap;
+            gap: 3px;
+        }
+
         .letter-box {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 34px;
-            height: 42px;
+            width: 32px;
+            height: 40px;
             border: 1px solid rgba(253, 246, 227, 0.3);
             border-radius: 3px;
             font-family: 'Cinzel', serif;
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             font-weight: 700;
             color: var(--fg);
             background: rgba(253, 246, 227, 0.03);
             transition: all 0.3s ease;
+            flex-shrink: 0;
         }
 
         .letter-box.apostrophe {
             border-color: rgba(253, 246, 227, 0.12);
             background: transparent;
             color: var(--muted);
-            font-size: 1rem;
+            font-size: 0.9rem;
+            width: 16px;
         }
 
         .letter-box.revealed {
@@ -288,7 +296,12 @@
             100% { transform: scale(1); }
         }
 
-        .space-gap { display: inline-block; width: 18px; }
+        /* Espace entre les mots — largeur fixe */
+        .space-gap {
+            display: inline-block;
+            width: 14px;
+            flex-shrink: 0;
+        }
 
         /* ============ SECTION ROUE ============ */
         .wheel-section {
@@ -610,12 +623,29 @@
 
         /* ============ RESPONSIVE ============ */
         @media (max-width: 480px) {
-            .letter-box { width: 24px; height: 32px; font-size: 0.82rem; }
-            .space-gap { width: 10px; }
+            .letter-box {
+                width: 22px;
+                height: 30px;
+                font-size: 0.75rem;
+            }
+            .letter-box.apostrophe { width: 12px; font-size: 0.7rem; }
+            .word-group { gap: 2px; }
+            .space-gap { width: 8px; }
             .key-btn { width: 30px; height: 34px; font-size: 0.78rem; }
             .game-container { padding: 40px 8px 70px; }
-            .phrase-container { padding: 12px 8px; gap: 3px; }
+            .phrase-container { padding: 14px 8px; gap: 5px; }
             .spin-btn { padding: 10px 24px; font-size: 0.9rem; }
+        }
+
+        @media (min-width: 481px) and (max-width: 600px) {
+            .letter-box {
+                width: 27px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+            .letter-box.apostrophe { width: 14px; font-size: 0.8rem; }
+            .word-group { gap: 2px; }
+            .space-gap { width: 10px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -674,7 +704,6 @@
             <div class="keyboard-grid" id="vowelGrid"></div>
         </section>
 
-        <!-- BOUTONS D'ACTIONS : proposition + nouvelle partie -->
         <section class="actions-section">
             <button class="action-btn" id="guessBtn" disabled aria-label="Faire une proposition">
                 <i class="fas fa-lightbulb" aria-hidden="true"></i> Faire une proposition
@@ -802,26 +831,25 @@
         ];
 
         /* ============================================
-           ROUE — 16 SEGMENTS (2 BANQUEROUTE opposés)
-           Indices 7 et 15 = 8 segments d'écart = opposés
+           ROUE — 16 SEGMENTS
         ============================================ */
         const wheelSegments = [
-            { value: 100,  color: "#c0392b", label: "100" },         /* 0 */
-            { value: 200,  color: "#e67e22", label: "200" },         /* 1 */
-            { value: 300,  color: "#f1c40f", label: "300" },         /* 2 */
-            { value: 400,  color: "#27ae60", label: "400" },         /* 3 */
-            { value: 500,  color: "#1abc9c", label: "500" },         /* 4 */
-            { value: 600,  color: "#d35400", label: "600" },         /* 5 */
-            { value: 700,  color: "#16a085", label: "700" },         /* 6 */
-            { value: "BANQUEROUTE", color: "#1a1a1a", label: "BANQUEROUTE" }, /* 7 */
-            { value: 800,  color: "#e74c3c", label: "800" },         /* 8 */
-            { value: 900,  color: "#f39c12", label: "900" },         /* 9 */
-            { value: 1000, color: "#2ecc71", label: "1000" },        /* 10 */
-            { value: 1500, color: "#e67e22", label: "1500" },        /* 11 */
-            { value: 2000, color: "#c0392b", label: "2000" },        /* 12 */
-            { value: 50,   color: "#4a5568", label: "50" },          /* 13 */
-            { value: 10,   color: "#34495e", label: "10" },          /* 14 */
-            { value: "BANQUEROUTE", color: "#1a1a1a", label: "BANQUEROUTE" }  /* 15 */
+            { value: 100,  color: "#c0392b", label: "100" },
+            { value: 200,  color: "#e67e22", label: "200" },
+            { value: 300,  color: "#f1c40f", label: "300" },
+            { value: 400,  color: "#27ae60", label: "400" },
+            { value: 500,  color: "#1abc9c", label: "500" },
+            { value: 600,  color: "#d35400", label: "600" },
+            { value: 700,  color: "#16a085", label: "700" },
+            { value: "BANQUEROUTE", color: "#1a1a1a", label: "BANQUEROUTE" },
+            { value: 800,  color: "#e74c3c", label: "800" },
+            { value: 900,  color: "#f39c12", label: "900" },
+            { value: 1000, color: "#2ecc71", label: "1000" },
+            { value: 1500, color: "#e67e22", label: "1500" },
+            { value: 2000, color: "#c0392b", label: "2000" },
+            { value: 50,   color: "#4a5568", label: "50" },
+            { value: 10,   color: "#34495e", label: "10" },
+            { value: "BANQUEROUTE", color: "#1a1a1a", label: "BANQUEROUTE" }
         ];
 
         const VOWELS = ["A", "E", "I", "O", "U", "Y"];
@@ -1078,7 +1106,6 @@
         function spinWheel() {
             if (isSpinning || gameWon) return;
 
-            /* Si le joueur relance alors qu'il avait une valeur de roue, il la perd */
             if (canChooseConsonant) {
                 canChooseConsonant = false;
                 currentWheelValue = null;
@@ -1135,37 +1162,50 @@
         }
 
         /* ============================================
-           PHRASE
+           PHRASE — MOTS REGROUPÉS (jamais coupés)
         ============================================ */
         function renderPhrase() {
             phraseContainerEl.innerHTML = "";
-            for (const char of currentPhrase) {
-                if (char === " ") {
-                    const gap = document.createElement("span");
-                    gap.className = "space-gap";
-                    phraseContainerEl.appendChild(gap);
-                } else if (char === "'") {
-                    const box = document.createElement("span");
-                    box.className = "letter-box apostrophe";
-                    box.textContent = "'";
-                    phraseContainerEl.appendChild(box);
-                } else {
-                    const norm = normalizeLetter(char);
-                    const box = document.createElement("span");
-                    box.className = "letter-box";
+            const words = currentPhrase.split(" ");
 
-                    if (revealedLetters.has(norm)) {
-                        box.classList.add("revealed");
-                        box.textContent = char;
-                    }
-                    if (gameWon) {
-                        box.classList.add("won");
-                        box.textContent = char;
-                    }
+            words.forEach((word, wordIdx) => {
+                /* Groupe insécable pour chaque mot */
+                const wordGroup = document.createElement("span");
+                wordGroup.className = "word-group";
 
-                    phraseContainerEl.appendChild(box);
+                for (const char of word) {
+                    if (char === "'") {
+                        const box = document.createElement("span");
+                        box.className = "letter-box apostrophe";
+                        box.textContent = "'";
+                        wordGroup.appendChild(box);
+                    } else {
+                        const norm = normalizeLetter(char);
+                        const box = document.createElement("span");
+                        box.className = "letter-box";
+
+                        if (revealedLetters.has(norm)) {
+                            box.classList.add("revealed");
+                            box.textContent = char;
+                        }
+                        if (gameWon) {
+                            box.classList.add("won");
+                            box.textContent = char;
+                        }
+
+                        wordGroup.appendChild(box);
+                    }
                 }
-            }
+
+                phraseContainerEl.appendChild(wordGroup);
+
+                /* Espace entre les mots (sauf après le dernier) */
+                if (wordIdx < words.length - 1) {
+                    const space = document.createElement("span");
+                    space.className = "space-gap";
+                    phraseContainerEl.appendChild(space);
+                }
+            });
         }
 
         /* ============================================
@@ -1222,10 +1262,7 @@
                 }
             });
 
-            /* Le bouton proposition est actif dès que la roue ne tourne pas et partie non gagnée */
             guessBtnEl.disabled = isSpinning || gameWon;
-
-            /* Spin : désactivé si en spin, si on peut encore choisir une consonne, ou si gagné */
             spinBtnEl.disabled = isSpinning || gameWon;
         }
 
