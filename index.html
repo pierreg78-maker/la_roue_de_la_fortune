@@ -45,94 +45,58 @@
             z-index: 0;
         }
 
-        /* ============ GUIRLANDES ============ */
-        .garland {
-            position: fixed;
-            z-index: 1000;
-            pointer-events: none;
-        }
+        .garland { position: fixed; z-index: 1000; pointer-events: none; }
 
-        .garland-top::after,
-        .garland-bottom::after {
-            content: '';
-            position: absolute;
-            left: 0; right: 0;
-            height: 1px;
-            background: rgba(120, 100, 60, 0.5);
-            transition: all 0.3s;
+        .garland-top::after, .garland-bottom::after {
+            content: ''; position: absolute; left: 0; right: 0;
+            height: 1px; background: rgba(120, 100, 60, 0.5); transition: all 0.3s;
         }
         .garland-top::after { top: 9px; }
         .garland-bottom::after { bottom: 9px; }
 
-        .garland-left::after,
-        .garland-right::after {
-            content: '';
-            position: absolute;
-            top: 0; bottom: 0;
-            width: 1px;
-            background: rgba(120, 100, 60, 0.5);
-            transition: all 0.3s;
+        .garland-left::after, .garland-right::after {
+            content: ''; position: absolute; top: 0; bottom: 0;
+            width: 1px; background: rgba(120, 100, 60, 0.5); transition: all 0.3s;
         }
         .garland-left::after { left: 9px; }
         .garland-right::after { right: 9px; }
 
-        .garland-top,
-        .garland-bottom {
-            left: 0; right: 0;
-            height: 32px;
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-evenly;
-            padding: 0 8px;
+        .garland-top, .garland-bottom {
+            left: 0; right: 0; height: 32px;
+            display: flex; align-items: flex-start; justify-content: space-evenly; padding: 0 8px;
         }
         .garland-top { top: 0; }
         .garland-bottom { bottom: 0; }
         .garland-top .garland-bulb { margin-top: 10px; }
         .garland-bottom .garland-bulb { margin-bottom: 10px; margin-top: auto; }
 
-        .garland-left,
-        .garland-right {
-            top: 0; bottom: 0;
-            width: 32px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: space-evenly;
-            padding: 8px 0;
+        .garland-left, .garland-right {
+            top: 0; bottom: 0; width: 32px;
+            display: flex; flex-direction: column; align-items: flex-start;
+            justify-content: space-evenly; padding: 8px 0;
         }
         .garland-left { left: 0; }
         .garland-right { right: 0; }
-        .garland-left .garland-bulb,
-        .garland-right .garland-bulb { margin-left: 12px; }
+        .garland-left .garland-bulb, .garland-right .garland-bulb { margin-left: 12px; }
 
         .garland-bulb {
-            width: 7px;
-            height: 10px;
+            width: 7px; height: 10px;
             border-radius: 45% 45% 50% 50% / 55% 55% 45% 45%;
-            flex-shrink: 0;
-            position: relative;
+            flex-shrink: 0; position: relative;
             transition: transform 0.2s, filter 0.2s;
             animation: bulbGlow 2s ease-in-out infinite;
         }
 
-        .garland-top .garland-bulb::before,
-        .garland-bottom .garland-bulb::before {
-            content: '';
-            position: absolute;
-            width: 1px; height: 5px;
-            left: 50%; transform: translateX(-50%);
-            background: rgba(120, 100, 60, 0.5);
+        .garland-top .garland-bulb::before, .garland-bottom .garland-bulb::before {
+            content: ''; position: absolute; width: 1px; height: 5px;
+            left: 50%; transform: translateX(-50%); background: rgba(120, 100, 60, 0.5);
         }
         .garland-top .garland-bulb::before { top: -5px; }
         .garland-bottom .garland-bulb::before { bottom: -5px; top: auto; }
 
-        .garland-left .garland-bulb::before,
-        .garland-right .garland-bulb::before {
-            content: '';
-            position: absolute;
-            width: 5px; height: 1px;
-            top: 50%; transform: translateY(-50%);
-            background: rgba(120, 100, 60, 0.5);
+        .garland-left .garland-bulb::before, .garland-right .garland-bulb::before {
+            content: ''; position: absolute; width: 5px; height: 1px;
+            top: 50%; transform: translateY(-50%); background: rgba(120, 100, 60, 0.5);
         }
         .garland-left .garland-bulb::before { left: -5px; }
         .garland-right .garland-bulb::before { left: -5px; }
@@ -143,152 +107,87 @@
         }
 
         body.celebrating .garland-bulb {
-            animation: bulbCelebration 0.2s ease-in-out infinite !important;
-            transform: scale(1.6);
+            animation: bulbCelebration 0.2s ease-in-out infinite !important; transform: scale(1.6);
         }
-
         @keyframes bulbCelebration {
             0%, 100% { opacity: 1; filter: brightness(3) saturate(2); transform: scale(1.6); }
             50% { opacity: 0.2; filter: brightness(0.6); transform: scale(0.8); }
         }
 
-        body.celebrating .garland-top::after,
-        body.celebrating .garland-bottom::after {
+        body.celebrating .garland-top::after, body.celebrating .garland-bottom::after {
             height: 3px;
             background: linear-gradient(90deg, #ff0044, #ffdd00, #00ff88, #00ccff, #ff00cc, #ff0044);
-            background-size: 300% 100%;
-            animation: wireGlowH 0.6s linear infinite;
+            background-size: 300% 100%; animation: wireGlowH 0.6s linear infinite;
             box-shadow: 0 0 8px rgba(255, 200, 0, 0.5);
         }
-
-        body.celebrating .garland-left::after,
-        body.celebrating .garland-right::after {
+        body.celebrating .garland-left::after, body.celebrating .garland-right::after {
             width: 3px;
             background: linear-gradient(180deg, #ff0044, #ffdd00, #00ff88, #00ccff, #ff00cc, #ff0044);
-            background-size: 100% 300%;
-            animation: wireGlowV 0.6s linear infinite;
+            background-size: 100% 300%; animation: wireGlowV 0.6s linear infinite;
             box-shadow: 0 0 8px rgba(255, 200, 0, 0.5);
         }
-
         @keyframes wireGlowH { from { background-position: 0% 0%; } to { background-position: 300% 0%; } }
         @keyframes wireGlowV { from { background-position: 0% 0%; } to { background-position: 0% 300%; } }
 
-        /* ============ CONTENEUR ============ */
         .game-container {
-            max-width: 880px;
-            margin: 0 auto;
-            padding: 48px 20px 80px;
-            position: relative;
-            z-index: 10;
+            max-width: 880px; margin: 0 auto;
+            padding: 48px 20px 80px; position: relative; z-index: 10;
         }
 
-        /* ============ HEADER ============ */
-        .game-header {
-            text-align: center;
-            margin-bottom: 22px;
-        }
+        .game-header { text-align: center; margin-bottom: 22px; }
 
         .game-title {
-            font-family: 'Cinzel', serif;
-            font-weight: 900;
+            font-family: 'Cinzel', serif; font-weight: 900;
             font-size: clamp(1.5rem, 5vw, 2.5rem);
-            color: var(--accent);
-            text-shadow: 0 0 30px rgba(212, 160, 23, 0.25);
-            letter-spacing: 2px;
-            margin-bottom: 10px;
+            color: var(--accent); text-shadow: 0 0 30px rgba(212, 160, 23, 0.25);
+            letter-spacing: 2px; margin-bottom: 10px;
         }
 
         .gold-display {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            padding: 7px 20px;
-            border-radius: 30px;
-            font-weight: 800;
-            font-size: 1.05rem;
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--card); border: 1px solid var(--border);
+            padding: 7px 20px; border-radius: 30px; font-weight: 800; font-size: 1.05rem;
         }
-
         .gold-display i { color: var(--accent); font-size: 1.15rem; }
-
-        .gold-amount {
-            color: var(--accent-glow);
-            min-width: 50px;
-            text-align: right;
-            transition: color 0.3s;
-        }
+        .gold-amount { color: var(--accent-glow); min-width: 50px; text-align: right; transition: color 0.3s; }
         .gold-amount.negative { color: var(--danger); }
 
-        /* ============ CATÉGORIE ============ */
         .category-display {
-            text-align: center;
-            margin-bottom: 18px;
-            font-size: 0.9rem;
-            color: var(--muted);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 3px;
+            text-align: center; margin-bottom: 18px; font-size: 0.9rem;
+            color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 3px;
         }
 
-        /* ============ PHRASE — MOTS NON COUPABLES ============ */
         .phrase-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 6px;
-            margin-bottom: 26px;
-            min-height: 54px;
-            padding: 18px 14px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 6px; margin-bottom: 26px; min-height: 54px;
+            padding: 18px 14px; background: var(--card);
+            border: 1px solid var(--border); border-radius: 12px;
         }
 
-        /* Chaque mot est un groupe insécable */
-        .word-group {
-            display: inline-flex;
-            flex-wrap: nowrap;
-            gap: 3px;
-        }
+        .word-group { display: inline-flex; flex-wrap: nowrap; gap: 3px; }
 
         .letter-box {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 40px;
-            border: 1px solid rgba(253, 246, 227, 0.3);
-            border-radius: 3px;
-            font-family: 'Cinzel', serif;
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--fg);
-            background: rgba(253, 246, 227, 0.03);
-            transition: all 0.3s ease;
-            flex-shrink: 0;
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 32px; height: 40px;
+            border: 1px solid rgba(253, 246, 227, 0.3); border-radius: 3px;
+            font-family: 'Cinzel', serif; font-size: 1.05rem; font-weight: 700;
+            color: var(--fg); background: rgba(253, 246, 227, 0.03);
+            transition: all 0.3s ease; flex-shrink: 0;
         }
 
         .letter-box.apostrophe {
-            border-color: rgba(253, 246, 227, 0.12);
-            background: transparent;
-            color: var(--muted);
-            font-size: 0.9rem;
-            width: 16px;
+            border-color: rgba(253, 246, 227, 0.12); background: transparent;
+            color: var(--muted); font-size: 0.9rem; width: 16px;
         }
 
         .letter-box.revealed {
-            background: rgba(212, 160, 23, 0.13);
-            border-color: rgba(212, 160, 23, 0.45);
-            color: var(--accent-glow);
-            animation: revealPop 0.4s ease-out;
+            background: rgba(212, 160, 23, 0.13); border-color: rgba(212, 160, 23, 0.45);
+            color: var(--accent-glow); animation: revealPop 0.4s ease-out;
         }
 
         .letter-box.won {
-            background: rgba(39, 174, 96, 0.18);
-            border-color: rgba(39, 174, 96, 0.5);
-            color: #5dde9e;
-            animation: none;
+            background: rgba(39, 174, 96, 0.18); border-color: rgba(39, 174, 96, 0.5);
+            color: #5dde9e; animation: none;
         }
 
         @keyframes revealPop {
@@ -296,253 +195,121 @@
             100% { transform: scale(1); }
         }
 
-        /* Espace entre les mots — largeur fixe */
-        .space-gap {
-            display: inline-block;
-            width: 14px;
-            flex-shrink: 0;
-        }
+        .space-gap { display: inline-block; width: 14px; flex-shrink: 0; }
 
-        /* ============ SECTION ROUE ============ */
         .wheel-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 22px;
+            display: flex; flex-direction: column; align-items: center; margin-bottom: 22px;
         }
 
         .wheel-wrapper {
-            position: relative;
-            width: 270px;
-            height: 270px;
-            margin-bottom: 14px;
+            position: relative; width: 270px; height: 270px; margin-bottom: 14px;
         }
-
-        @media (min-width: 560px) {
-            .wheel-wrapper { width: 340px; height: 340px; }
-        }
+        @media (min-width: 560px) { .wheel-wrapper { width: 340px; height: 340px; } }
 
         #wheelCanvas {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             filter: drop-shadow(0 0 18px rgba(212, 160, 23, 0.18));
         }
 
         .wheel-pointer {
-            position: absolute;
-            top: -6px;
-            left: 50%;
-            transform: translateX(-50%);
+            position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
             width: 0; height: 0;
-            border-left: 13px solid transparent;
-            border-right: 13px solid transparent;
+            border-left: 13px solid transparent; border-right: 13px solid transparent;
             border-top: 26px solid var(--accent);
-            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
-            z-index: 5;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5)); z-index: 5;
         }
 
         .spin-btn {
-            background: linear-gradient(135deg, #d4a017, #b8860b);
-            color: #1a1510;
-            border: none;
-            padding: 11px 34px;
-            font-family: 'Cinzel', serif;
-            font-weight: 700;
-            font-size: 1rem;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            background: linear-gradient(135deg, #d4a017, #b8860b); color: #1a1510;
+            border: none; padding: 11px 34px;
+            font-family: 'Cinzel', serif; font-weight: 700; font-size: 1rem;
+            border-radius: 30px; cursor: pointer; transition: all 0.3s ease;
+            text-transform: uppercase; letter-spacing: 1px;
         }
-
-        .spin-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(212, 160, 23, 0.35);
-        }
+        .spin-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212, 160, 23, 0.35); }
         .spin-btn:active:not(:disabled) { transform: translateY(0); }
         .spin-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
         .wheel-result {
-            margin-top: 10px;
-            font-size: 1.05rem;
-            font-weight: 800;
-            min-height: 26px;
-            text-align: center;
-            line-height: 1.3;
+            margin-top: 10px; font-size: 1.05rem; font-weight: 800;
+            min-height: 26px; text-align: center; line-height: 1.3;
         }
         .wheel-result.positive { color: var(--accent-glow); }
         .wheel-result.negative { color: var(--danger); }
 
-        /* ============ CLAVIER ============ */
         .keyboard-section { margin-bottom: 14px; }
 
         .keyboard-label {
-            font-size: 0.78rem;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 7px;
-            text-align: center;
+            font-size: 0.78rem; color: var(--muted); text-transform: uppercase;
+            letter-spacing: 2px; margin-bottom: 7px; text-align: center;
         }
 
         .vowel-cost-note {
-            font-size: 0.72rem;
-            color: var(--muted);
-            text-align: center;
-            margin-bottom: 6px;
-            font-style: italic;
-            line-height: 1.4;
+            font-size: 0.72rem; color: var(--muted); text-align: center;
+            margin-bottom: 6px; font-style: italic; line-height: 1.4;
         }
 
         .keyboard-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 5px;
-            max-width: 480px;
-            margin: 0 auto;
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 5px; max-width: 480px; margin: 0 auto;
         }
 
         .key-btn {
-            width: 37px;
-            height: 40px;
-            border: 1px solid var(--border);
-            background: var(--card);
-            color: var(--fg);
-            font-family: 'Cinzel', serif;
-            font-weight: 700;
-            font-size: 0.92rem;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 37px; height: 40px;
+            border: 1px solid var(--border); background: var(--card); color: var(--fg);
+            font-family: 'Cinzel', serif; font-weight: 700; font-size: 0.92rem;
+            border-radius: 5px; cursor: pointer; transition: all 0.2s ease;
+            display: flex; align-items: center; justify-content: center;
         }
-
-        .key-btn:hover:not(:disabled) {
-            background: rgba(212, 160, 23, 0.18);
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-
+        .key-btn:hover:not(:disabled) { background: rgba(212, 160, 23, 0.18); border-color: var(--accent); transform: translateY(-2px); }
         .key-btn:disabled { opacity: 0.18; cursor: not-allowed; transform: none !important; }
         .key-btn.vowel { border-color: rgba(192, 57, 43, 0.35); }
         .key-btn.vowel:hover:not(:disabled) { background: rgba(192, 57, 43, 0.18); border-color: #c0392b; }
+        .key-btn.used-correct { opacity: 1 !important; background: rgba(39, 174, 96, 0.2) !important; border-color: rgba(39, 174, 96, 0.5) !important; color: #5dde9e !important; cursor: default; }
+        .key-btn.used-wrong { opacity: 1 !important; background: rgba(192, 57, 43, 0.12) !important; border-color: rgba(192, 57, 43, 0.25) !important; color: #a05050 !important; cursor: default; }
 
-        .key-btn.used-correct {
-            opacity: 1 !important;
-            background: rgba(39, 174, 96, 0.2) !important;
-            border-color: rgba(39, 174, 96, 0.5) !important;
-            color: #5dde9e !important;
-            cursor: default;
-        }
-
-        .key-btn.used-wrong {
-            opacity: 1 !important;
-            background: rgba(192, 57, 43, 0.12) !important;
-            border-color: rgba(192, 57, 43, 0.25) !important;
-            color: #a05050 !important;
-            cursor: default;
-        }
-
-        /* ============ ACTIONS ============ */
         .actions-section {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 14px;
-            flex-wrap: wrap;
+            display: flex; justify-content: center; gap: 10px;
+            margin-bottom: 14px; flex-wrap: wrap;
         }
 
         .action-btn {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--fg);
-            padding: 9px 22px;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 700;
-            font-size: 0.88rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            background: transparent; border: 1px solid var(--border); color: var(--fg);
+            padding: 9px 22px; font-family: 'Nunito', sans-serif; font-weight: 700;
+            font-size: 0.88rem; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;
         }
-
-        .action-btn:hover:not(:disabled) {
-            border-color: var(--accent);
-            background: rgba(212, 160, 23, 0.1);
-        }
+        .action-btn:hover:not(:disabled) { border-color: var(--accent); background: rgba(212, 160, 23, 0.1); }
         .action-btn:disabled { opacity: 0.25; cursor: not-allowed; }
         .action-btn i { margin-right: 5px; }
 
-        /* ============ LIGNE DU BAS ============ */
         .info-line {
-            text-align: center;
-            font-size: 0.84rem;
-            color: var(--muted);
-            margin-bottom: 12px;
-            min-height: 20px;
-            line-height: 1.4;
+            text-align: center; font-size: 0.84rem; color: var(--muted);
+            margin-bottom: 12px; min-height: 20px; line-height: 1.4;
         }
 
-        /* ============ RETOUR AU VILLAGE — ROSE ============ */
         .back-btn {
-            display: block;
-            width: 100%;
-            max-width: 280px;
-            margin: 0 auto;
-            padding: 11px;
-            background: transparent;
-            border: 1px solid var(--pink);
-            color: var(--pink-light);
-            font-family: 'Nunito', sans-serif;
-            font-weight: 700;
-            font-size: 0.88rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
+            display: block; width: 100%; max-width: 280px; margin: 0 auto; padding: 11px;
+            background: transparent; border: 1px solid var(--pink); color: var(--pink-light);
+            font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.88rem;
+            border-radius: 8px; cursor: pointer; transition: all 0.3s ease; text-align: center;
         }
-
-        .back-btn:hover {
-            background: rgba(232, 67, 147, 0.12);
-            border-color: var(--pink-light);
-            color: #fff;
-            box-shadow: 0 0 16px rgba(232, 67, 147, 0.25);
-        }
+        .back-btn:hover { background: rgba(232, 67, 147, 0.12); border-color: var(--pink-light); color: #fff; box-shadow: 0 0 16px rgba(232, 67, 147, 0.25); }
         .back-btn i { margin-right: 6px; }
 
-        /* ============ TOASTS ============ */
         .toast-container {
-            position: fixed;
-            top: 44px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 2000;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            pointer-events: none;
-            width: 90%;
-            max-width: 420px;
+            position: fixed; top: 44px; left: 50%; transform: translateX(-50%);
+            z-index: 2000; display: flex; flex-direction: column; gap: 8px;
+            pointer-events: none; width: 90%; max-width: 420px;
         }
 
         .toast {
-            background: rgba(20, 18, 14, 0.95);
-            border: 1px solid var(--border);
-            color: var(--fg);
-            padding: 11px 20px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 0.86rem;
+            background: rgba(20, 18, 14, 0.95); border: 1px solid var(--border); color: var(--fg);
+            padding: 11px 20px; border-radius: 10px; font-weight: 600; font-size: 0.86rem;
             text-align: center;
             animation: toastIn 0.35s ease-out, toastOut 0.4s ease-in forwards;
             animation-delay: 0s, 2.6s;
-            box-shadow: 0 8px 28px rgba(0,0,0,0.6);
-            line-height: 1.35;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.6); line-height: 1.35;
         }
-
         .toast.success { border-color: var(--success); color: #5dde9e; }
         .toast.error { border-color: var(--danger); color: #e07070; }
         .toast.info { border-color: var(--accent); color: var(--accent-glow); }
@@ -550,84 +317,45 @@
         @keyframes toastIn { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateY(-10px); } }
 
-        /* ============ MODAL ============ */
         .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.72);
-            z-index: 1500;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(4px);
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.72);
+            z-index: 1500; align-items: center; justify-content: center; backdrop-filter: blur(4px);
         }
         .modal-overlay.active { display: flex; }
 
         .modal-box {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 30px;
-            max-width: 460px;
-            width: 90%;
-            text-align: center;
-            animation: modalIn 0.3s ease-out;
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: 16px; padding: 30px; max-width: 460px; width: 90%;
+            text-align: center; animation: modalIn 0.3s ease-out;
         }
         @keyframes modalIn { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
 
         .modal-title {
-            font-family: 'Cinzel', serif;
-            font-weight: 900;
-            font-size: 1.35rem;
-            color: var(--accent);
-            margin-bottom: 14px;
+            font-family: 'Cinzel', serif; font-weight: 900; font-size: 1.35rem;
+            color: var(--accent); margin-bottom: 14px;
         }
 
         .modal-input {
-            width: 100%;
-            padding: 11px 14px;
-            background: rgba(0,0,0,0.35);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--fg);
-            font-family: 'Nunito', sans-serif;
-            font-size: 1rem;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            outline: none;
-            margin-bottom: 16px;
+            width: 100%; padding: 11px 14px; background: rgba(0,0,0,0.35);
+            border: 1px solid var(--border); border-radius: 8px; color: var(--fg);
+            font-family: 'Nunito', sans-serif; font-size: 1rem;
+            text-align: center; text-transform: uppercase; letter-spacing: 2px;
+            outline: none; margin-bottom: 16px;
         }
         .modal-input:focus { border-color: var(--accent); }
 
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+        .modal-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 
         .modal-btn {
-            padding: 9px 22px;
-            border-radius: 8px;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: none;
+            padding: 9px 22px; border-radius: 8px; font-family: 'Nunito', sans-serif;
+            font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.2s ease; border: none;
         }
         .modal-btn.primary { background: linear-gradient(135deg, #d4a017, #b8860b); color: #1a1510; }
         .modal-btn.secondary { background: transparent; border: 1px solid var(--border); color: var(--muted); }
         .modal-btn:hover { transform: translateY(-1px); }
 
-        /* ============ RESPONSIVE ============ */
         @media (max-width: 480px) {
-            .letter-box {
-                width: 22px;
-                height: 30px;
-                font-size: 0.75rem;
-            }
+            .letter-box { width: 22px; height: 30px; font-size: 0.75rem; }
             .letter-box.apostrophe { width: 12px; font-size: 0.7rem; }
             .word-group { gap: 2px; }
             .space-gap { width: 8px; }
@@ -638,11 +366,7 @@
         }
 
         @media (min-width: 481px) and (max-width: 600px) {
-            .letter-box {
-                width: 27px;
-                height: 35px;
-                font-size: 0.9rem;
-            }
+            .letter-box { width: 27px; height: 35px; font-size: 0.9rem; }
             .letter-box.apostrophe { width: 14px; font-size: 0.8rem; }
             .word-group { gap: 2px; }
             .space-gap { width: 10px; }
@@ -679,7 +403,6 @@
         </header>
 
         <div class="category-display" id="categoryDisplay" aria-live="polite">Chargement...</div>
-
         <div class="phrase-container" id="phraseContainer" aria-label="Expression à deviner"></div>
 
         <section class="wheel-section" aria-label="Roue de la fortune">
@@ -699,8 +422,8 @@
         </section>
 
         <section class="keyboard-section" aria-label="Clavier des voyelles">
-            <div class="keyboard-label">Voyelles <span style="color:var(--danger);font-weight:800;">(5 PO / occurrence)</span></div>
-            <div class="vowel-cost-note">Le coût est de 5 pièces d'or par occurrence de la voyelle dans l'expression. Le solde peut devenir négatif.</div>
+            <div class="keyboard-label">Voyelles <span style="color:var(--danger);font-weight:800;">(1000 PO / occurrence)</span></div>
+            <div class="vowel-cost-note">Le coût est de 1000 pièces d'or par occurrence de la voyelle dans l'expression. Le solde peut devenir négatif.</div>
             <div class="keyboard-grid" id="vowelGrid"></div>
         </section>
 
@@ -721,9 +444,6 @@
     </main>
 
     <script>
-        /* ============================================
-           EXPRESSIONS
-        ============================================ */
         const phrases = [
             { text: "Avoir le cafard", cat: "Expression courante" },
             { text: "Se creuser la cervelle", cat: "Expression courante" },
@@ -778,61 +498,25 @@
         ];
 
         const phrasesDisplay = [
-            "Avoir le cafard",
-            "Se creuser la cervelle",
-            "Avoir un chat dans la gorge",
-            "Coûter les yeux de la tête",
-            "Avoir le vent en poupe",
-            "Mettre les pieds dans le plat",
-            "Perdre la boule",
-            "Avoir le cœur sur la main",
-            "Tourner autour du pot",
-            "Avoir la frite",
-            "Poser un lapin",
-            "Avoir d'autres chats à fouetter",
-            "Revenir à ses moutons",
-            "Avaler des couleuvres",
-            "Faire l'autruche",
-            "Avoir une faim de loup",
-            "Être un cordon-bleu",
-            "Chanter comme une casserole",
-            "Poule mouillée",
-            "Quand les poules auront des dents",
-            "Voir la vie en rose",
-            "Être blanc comme neige",
-            "Raconter des salades",
-            "Pédaler dans la choucroute",
-            "C'est la fin des haricots",
-            "Haut comme trois pommes",
-            "Être dans de beaux draps",
-            "Vendre la mèche",
-            "Mettre de l'eau dans son vin",
-            "Appeler un chat un chat",
-            "Battre le fer tant qu'il est chaud",
-            "Avoir le pain sur la planche",
-            "Prendre le taureau par les cornes",
-            "Jeter l'éponge",
-            "Ne pas être né de la dernière pluie",
-            "Faire d'une pierre deux coups",
-            "Mettre la main à la pâte",
-            "Broyer du noir",
-            "Passer l'éponge",
-            "Tirer les vers du nez",
-            "C'est la mer à boire",
-            "Se mettre le doigt dans l'œil",
-            "Avoir le dos large",
-            "Tomber des nues",
-            "Vivre d'amour et d'eau fraîche",
-            "Avoir un poil dans la main",
-            "Chercher midi à quatorze heures",
-            "Courir plusieurs lièvres à la fois",
-            "Crier sur tous les toits",
-            "Être logé à la même enseigne"
+            "Avoir le cafard","Se creuser la cervelle","Avoir un chat dans la gorge",
+            "Coûter les yeux de la tête","Avoir le vent en poupe","Mettre les pieds dans le plat",
+            "Perdre la boule","Avoir le cœur sur la main","Tourner autour du pot","Avoir la frite",
+            "Poser un lapin","Avoir d'autres chats à fouetter","Revenir à ses moutons",
+            "Avaler des couleuvres","Faire l'autruche","Avoir une faim de loup","Être un cordon-bleu",
+            "Chanter comme une casserole","Poule mouillée","Quand les poules auront des dents",
+            "Voir la vie en rose","Être blanc comme neige","Raconter des salades",
+            "Pédaler dans la choucroute","C'est la fin des haricots","Haut comme trois pommes",
+            "Être dans de beaux draps","Vendre la mèche","Mettre de l'eau dans son vin",
+            "Appeler un chat un chat","Battre le fer tant qu'il est chaud",
+            "Avoir le pain sur la planche","Prendre le taureau par les cornes","Jeter l'éponge",
+            "Ne pas être né de la dernière pluie","Faire d'une pierre deux coups",
+            "Mettre la main à la pâte","Broyer du noir","Passer l'éponge",
+            "Tirer les vers du nez","C'est la mer à boire","Se mettre le doigt dans l'œil",
+            "Avoir le dos large","Tomber des nues","Vivre d'amour et d'eau fraîche",
+            "Avoir un poil dans la main","Chercher midi à quatorze heures",
+            "Courir plusieurs lièvres à la fois","Crier sur tous les toits","Être logé à la même enseigne"
         ];
 
-        /* ============================================
-           ROUE — 16 SEGMENTS
-        ============================================ */
         const wheelSegments = [
             { value: 100,  color: "#c0392b", label: "100" },
             { value: 200,  color: "#e67e22", label: "200" },
@@ -853,11 +537,8 @@
         ];
 
         const VOWELS = ["A", "E", "I", "O", "U", "Y"];
-        const VOWEL_COST_PER_OCCURRENCE = 5;
+        const VOWEL_COST_PER_OCCURRENCE = 1000;
 
-        /* ============================================
-           ÉTAT
-        ============================================ */
         let currentPhrase = "";
         let currentDisplayPhrase = "";
         let currentCategory = "";
@@ -872,9 +553,6 @@
         let spinVelocity = 0;
         let celebrationInterval = null;
 
-        /* ============================================
-           DOM
-        ============================================ */
         const goldDisplayEl     = document.getElementById("goldDisplay");
         const categoryDisplayEl = document.getElementById("categoryDisplay");
         const phraseContainerEl = document.getElementById("phraseContainer");
@@ -894,469 +572,240 @@
         const modalContentEl    = document.getElementById("modalContent");
         const modalActionsEl    = document.getElementById("modalActions");
 
-        /* ============================================
-           UTILITAIRES
-        ============================================ */
-        function normalizeLetter(ch) {
-            return ch.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
-        }
-
-        function isAlpha(ch) {
-            const n = normalizeLetter(ch);
-            return n >= "A" && n <= "Z";
-        }
-
+        function normalizeLetter(ch) { return ch.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase(); }
+        function isAlpha(ch) { const n = normalizeLetter(ch); return n >= "A" && n <= "Z"; }
         function countInPhrase(letter) {
             let n = 0;
-            for (const ch of currentPhrase) {
-                if (normalizeLetter(ch) === letter) n++;
-            }
+            for (const ch of currentPhrase) { if (normalizeLetter(ch) === letter) n++; }
             return n;
         }
 
-        /* ============================================
-           GUIRLANDES
-        ============================================ */
         function createGarlands() {
-            const bulbColors = [
-                "#ff4444", "#ffdd44", "#44ff88", "#ff8844",
-                "#44ddff", "#ff66aa", "#aaff44", "#ffaa22"
-            ];
-            const sides = ["top", "bottom", "left", "right"];
-
-            sides.forEach(side => {
-                const container = document.createElement("div");
-                container.className = "garland garland-" + side;
-                container.setAttribute("aria-hidden", "true");
-
-                let count;
-                if (side === "top" || side === "bottom") {
-                    count = Math.max(8, Math.floor(window.innerWidth / 30));
-                } else {
-                    count = Math.max(6, Math.floor(window.innerHeight / 30));
-                }
-
+            const bulbColors = ["#ff4444","#ffdd44","#44ff88","#ff8844","#44ddff","#ff66aa","#aaff44","#ffaa22"];
+            ["top","bottom","left","right"].forEach(side => {
+                const c = document.createElement("div");
+                c.className = "garland garland-" + side;
+                c.setAttribute("aria-hidden","true");
+                let count = (side === "top" || side === "bottom") ? Math.max(8, Math.floor(window.innerWidth / 30)) : Math.max(6, Math.floor(window.innerHeight / 30));
                 for (let i = 0; i < count; i++) {
-                    const bulb = document.createElement("div");
-                    bulb.className = "garland-bulb";
+                    const b = document.createElement("div");
+                    b.className = "garland-bulb";
                     const col = bulbColors[i % bulbColors.length];
-                    bulb.style.backgroundColor = col;
-                    bulb.style.boxShadow = "0 0 5px 2px " + col + ", 0 0 12px 4px " + col + "44";
-                    bulb.style.animationDelay = (i * 0.18 % 2).toFixed(2) + "s";
-                    bulb.style.animationDuration = (1.8 + (i % 3) * 0.4).toFixed(1) + "s";
-                    bulb.dataset.origColor = col;
-                    bulb.dataset.origShadow = "0 0 5px 2px " + col + ", 0 0 12px 4px " + col + "44";
-                    container.appendChild(bulb);
+                    b.style.backgroundColor = col;
+                    b.style.boxShadow = "0 0 5px 2px " + col + ", 0 0 12px 4px " + col + "44";
+                    b.style.animationDelay = (i * 0.18 % 2).toFixed(2) + "s";
+                    b.style.animationDuration = (1.8 + (i % 3) * 0.4).toFixed(1) + "s";
+                    b.dataset.origColor = col;
+                    b.dataset.origShadow = "0 0 5px 2px " + col + ", 0 0 12px 4px " + col + "44";
+                    c.appendChild(b);
                 }
-
-                document.body.appendChild(container);
+                document.body.appendChild(c);
             });
         }
 
         function restoreGarlandColors() {
-            document.querySelectorAll(".garland-bulb").forEach(bulb => {
-                bulb.style.backgroundColor = bulb.dataset.origColor;
-                bulb.style.boxShadow = bulb.dataset.origShadow;
+            document.querySelectorAll(".garland-bulb").forEach(b => {
+                b.style.backgroundColor = b.dataset.origColor;
+                b.style.boxShadow = b.dataset.origShadow;
             });
         }
 
         function startCelebration() {
             document.body.classList.add("celebrating");
-
-            const celebrationColors = [
-                "#ff0044", "#ffdd00", "#00ff88", "#ff6600",
-                "#00ccff", "#ff00cc", "#aaff00", "#ffaa00", "#ffffff"
-            ];
+            const cols = ["#ff0044","#ffdd00","#00ff88","#ff6600","#00ccff","#ff00cc","#aaff00","#ffaa00","#ffffff"];
             const bulbs = document.querySelectorAll(".garland-bulb");
             let tick = 0;
-
             celebrationInterval = setInterval(() => {
                 tick++;
-                bulbs.forEach((bulb, i) => {
-                    const col = celebrationColors[(i + tick) % celebrationColors.length];
-                    bulb.style.backgroundColor = col;
-                    bulb.style.boxShadow = "0 0 12px 5px " + col + ", 0 0 30px 10px " + col + "88";
+                bulbs.forEach((b, i) => {
+                    const col = cols[(i + tick) % cols.length];
+                    b.style.backgroundColor = col;
+                    b.style.boxShadow = "0 0 12px 5px " + col + ", 0 0 30px 10px " + col + "88";
                 });
             }, 100);
-
             setTimeout(() => {
-                clearInterval(celebrationInterval);
-                celebrationInterval = null;
-                document.body.classList.remove("celebrating");
-                restoreGarlandColors();
+                clearInterval(celebrationInterval); celebrationInterval = null;
+                document.body.classList.remove("celebrating"); restoreGarlandColors();
             }, 5000);
         }
 
-        /* ============================================
-           ROUE — DESSIN
-        ============================================ */
         const segCount = wheelSegments.length;
         const segAngle = (2 * Math.PI) / segCount;
 
         function drawWheel() {
-            const w = canvasEl.width;
-            const h = canvasEl.height;
-            const cx = w / 2;
-            const cy = h / 2;
+            const w = canvasEl.width, h = canvasEl.height, cx = w / 2, cy = h / 2;
             const radius = Math.max(10, Math.min(cx, cy) - 22);
-
             ctx.clearRect(0, 0, w, h);
-
-            ctx.beginPath();
-            ctx.arc(cx, cy, radius + 14, 0, 2 * Math.PI);
-            ctx.strokeStyle = "#d4a017";
-            ctx.lineWidth = 4;
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.arc(cx, cy, radius + 8, 0, 2 * Math.PI);
-            ctx.strokeStyle = "#8b6914";
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
+            ctx.beginPath(); ctx.arc(cx, cy, radius + 14, 0, 2 * Math.PI);
+            ctx.strokeStyle = "#d4a017"; ctx.lineWidth = 4; ctx.stroke();
+            ctx.beginPath(); ctx.arc(cx, cy, radius + 8, 0, 2 * Math.PI);
+            ctx.strokeStyle = "#8b6914"; ctx.lineWidth = 2; ctx.stroke();
             for (let i = 0; i < segCount; i++) {
-                const start = wheelAngle + i * segAngle;
-                const end = start + segAngle;
-                const seg = wheelSegments[i];
-
-                ctx.beginPath();
-                ctx.moveTo(cx, cy);
-                ctx.arc(cx, cy, radius, start, end);
-                ctx.closePath();
-                ctx.fillStyle = seg.color;
-                ctx.fill();
-
-                ctx.strokeStyle = "rgba(0,0,0,0.35)";
-                ctx.lineWidth = 1.5;
-                ctx.stroke();
-
-                ctx.save();
-                ctx.translate(cx, cy);
-                ctx.rotate(start + segAngle / 2);
-                ctx.textAlign = "right";
-                ctx.textBaseline = "middle";
-
+                const start = wheelAngle + i * segAngle, end = start + segAngle, seg = wheelSegments[i];
+                ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, radius, start, end); ctx.closePath();
+                ctx.fillStyle = seg.color; ctx.fill();
+                ctx.strokeStyle = "rgba(0,0,0,0.35)"; ctx.lineWidth = 1.5; ctx.stroke();
+                ctx.save(); ctx.translate(cx, cy); ctx.rotate(start + segAngle / 2);
+                ctx.textAlign = "right"; ctx.textBaseline = "middle";
                 if (seg.value === "BANQUEROUTE") {
-                    ctx.font = "bold 17px Cinzel, serif";
-                    ctx.fillStyle = "#ff4444";
+                    ctx.font = "bold 17px Cinzel, serif"; ctx.fillStyle = "#ff4444";
                     ctx.fillText("BANQUEROUTE", radius - 14, 0);
                 } else {
-                    ctx.font = "bold 32px Cinzel, serif";
-                    ctx.fillStyle = "#ffffff";
-                    ctx.shadowColor = "rgba(0,0,0,0.5)";
-                    ctx.shadowBlur = 4;
-                    ctx.fillText(seg.label, radius - 20, 0);
-                    ctx.shadowBlur = 0;
+                    ctx.font = "bold 32px Cinzel, serif"; ctx.fillStyle = "#ffffff";
+                    ctx.shadowColor = "rgba(0,0,0,0.5)"; ctx.shadowBlur = 4;
+                    ctx.fillText(seg.label, radius - 20, 0); ctx.shadowBlur = 0;
                 }
-
                 ctx.restore();
             }
-
-            const depthGrad = ctx.createRadialGradient(cx, cy, radius * 0.2, cx, cy, radius);
-            depthGrad.addColorStop(0, "rgba(255,255,255,0.07)");
-            depthGrad.addColorStop(0.6, "rgba(0,0,0,0)");
-            depthGrad.addColorStop(1, "rgba(0,0,0,0.25)");
-            ctx.beginPath();
-            ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
-            ctx.fillStyle = depthGrad;
-            ctx.fill();
-
+            const dg = ctx.createRadialGradient(cx, cy, radius * 0.2, cx, cy, radius);
+            dg.addColorStop(0, "rgba(255,255,255,0.07)"); dg.addColorStop(0.6, "rgba(0,0,0,0)");
+            dg.addColorStop(1, "rgba(0,0,0,0.25)");
+            ctx.beginPath(); ctx.arc(cx, cy, radius, 0, 2 * Math.PI); ctx.fillStyle = dg; ctx.fill();
             for (let i = 0; i < segCount; i++) {
                 const a = wheelAngle + i * segAngle;
-                const dx = cx + Math.cos(a) * (radius - 3);
-                const dy = cy + Math.sin(a) * (radius - 3);
-                ctx.beginPath();
-                ctx.arc(dx, dy, 4, 0, 2 * Math.PI);
-                ctx.fillStyle = "#d4a017";
-                ctx.fill();
-                ctx.strokeStyle = "#8b6914";
-                ctx.lineWidth = 1;
-                ctx.stroke();
+                ctx.beginPath(); ctx.arc(cx + Math.cos(a) * (radius - 3), cy + Math.sin(a) * (radius - 3), 4, 0, 2 * Math.PI);
+                ctx.fillStyle = "#d4a017"; ctx.fill(); ctx.strokeStyle = "#8b6914"; ctx.lineWidth = 1; ctx.stroke();
             }
-
-            const hubGrad = ctx.createRadialGradient(cx - 5, cy - 5, 0, cx, cy, 34);
-            hubGrad.addColorStop(0, "#f5c842");
-            hubGrad.addColorStop(0.6, "#d4a017");
-            hubGrad.addColorStop(1, "#8b6914");
-            ctx.beginPath();
-            ctx.arc(cx, cy, 32, 0, 2 * Math.PI);
-            ctx.fillStyle = hubGrad;
-            ctx.fill();
-            ctx.strokeStyle = "#6b4f10";
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.arc(cx, cy, 6, 0, 2 * Math.PI);
-            ctx.fillStyle = "#1a1510";
-            ctx.fill();
+            const hg = ctx.createRadialGradient(cx - 5, cy - 5, 0, cx, cy, 34);
+            hg.addColorStop(0, "#f5c842"); hg.addColorStop(0.6, "#d4a017"); hg.addColorStop(1, "#8b6914");
+            ctx.beginPath(); ctx.arc(cx, cy, 32, 0, 2 * Math.PI); ctx.fillStyle = hg; ctx.fill();
+            ctx.strokeStyle = "#6b4f10"; ctx.lineWidth = 2; ctx.stroke();
+            ctx.beginPath(); ctx.arc(cx, cy, 6, 0, 2 * Math.PI); ctx.fillStyle = "#1a1510"; ctx.fill();
         }
 
         function getWinningSegment() {
-            const pointerAngle = -Math.PI / 2;
-            let norm = (pointerAngle - wheelAngle) % (2 * Math.PI);
+            let norm = (-Math.PI / 2 - wheelAngle) % (2 * Math.PI);
             if (norm < 0) norm += 2 * Math.PI;
-            const idx = Math.floor(norm / segAngle) % segCount;
-            return wheelSegments[idx];
+            return wheelSegments[Math.floor(norm / segAngle) % segCount];
         }
 
-        /* ============================================
-           ROUE — ANIMATION
-        ============================================ */
         function spinWheel() {
             if (isSpinning || gameWon) return;
-
-            if (canChooseConsonant) {
-                canChooseConsonant = false;
-                currentWheelValue = null;
-                infoLineEl.textContent = "Valeur de roue perdue. La roue tourne...";
-            } else {
-                infoLineEl.textContent = "La roue tourne...";
-            }
-
-            isSpinning = true;
-            spinBtnEl.disabled = true;
-            guessBtnEl.disabled = true;
-            wheelResultEl.textContent = "";
-            wheelResultEl.className = "wheel-result";
-
+            if (canChooseConsonant) { canChooseConsonant = false; currentWheelValue = null; infoLineEl.textContent = "Valeur de roue perdue. La roue tourne..."; }
+            else { infoLineEl.textContent = "La roue tourne..."; }
+            isSpinning = true; spinBtnEl.disabled = true; guessBtnEl.disabled = true;
+            wheelResultEl.textContent = ""; wheelResultEl.className = "wheel-result";
             spinVelocity = 0.22 + Math.random() * 0.22;
-
-            function animate() {
-                wheelAngle += spinVelocity;
-                spinVelocity *= 0.984;
-                drawWheel();
-
-                if (spinVelocity > 0.001) {
-                    requestAnimationFrame(animate);
-                } else {
-                    isSpinning = false;
-                    handleWheelResult(getWinningSegment());
-                }
-            }
-
-            requestAnimationFrame(animate);
+            (function animate() {
+                wheelAngle += spinVelocity; spinVelocity *= 0.984; drawWheel();
+                if (spinVelocity > 0.001) requestAnimationFrame(animate);
+                else { isSpinning = false; handleWheelResult(getWinningSegment()); }
+            })();
         }
 
         function handleWheelResult(segment) {
             currentWheelValue = segment.value;
-
             if (segment.value === "BANQUEROUTE") {
-                goldBalance = 0;
-                updateGoldDisplay();
-                wheelResultEl.textContent = "Banqueroute ! Solde remis a zero.";
-                wheelResultEl.className = "wheel-result negative";
+                goldBalance = 0; updateGoldDisplay();
+                wheelResultEl.textContent = "Banqueroute ! Solde remis a zero."; wheelResultEl.className = "wheel-result negative";
                 showToast("Banqueroute ! Toutes vos pieces perdues.", "error");
                 infoLineEl.textContent = "Banqueroute ! Faites tourner la roue a nouveau.";
-                currentWheelValue = null;
-                spinBtnEl.disabled = false;
-
+                currentWheelValue = null; spinBtnEl.disabled = false;
             } else {
                 wheelResultEl.textContent = segment.value + " pieces d'or ! Choisissez une consonne.";
                 wheelResultEl.className = "wheel-result positive";
                 infoLineEl.textContent = "Roue : " + segment.value + " PO. Choisissez une consonne.";
                 canChooseConsonant = true;
             }
-
             updateKeyboard();
         }
 
-        /* ============================================
-           PHRASE — MOTS REGROUPÉS (jamais coupés)
-        ============================================ */
         function renderPhrase() {
             phraseContainerEl.innerHTML = "";
             const words = currentPhrase.split(" ");
-
-            words.forEach((word, wordIdx) => {
-                /* Groupe insécable pour chaque mot */
-                const wordGroup = document.createElement("span");
-                wordGroup.className = "word-group";
-
-                for (const char of word) {
-                    if (char === "'") {
-                        const box = document.createElement("span");
-                        box.className = "letter-box apostrophe";
-                        box.textContent = "'";
-                        wordGroup.appendChild(box);
+            words.forEach((word, wi) => {
+                const wg = document.createElement("span"); wg.className = "word-group";
+                for (const ch of word) {
+                    if (ch === "'") {
+                        const b = document.createElement("span"); b.className = "letter-box apostrophe"; b.textContent = "'"; wg.appendChild(b);
                     } else {
-                        const norm = normalizeLetter(char);
-                        const box = document.createElement("span");
-                        box.className = "letter-box";
-
-                        if (revealedLetters.has(norm)) {
-                            box.classList.add("revealed");
-                            box.textContent = char;
-                        }
-                        if (gameWon) {
-                            box.classList.add("won");
-                            box.textContent = char;
-                        }
-
-                        wordGroup.appendChild(box);
+                        const norm = normalizeLetter(ch);
+                        const b = document.createElement("span"); b.className = "letter-box";
+                        if (revealedLetters.has(norm)) { b.classList.add("revealed"); b.textContent = ch; }
+                        if (gameWon) { b.classList.add("won"); b.textContent = ch; }
+                        wg.appendChild(b);
                     }
                 }
-
-                phraseContainerEl.appendChild(wordGroup);
-
-                /* Espace entre les mots (sauf après le dernier) */
-                if (wordIdx < words.length - 1) {
-                    const space = document.createElement("span");
-                    space.className = "space-gap";
-                    phraseContainerEl.appendChild(space);
-                }
+                phraseContainerEl.appendChild(wg);
+                if (wi < words.length - 1) { const s = document.createElement("span"); s.className = "space-gap"; phraseContainerEl.appendChild(s); }
             });
         }
 
-        /* ============================================
-           CLAVIER
-        ============================================ */
         function buildKeyboard() {
-            consonantGridEl.innerHTML = "";
-            vowelGridEl.innerHTML = "";
-
-            "BCDFGHJKLMNPQRSTVWXZ".split("").forEach(letter => {
-                const btn = document.createElement("button");
-                btn.className = "key-btn";
-                btn.textContent = letter;
-                btn.dataset.letter = letter;
-                btn.disabled = true;
-                btn.setAttribute("aria-label", "Consonne " + letter);
-                btn.addEventListener("click", () => chooseConsonant(letter));
-                consonantGridEl.appendChild(btn);
+            consonantGridEl.innerHTML = ""; vowelGridEl.innerHTML = "";
+            "BCDFGHJKLMNPQRSTVWXZ".split("").forEach(l => {
+                const b = document.createElement("button"); b.className = "key-btn"; b.textContent = l;
+                b.dataset.letter = l; b.disabled = true; b.setAttribute("aria-label", "Consonne " + l);
+                b.addEventListener("click", () => chooseConsonant(l)); consonantGridEl.appendChild(b);
             });
-
-            VOWELS.forEach(letter => {
-                const btn = document.createElement("button");
-                btn.className = "key-btn vowel";
-                btn.textContent = letter;
-                btn.dataset.letter = letter;
-                btn.disabled = true;
-                btn.setAttribute("aria-label", "Voyelle " + letter);
-                btn.addEventListener("click", () => chooseVowel(letter));
-                vowelGridEl.appendChild(btn);
+            VOWELS.forEach(l => {
+                const b = document.createElement("button"); b.className = "key-btn vowel"; b.textContent = l;
+                b.dataset.letter = l; b.disabled = true; b.setAttribute("aria-label", "Voyelle " + l);
+                b.addEventListener("click", () => chooseVowel(l)); vowelGridEl.appendChild(b);
             });
         }
 
         function updateKeyboard() {
-            consonantGridEl.querySelectorAll(".key-btn").forEach(btn => {
-                const l = btn.dataset.letter;
-                if (usedLetters.has(l)) {
-                    btn.disabled = true;
-                    btn.classList.remove("vowel");
-                    btn.classList.add(revealedLetters.has(l) ? "used-correct" : "used-wrong");
-                } else {
-                    btn.disabled = !(canChooseConsonant && typeof currentWheelValue === "number");
-                    btn.classList.remove("used-correct", "used-wrong");
-                }
+            consonantGridEl.querySelectorAll(".key-btn").forEach(b => {
+                const l = b.dataset.letter;
+                if (usedLetters.has(l)) { b.disabled = true; b.classList.remove("vowel"); b.classList.add(revealedLetters.has(l) ? "used-correct" : "used-wrong"); }
+                else { b.disabled = !(canChooseConsonant && typeof currentWheelValue === "number"); b.classList.remove("used-correct", "used-wrong"); }
             });
-
-            vowelGridEl.querySelectorAll(".key-btn").forEach(btn => {
-                const l = btn.dataset.letter;
-                if (usedLetters.has(l)) {
-                    btn.disabled = true;
-                    btn.classList.add(revealedLetters.has(l) ? "used-correct" : "used-wrong");
-                } else {
-                    btn.disabled = isSpinning || gameWon;
-                    btn.classList.remove("used-correct", "used-wrong");
-                }
+            vowelGridEl.querySelectorAll(".key-btn").forEach(b => {
+                const l = b.dataset.letter;
+                if (usedLetters.has(l)) { b.disabled = true; b.classList.add(revealedLetters.has(l) ? "used-correct" : "used-wrong"); }
+                else { b.disabled = isSpinning || gameWon; b.classList.remove("used-correct", "used-wrong"); }
             });
-
             guessBtnEl.disabled = isSpinning || gameWon;
             spinBtnEl.disabled = isSpinning || gameWon;
         }
 
-        /* ============================================
-           CONSONNE
-        ============================================ */
         function chooseConsonant(letter) {
             if (!canChooseConsonant || usedLetters.has(letter) || typeof currentWheelValue !== "number") return;
-
             usedLetters.add(letter);
             const count = countInPhrase(letter);
-
             if (count > 0) {
                 revealedLetters.add(letter);
                 const earned = currentWheelValue * count;
-                goldBalance += earned;
-                updateGoldDisplay();
+                goldBalance += earned; updateGoldDisplay();
                 showToast(count + " \"" + letter + "\" trouve" + (count > 1 ? "s" : "") + " ! +" + earned + " PO", "success");
                 infoLineEl.textContent = "+" + earned + " PO gagnes ! Continuez.";
-                renderPhrase();
-                checkWin();
+                renderPhrase(); checkWin();
             } else {
                 showToast("Pas de \"" + letter + "\" dans l'expression.", "error");
                 infoLineEl.textContent = "Pas de \"" + letter + "\". Faites tourner la roue.";
-                canChooseConsonant = false;
-                currentWheelValue = null;
+                canChooseConsonant = false; currentWheelValue = null;
             }
-
             updateKeyboard();
         }
 
-        /* ============================================
-           VOYELLE
-        ============================================ */
         function chooseVowel(letter) {
             if (usedLetters.has(letter) || isSpinning || gameWon) return;
-
             const count = countInPhrase(letter);
             const cost = count * VOWEL_COST_PER_OCCURRENCE;
-
             usedLetters.add(letter);
-            goldBalance -= cost;
-            updateGoldDisplay();
-
+            goldBalance -= cost; updateGoldDisplay();
             if (count > 0) {
-                revealedLetters.add(letter);
-                renderPhrase();
-                if (count === 1) {
-                    showToast("1 \"" + letter + "\" trouve. Cout : " + cost + " PO", "info");
-                } else {
-                    showToast(count + " \"" + letter + "\" trouves. Cout : " + cost + " PO", "info");
-                }
+                revealedLetters.add(letter); renderPhrase();
+                showToast(count + " \"" + letter + "\" trouve" + (count > 1 ? "s" : "") + ". Cout : " + cost + " PO", "info");
                 infoLineEl.textContent = "Voyelle \"" + letter + "\" revelee. Cout : " + cost + " PO.";
                 checkWin();
             } else {
                 showToast("Pas de \"" + letter + "\". Cout : " + cost + " PO.", "error");
                 infoLineEl.textContent = "Pas de \"" + letter + "\". " + cost + " PO depenses.";
             }
-
-            canChooseConsonant = false;
-            currentWheelValue = null;
-            updateKeyboard();
+            canChooseConsonant = false; currentWheelValue = null; updateKeyboard();
         }
 
-        /* ============================================
-           VICTOIRE
-        ============================================ */
         function checkWin() {
-            const allRevealed = [...currentPhrase].every(ch => {
-                if (ch === " " || ch === "'") return true;
-                if (!isAlpha(ch)) return true;
-                return revealedLetters.has(normalizeLetter(ch));
-            });
-
-            if (!allRevealed) return;
-
-            gameWon = true;
-            canChooseConsonant = false;
-
+            if (![...currentPhrase].every(ch => (ch === " " || ch === "'" || !isAlpha(ch)) || revealedLetters.has(normalizeLetter(ch)))) return;
+            gameWon = true; canChooseConsonant = false;
             revealedLetters.clear();
-            for (const ch of currentPhrase) {
-                if (isAlpha(ch)) revealedLetters.add(normalizeLetter(ch));
-            }
-            renderPhrase();
-            updateKeyboard();
-
-            goldBalance += 500;
-            updateGoldDisplay();
-
-            startCelebration();
-
+            for (const ch of currentPhrase) { if (isAlpha(ch)) revealedLetters.add(normalizeLetter(ch)); }
+            renderPhrase(); updateKeyboard();
+            goldBalance += 500; updateGoldDisplay(); startCelebration();
             setTimeout(() => {
-                showModal(
-                    "Bravo !",
+                showModal("Bravo !",
                     '<p style="margin-bottom:12px;color:var(--fg);">Vous avez trouve :</p>' +
                     '<p style="font-family:Cinzel,serif;font-size:1.15rem;color:var(--accent-glow);margin-bottom:14px;letter-spacing:1px;line-height:1.4;">"' + currentDisplayPhrase + '"</p>' +
                     '<p style="color:var(--muted);">Bonus de victoire : +500 PO</p>' +
@@ -1366,57 +815,28 @@
             }, 600);
         }
 
-        /* ============================================
-           PROPOSITION
-        ============================================ */
         function openGuessModal() {
             if (isSpinning || gameWon) return;
-            showModal(
-                "Faire une proposition",
+            showModal("Faire une proposition",
                 '<input type="text" class="modal-input" id="guessInput" placeholder="Tapez votre reponse..." autocomplete="off">',
-                [
-                    { text: "Valider", cls: "primary", action: submitGuess },
-                    { text: "Annuler", cls: "secondary", action: closeModal }
-                ]
+                [{ text: "Valider", cls: "primary", action: submitGuess }, { text: "Annuler", cls: "secondary", action: closeModal }]
             );
-            setTimeout(() => {
-                const inp = document.getElementById("guessInput");
-                if (inp) inp.focus();
-            }, 120);
+            setTimeout(() => { const i = document.getElementById("guessInput"); if (i) i.focus(); }, 120);
         }
 
         function submitGuess() {
-            const inp = document.getElementById("guessInput");
-            if (!inp) return;
-
-            const guess = inp.value
-                .trim()
-                .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                .toUpperCase()
-                .replace(/\s+/g, " ");
-
+            const inp = document.getElementById("guessInput"); if (!inp) return;
+            const guess = inp.value.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().replace(/\s+/g, " ");
             const target = currentPhrase.toUpperCase().replace(/\s+/g, " ");
             closeModal();
-
             if (guess === target) {
-                gameWon = true;
-                canChooseConsonant = false;
-
+                gameWon = true; canChooseConsonant = false;
                 revealedLetters.clear();
-                for (const ch of currentPhrase) {
-                    if (isAlpha(ch)) revealedLetters.add(normalizeLetter(ch));
-                }
-                renderPhrase();
-                updateKeyboard();
-
-                goldBalance += 500;
-                updateGoldDisplay();
-
-                startCelebration();
-
+                for (const ch of currentPhrase) { if (isAlpha(ch)) revealedLetters.add(normalizeLetter(ch)); }
+                renderPhrase(); updateKeyboard();
+                goldBalance += 500; updateGoldDisplay(); startCelebration();
                 setTimeout(() => {
-                    showModal(
-                        "Bravo !",
+                    showModal("Bravo !",
                         '<p style="margin-bottom:12px;color:var(--fg);">Vous avez trouve :</p>' +
                         '<p style="font-family:Cinzel,serif;font-size:1.15rem;color:var(--accent-glow);margin-bottom:14px;letter-spacing:1px;line-height:1.4;">"' + currentDisplayPhrase + '"</p>' +
                         '<p style="color:var(--muted);">Bonus de victoire : +500 PO</p>' +
@@ -1427,122 +847,60 @@
             } else {
                 showToast("Mauvaise reponse !", "error");
                 infoLineEl.textContent = "Mauvaise reponse. Continuez a jouer !";
-                canChooseConsonant = false;
-                currentWheelValue = null;
-                updateKeyboard();
+                canChooseConsonant = false; currentWheelValue = null; updateKeyboard();
             }
         }
 
-        /* ============================================
-           MODAL
-        ============================================ */
         function showModal(title, contentHTML, buttons) {
-            modalTitleEl.textContent = title;
-            modalContentEl.innerHTML = contentHTML;
-            modalActionsEl.innerHTML = "";
+            modalTitleEl.textContent = title; modalContentEl.innerHTML = contentHTML; modalActionsEl.innerHTML = "";
             buttons.forEach(b => {
-                const el = document.createElement("button");
-                el.className = "modal-btn " + (b.cls || "");
-                el.textContent = b.text;
-                el.addEventListener("click", b.action);
-                modalActionsEl.appendChild(el);
+                const el = document.createElement("button"); el.className = "modal-btn " + (b.cls || "");
+                el.textContent = b.text; el.addEventListener("click", b.action); modalActionsEl.appendChild(el);
             });
             modalOverlayEl.classList.add("active");
         }
+        function closeModal() { modalOverlayEl.classList.remove("active"); }
 
-        function closeModal() {
-            modalOverlayEl.classList.remove("active");
-        }
-
-        /* ============================================
-           TOASTS
-        ============================================ */
         function showToast(message, type) {
-            type = type || "info";
-            const t = document.createElement("div");
-            t.className = "toast " + type;
-            t.textContent = message;
-            toastContainerEl.appendChild(t);
-            setTimeout(() => { if (t.parentNode) t.remove(); }, 3200);
+            const t = document.createElement("div"); t.className = "toast " + (type || "info"); t.textContent = message;
+            toastContainerEl.appendChild(t); setTimeout(() => { if (t.parentNode) t.remove(); }, 3200);
         }
 
-        /* ============================================
-           OR
-        ============================================ */
         function updateGoldDisplay() {
             goldDisplayEl.textContent = goldBalance;
             goldDisplayEl.className = "gold-amount" + (goldBalance < 0 ? " negative" : "");
         }
 
-        /* ============================================
-           NOUVELLE PARTIE
-        ============================================ */
         function startNewGame() {
             closeModal();
-
-            if (celebrationInterval) {
-                clearInterval(celebrationInterval);
-                celebrationInterval = null;
-            }
-            document.body.classList.remove("celebrating");
-            restoreGarlandColors();
-
+            if (celebrationInterval) { clearInterval(celebrationInterval); celebrationInterval = null; }
+            document.body.classList.remove("celebrating"); restoreGarlandColors();
             const idx = Math.floor(Math.random() * phrases.length);
-            currentPhrase = phrases[idx].text;
-            currentDisplayPhrase = phrasesDisplay[idx];
-            currentCategory = phrases[idx].cat;
-            revealedLetters = new Set();
-            usedLetters = new Set();
-            currentWheelValue = null;
-            canChooseConsonant = false;
-            gameWon = false;
-            isSpinning = false;
-
+            currentPhrase = phrases[idx].text; currentDisplayPhrase = phrasesDisplay[idx]; currentCategory = phrases[idx].cat;
+            revealedLetters = new Set(); usedLetters = new Set(); currentWheelValue = null;
+            canChooseConsonant = false; gameWon = false; isSpinning = false;
             categoryDisplayEl.textContent = currentCategory;
-            wheelResultEl.textContent = "";
-            wheelResultEl.className = "wheel-result";
+            wheelResultEl.textContent = ""; wheelResultEl.className = "wheel-result";
             infoLineEl.textContent = "Faites tourner la roue pour commencer !";
-
-            renderPhrase();
-            buildKeyboard();
-            updateKeyboard();
-            drawWheel();
+            renderPhrase(); buildKeyboard(); updateKeyboard(); drawWheel();
         }
 
-        /* ============================================
-           ÉVÉNEMENTS
-        ============================================ */
         spinBtnEl.addEventListener("click", spinWheel);
         guessBtnEl.addEventListener("click", openGuessModal);
         newGameBtnEl.addEventListener("click", startNewGame);
-
         backBtnEl.addEventListener("click", () => {
-            showModal(
-                "Retour au Village",
-                '<p style="color:var(--muted);">Voulez-vous vraiment quitter la partie en cours ?</p>',
-                [
-                    { text: "Quitter", cls: "primary", action: () => { closeModal(); window.location.href = "https://pierreg78-maker.github.io/village/"; } },
-                    { text: "Rester", cls: "secondary", action: closeModal }
-                ]
+            showModal("Retour au Village", '<p style="color:var(--muted);">Voulez-vous vraiment quitter la partie en cours ?</p>',
+                [{ text: "Quitter", cls: "primary", action: () => { closeModal(); window.location.href = "https://pierreg78-maker.github.io/village/"; } },
+                 { text: "Rester", cls: "secondary", action: closeModal }]
             );
         });
-
         document.addEventListener("keydown", e => {
             if (!modalOverlayEl.classList.contains("active")) return;
-            if (e.key === "Enter") {
-                const inp = document.getElementById("guessInput");
-                if (inp && document.activeElement === inp) submitGuess();
-            }
+            if (e.key === "Enter") { const i = document.getElementById("guessInput"); if (i && document.activeElement === i) submitGuess(); }
             if (e.key === "Escape") closeModal();
         });
+        modalOverlayEl.addEventListener("click", e => { if (e.target === modalOverlayEl) closeModal(); });
 
-        modalOverlayEl.addEventListener("click", e => {
-            if (e.target === modalOverlayEl) closeModal();
-        });
-
-        /* ============================================
-           INIT
-        ============================================ */
         createGarlands();
         startNewGame();
     </script>
