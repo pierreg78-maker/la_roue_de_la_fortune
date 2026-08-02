@@ -2,676 +2,1379 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Roue de la Fortune</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
-            --bg-color: #2c1810;
-            --wood-light: #8B4513;
-            --wood-dark: #5C2E00;
-            --gold: #FFD700;
-            --cream: #FDF5E6;
-            --red: #8B0000;
+            --bg: #0d0d0d;
+            --bg-secondary: #1a1510;
+            --fg: #fdf6e3;
+            --muted: #8a7e6b;
+            --accent: #d4a017;
+            --accent-glow: #f5c842;
+            --card: rgba(30, 25, 18, 0.92);
+            --border: rgba(212, 160, 23, 0.3);
+            --danger: #c0392b;
+            --success: #27ae60;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Georgia', serif;
-            background-color: var(--bg-color);
-            color: var(--cream);
-            margin: 0;
-            height: 100vh;
-            height: 100dvh; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        #game-container {
-            display: flex;
-            flex-direction: column; 
-            width: 100%;
-            height: 100%;
-            max-width: 1200px;
-            background: linear-gradient(145deg, #4a2c1a, #2c1810);
-            border: 4px solid var(--wood-light);
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+            overflow-x: hidden;
             position: relative;
-            padding: 10px;
         }
 
-        @media (min-width: 768px) {
-            #game-container {
-                flex-direction: row;
-                height: 90vh;
-                border-width: 8px;
-                border-radius: 20px;
-                padding: 20px;
-            }
+        /* === FOND DÉCORATIF === */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(212, 160, 23, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(192, 57, 43, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 85%, rgba(39, 174, 96, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
 
-        #left-panel {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            padding: 10px 0;
+        /* ============ GUIRLANDES - 4 CÔTÉS ============ */
+        .garland {
+            position: fixed;
+            z-index: 1000;
+            pointer-events: none;
         }
 
-        #wheel-container {
-            position: relative;
-            width: 280px;
-            height: 280px;
-        }
-
-        @media (min-width: 768px) {
-            #wheel-container { width: 350px; height: 350px; }
-            canvas { width: 350px !important; height: 350px !important; }
-        }
-
-        #pointer {
+        /* Fil (wire) commun */
+        .garland-top::after,
+        .garland-bottom::after {
+            content: '';
             position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0; height: 0;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-top: 25px solid var(--gold);
-            z-index: 10;
-            filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.8));
+            left: 0; right: 0;
+            height: 1px;
+            background: rgba(120, 100, 60, 0.5);
         }
+        .garland-top::after { top: 9px; }
+        .garland-bottom::after { bottom: 9px; }
 
-        canvas {
-            width: 280px; height: 280px;
-            border-radius: 50%;
-            box-shadow: 0 0 15px rgba(0,0,0,0.6);
+        .garland-left::after,
+        .garland-right::after {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 1px;
+            background: rgba(120, 100, 60, 0.5);
         }
+        .garland-left::after { left: 9px; }
+        .garland-right::after { right: 9px; }
 
-        .game-btn {
-            margin-top: 10px;
-            padding: 10px 25px;
-            font-size: 18px;
-            font-family: 'Georgia', serif;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            border: 2px solid var(--wood-dark);
-            transition: 0.2s;
+        /* Guirlandes haut et bas */
+        .garland-top,
+        .garland-bottom {
+            left: 0; right: 0;
+            height: 32px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-evenly;
+            padding: 0 8px;
         }
+        .garland-top { top: 0; }
+        .garland-bottom { bottom: 0; }
 
-        #spin-btn {
-            color: var(--wood-dark);
-            background: linear-gradient(to bottom, var(--gold), #daa520);
-        }
+        .garland-top .garland-bulb { margin-top: 10px; }
+        .garland-bottom .garland-bulb { margin-bottom: 10px; margin-top: auto; }
 
-        #propose-btn {
-            color: var(--gold);
-            background: transparent;
-            border-color: var(--gold);
-        }
-
-        .game-btn:disabled {
-            background: linear-gradient(to bottom, #444, #222) !important;
-            color: #666 !important;
-            border-color: #444 !important;
-            cursor: not-allowed;
-        }
-
-        #proposal-group {
-            display: none;
+        /* Guirlandes gauche et droite */
+        .garland-left,
+        .garland-right {
+            top: 0; bottom: 0;
+            width: 32px;
+            display: flex;
             flex-direction: column;
-            align-items: center;
-            margin-top: 15px;
-            width: 100%;
-            max-width: 300px;
+            align-items: flex-start;
+            justify-content: space-evenly;
+            padding: 8px 0;
+        }
+        .garland-left { left: 0; }
+        .garland-right { right: 0; }
+
+        .garland-left .garland-bulb { margin-left: 12px; }
+        .garland-right .garland-bulb { margin-left: 12px; }
+
+        /* Ampoule */
+        .garland-bulb {
+            width: 7px;
+            height: 10px;
+            border-radius: 45% 45% 50% 50% / 55% 55% 45% 45%;
+            flex-shrink: 0;
+            position: relative;
+            animation: bulbGlow 2s ease-in-out infinite;
         }
 
-        #proposal-input {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            font-family: 'Georgia', serif;
-            background: #1a0f0a;
-            color: var(--gold);
-            border: 2px solid var(--gold);
-            border-radius: 8px;
+        /* Connecteur fil → ampoule (haut/bas) */
+        .garland-top .garland-bulb::before,
+        .garland-bottom .garland-bulb::before {
+            content: '';
+            position: absolute;
+            width: 1px; height: 5px;
+            left: 50%; transform: translateX(-50%);
+            background: rgba(120, 100, 60, 0.5);
+        }
+        .garland-top .garland-bulb::before { top: -5px; }
+        .garland-bottom .garland-bulb::before { bottom: -5px; top: auto; }
+
+        /* Connecteur fil → ampoule (gauche/droite) */
+        .garland-left .garland-bulb::before,
+        .garland-right .garland-bulb::before {
+            content: '';
+            position: absolute;
+            width: 5px; height: 1px;
+            top: 50%; transform: translateY(-50%);
+            background: rgba(120, 100, 60, 0.5);
+        }
+        .garland-left .garland-bulb::before { left: -5px; }
+        .garland-right .garland-bulb::before { left: -5px; }
+
+        @keyframes bulbGlow {
+            0%, 100% { opacity: 1; filter: brightness(1.15); }
+            50% { opacity: 0.25; filter: brightness(0.5); }
+        }
+
+        /* ============ CONTENEUR PRINCIPAL ============ */
+        .game-container {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 48px 20px 80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ============ HEADER ============ */
+        .game-header {
             text-align: center;
-            outline: none;
+            margin-bottom: 22px;
+        }
+
+        .game-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 900;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            color: var(--accent);
+            text-shadow: 0 0 30px rgba(212, 160, 23, 0.25);
+            letter-spacing: 2px;
             margin-bottom: 10px;
         }
 
-        .small-btn {
-            padding: 6px 15px;
-            font-size: 14px;
-            border-radius: 20px;
-            font-family: 'Georgia', serif;
-            cursor: pointer;
-            border: 1px solid;
-            margin: 0 5px;
-        }
-        #validate-btn { background: #228B22; color: white; border-color: #006400; }
-        #cancel-btn { background: transparent; color: #ccc; border-color: #ccc; }
-
-        #garland {
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 25px;
-            display: flex;
-            justify-content: space-around;
-            pointer-events: none;
-            z-index: 20;
-        }
-
-        .bulb {
-            width: 10px; height: 10px;
-            border-radius: 50%;
-            background-color: #333;
-            box-shadow: inset 0 0 3px rgba(0,0,0,0.8);
-            transition: all 0.3s;
-        }
-        .bulb.on { background-color: var(--gold); box-shadow: 0 0 8px var(--gold); }
-        .bulb.red.on { background-color: #ff3333; box-shadow: 0 0 8px #ff3333; }
-        .bulb.green.on { background-color: #33ff33; box-shadow: 0 0 8px #33ff33; }
-        .bulb.blue.on { background-color: #3399ff; box-shadow: 0 0 8px #3399ff; }
-
-        #right-panel {
-            flex: 1.2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 10px;
-            overflow-y: auto;
-            cursor: pointer; 
-        }
-
-        @media (min-width: 768px) {
-            #right-panel { padding-left: 40px; cursor: default; }
-        }
-
-        #phrase-display {
-            display: flex;
-            flex-wrap: wrap; 
-            justify-content: center;
-            margin-bottom: 20px;
-            row-gap: 15px; /* Espace vertical entre les lignes */
-        }
-
-        .word-wrapper {
+        .gold-display {
             display: inline-flex;
-            gap: 6px; /* CORRECTION ICI : Espace entre les lettres d'un même mot */
-            margin-right: 15px; /* Espace horizontal entre les mots */
+            align-items: center;
+            gap: 8px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 7px 20px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 1.05rem;
+        }
+
+        .gold-display i { color: var(--accent); font-size: 1.15rem; }
+
+        .gold-amount {
+            color: var(--accent-glow);
+            min-width: 50px;
+            text-align: right;
+            transition: color 0.3s;
+        }
+
+        .gold-amount.negative { color: var(--danger); }
+
+        /* ============ CATÉGORIE ============ */
+        .category-display {
+            text-align: center;
+            margin-bottom: 18px;
+            font-size: 0.9rem;
+            color: var(--muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        /* ============ PHRASE — CASES À BORDURE FINE ============ */
+        .phrase-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 26px;
+            min-height: 54px;
+            padding: 18px 14px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
         }
 
         .letter-box {
-            width: 28px; height: 36px;
-            border-bottom: 3px solid var(--gold);
-            display: flex;
-            justify-content: center;
+            display: inline-flex;
             align-items: center;
-            font-size: 22px;
-            font-weight: bold;
-            color: var(--gold);
-        }
-        @media (min-width: 768px) {
-            .letter-box { width: 40px; height: 50px; font-size: 32px; }
-            .word-wrapper { margin-right: 20px; gap: 10px; } /* Espace plus grand sur PC */
+            justify-content: center;
+            width: 34px;
+            height: 42px;
+            border: 1px solid rgba(253, 246, 227, 0.3);
+            border-radius: 3px;
+            font-family: 'Cinzel', serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--fg);
+            background: rgba(253, 246, 227, 0.03);
+            transition: all 0.3s ease;
         }
 
-        #message {
-            height: 40px;
-            font-size: 16px;
-            color: #ff9999;
-            margin-bottom: 10px;
-            text-align: center;
-            padding: 0 10px;
+        .letter-box.revealed {
+            background: rgba(212, 160, 23, 0.13);
+            border-color: rgba(212, 160, 23, 0.45);
+            color: var(--accent-glow);
+            animation: revealPop 0.4s ease-out;
         }
-        @media (min-width: 768px) { #message { font-size: 20px; margin-bottom: 20px; } }
 
-        #bottom-panel {
-            position: absolute;
-            bottom: 10px;
-            right: 15px;
+        .letter-box.won {
+            background: rgba(39, 174, 96, 0.18);
+            border-color: rgba(39, 174, 96, 0.5);
+            color: #5dde9e;
+        }
+
+        @keyframes revealPop {
+            0% { transform: scale(1.25); background: rgba(212, 160, 23, 0.35); }
+            100% { transform: scale(1); }
+        }
+
+        /* Espace bien visible entre les mots */
+        .space-gap {
+            display: inline-block;
+            width: 18px;
+        }
+
+        /* ============ SECTION ROUE ============ */
+        .wheel-section {
             display: flex;
             flex-direction: column;
-            align-items: flex-end;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .wheel-wrapper {
+            position: relative;
+            width: 270px;
+            height: 270px;
+            margin-bottom: 14px;
+        }
+
+        @media (min-width: 560px) {
+            .wheel-wrapper { width: 340px; height: 340px; }
+        }
+
+        #wheelCanvas {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 18px rgba(212, 160, 23, 0.18));
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            border-left: 13px solid transparent;
+            border-right: 13px solid transparent;
+            border-top: 26px solid var(--accent);
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
             z-index: 5;
         }
 
-        #score-display {
-            font-size: 20px;
-            color: var(--gold);
-            margin-bottom: 8px;
-            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+        .spin-btn {
+            background: linear-gradient(135deg, #d4a017, #b8860b);
+            color: #1a1510;
+            border: none;
+            padding: 11px 34px;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        @media (min-width: 768px) { #score-display { font-size: 28px; margin-bottom: 15px; } }
 
-        #quit-btn {
-            display: inline-block;
-            padding: 8px 15px;
-            font-family: 'Georgia', serif;
-            font-size: 14px;
-            background-color: #FF69B4;
-            color: #fff;
-            border: 2px solid #FF1493;
-            border-radius: 20px;
-            text-decoration: none;
+        .spin-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 160, 23, 0.35);
+        }
+
+        .spin-btn:active:not(:disabled) { transform: translateY(0); }
+        .spin-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+        .wheel-result {
+            margin-top: 10px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            min-height: 26px;
             text-align: center;
-            transition: 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            line-height: 1.3;
         }
-        #quit-btn:hover { background-color: #FF1493; color: #fff; }
 
-        #mobile-input {
-            position: absolute;
-            bottom: 60px; 
+        .wheel-result.positive { color: var(--accent-glow); }
+        .wheel-result.negative { color: var(--danger); }
+
+        /* ============ CLAVIER ============ */
+        .keyboard-section { margin-bottom: 14px; }
+
+        .keyboard-label {
+            font-size: 0.78rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 7px;
+            text-align: center;
+        }
+
+        .vowel-cost-note {
+            font-size: 0.72rem;
+            color: var(--muted);
+            text-align: center;
+            margin-bottom: 6px;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        .keyboard-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .key-btn {
+            width: 37px;
+            height: 40px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--fg);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 0.92rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .key-btn:hover:not(:disabled) {
+            background: rgba(212, 160, 23, 0.18);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .key-btn:disabled {
+            opacity: 0.18;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Voyelles avec bordure distincte */
+        .key-btn.vowel {
+            border-color: rgba(192, 57, 43, 0.35);
+        }
+
+        .key-btn.vowel:hover:not(:disabled) {
+            background: rgba(192, 57, 43, 0.18);
+            border-color: #c0392b;
+        }
+
+        .key-btn.used-correct {
+            opacity: 1 !important;
+            background: rgba(39, 174, 96, 0.2) !important;
+            border-color: rgba(39, 174, 96, 0.5) !important;
+            color: #5dde9e !important;
+            cursor: default;
+        }
+
+        .key-btn.used-wrong {
+            opacity: 1 !important;
+            background: rgba(192, 57, 43, 0.12) !important;
+            border-color: rgba(192, 57, 43, 0.25) !important;
+            color: #a05050 !important;
+            cursor: default;
+        }
+
+        /* ============ ACTIONS ============ */
+        .actions-section {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--fg);
+            padding: 9px 22px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 0.88rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover:not(:disabled) {
+            border-color: var(--accent);
+            background: rgba(212, 160, 23, 0.1);
+        }
+
+        .action-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+        .action-btn i { margin-right: 5px; }
+
+        /* ============ LIGNE DU BAS (AU-DESSUS du bouton retour) ============ */
+        .info-line {
+            text-align: center;
+            font-size: 0.84rem;
+            color: var(--muted);
+            margin-bottom: 12px;
+            min-height: 20px;
+            line-height: 1.4;
+        }
+
+        /* ============ BOUTON RETOUR AU VILLAGE ============ */
+        .back-btn {
+            display: block;
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto;
+            padding: 11px;
+            background: transparent;
+            border: 1px solid rgba(138, 126, 107, 0.35);
+            color: var(--muted);
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            font-size: 0.88rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .back-btn:hover {
+            border-color: var(--muted);
+            color: var(--fg);
+        }
+
+        .back-btn i { margin-right: 6px; }
+
+        /* ============ TOASTS ============ */
+        .toast-container {
+            position: fixed;
+            top: 44px;
             left: 50%;
             transform: translateX(-50%);
-            width: 1px; height: 1px;
-            opacity: 0; 
-            z-index: -1; 
-            border: none; outline: none;
-            font-size: 16px; 
-            padding: 0; margin: 0;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .toast {
+            background: rgba(20, 18, 14, 0.95);
+            border: 1px solid var(--border);
+            color: var(--fg);
+            padding: 11px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            text-align: center;
+            animation: toastIn 0.35s ease-out, toastOut 0.4s ease-in forwards;
+            animation-delay: 0s, 2.6s;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.6);
+            line-height: 1.3;
+        }
+
+        .toast.success { border-color: var(--success); color: #5dde9e; }
+        .toast.error { border-color: var(--danger); color: #e07070; }
+        .toast.info { border-color: var(--accent); color: var(--accent-glow); }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(-16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes toastOut {
+            from { opacity: 1; }
+            to { opacity: 0; transform: translateY(-10px); }
+        }
+
+        /* ============ MODAL ============ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.72);
+            z-index: 1500;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 440px;
+            width: 90%;
+            text-align: center;
+            animation: modalIn 0.3s ease-out;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            font-weight: 900;
+            font-size: 1.35rem;
+            color: var(--accent);
+            margin-bottom: 14px;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 11px 14px;
+            background: rgba(0,0,0,0.35);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--fg);
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            outline: none;
+            margin-bottom: 16px;
+        }
+
+        .modal-input:focus { border-color: var(--accent); }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .modal-btn {
+            padding: 9px 22px;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .modal-btn.primary {
+            background: linear-gradient(135deg, #d4a017, #b8860b);
+            color: #1a1510;
+        }
+
+        .modal-btn.secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+        }
+
+        .modal-btn:hover { transform: translateY(-1px); }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 480px) {
+            .letter-box {
+                width: 26px;
+                height: 34px;
+                font-size: 0.88rem;
+            }
+            .space-gap { width: 12px; }
+            .key-btn {
+                width: 31px;
+                height: 35px;
+                font-size: 0.82rem;
+            }
+            .game-container {
+                padding: 40px 10px 70px;
+            }
+            .phrase-container { padding: 12px 8px; gap: 3px; }
+        }
+
+        /* ============ RÉDUCTION DE MOUVEMENT ============ */
+        @media (prefers-reduced-motion: reduce) {
+            .garland-bulb { animation: none !important; opacity: 0.7; }
+            .letter-box.revealed { animation: none !important; }
+            .toast { animation: none !important; opacity: 1; }
+            .modal-box { animation: none !important; }
         }
     </style>
 </head>
 <body>
 
-<div id="game-container">
-    <div id="garland"></div>
-    
-    <input type="text" id="mobile-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <!-- Toasts -->
+    <div class="toast-container" id="toastContainer"></div>
 
-    <div id="left-panel">
-        <div id="wheel-container">
-            <div id="pointer"></div>
-            <canvas id="wheel" width="350" height="350"></canvas>
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true">
+        <div class="modal-box">
+            <div class="modal-title" id="modalTitle"></div>
+            <div id="modalContent"></div>
+            <div class="modal-actions" id="modalActions"></div>
         </div>
-        
-        <button id="spin-btn" class="game-btn" onclick="spinWheel()">FAIRE TOUNER LA ROUE</button>
-        <button id="propose-btn" class="game-btn" onclick="startProposal()">PROPOSER UNE SOLUTION</button>
-        
-        <div id="proposal-group">
-            <input type="text" id="proposal-input" placeholder="Tapez votre solution..." autocomplete="off">
-            <div>
-                <button id="validate-btn" class="small-btn" onclick="submitProposal()">Valider</button>
-                <button id="cancel-btn" class="small-btn" onclick="cancelProposal()">Annuler</button>
+    </div>
+
+    <main class="game-container">
+        <header class="game-header">
+            <h1 class="game-title">La Roue de la Fortune</h1>
+            <div class="gold-display" aria-live="polite">
+                <i class="fas fa-coins" aria-hidden="true"></i>
+                <span>Pièces d'or :</span>
+                <span class="gold-amount" id="goldDisplay">0</span>
             </div>
-        </div>
-    </div>
+        </header>
 
-    <div id="right-panel">
-        <div id="phrase-display"></div>
-        <div id="message">Appuyez sur "Tourner" !</div>
-    </div>
+        <div class="category-display" id="categoryDisplay" aria-live="polite">Chargement...</div>
 
-    <div id="bottom-panel">
-        <div id="score-display">Pièces : 0</div>
-        <a id="quit-btn" href="https://pierreg78-maker.github.io/village/">Retour au Village</a>
-    </div>
-</div>
+        <div class="phrase-container" id="phraseContainer" aria-label="Expression à deviner"></div>
 
-<script>
-    const expressions = [
-        "Le champagne est à la bouche ce que le clair de lune est au cœur",
-        "Une hirondelle ne fait pas le printemps",
-        "Petit à petit l'oiseau fait son nid",
-        "Quand les poules auront des dents",
-        "C'est la cerise sur le gâteau",
-        "Avoir le cafard",
-        "Tomber dans les pommes",
-        "En avoir ras le bol"
-    ];
+        <section class="wheel-section" aria-label="Roue de la fortune">
+            <div class="wheel-wrapper">
+                <div class="wheel-pointer" aria-hidden="true"></div>
+                <canvas id="wheelCanvas" width="680" height="680"></canvas>
+            </div>
+            <button class="spin-btn" id="spinBtn" aria-label="Tourner la roue">
+                <i class="fas fa-sync-alt" aria-hidden="true"></i> Tourner la roue
+            </button>
+            <div class="wheel-result" id="wheelResult" aria-live="polite"></div>
+        </section>
 
-    const segments = [0, 10, "X", 5, 1, 2, 0, 10, "X", 5, 1, 2];
-    const colors = ["#555555", "#006400", "#800000", "#00008B", "#808000", "#4B0082", "#666666", "#228B22", "#B22222", "#191970", "#BDB76B", "#6A0DAD"];
-    const voyelles = ["a", "e", "i", "o", "u", "y"];
+        <section class="keyboard-section" aria-label="Clavier des consonnes">
+            <div class="keyboard-label">Consonnes</div>
+            <div class="keyboard-grid" id="consonantGrid"></div>
+        </section>
 
-    let currentExpression = "";
-    let normalizedExpression = "";
-    let revealedLetters = [];
-    let score = 0;
-    let currentWheelValue = 0;
-    let canGuess = false;
-    let isSpinning = false;
-    let gameWon = false;
-    let isProposing = false;
+        <section class="keyboard-section" aria-label="Clavier des voyelles">
+            <div class="keyboard-label">Voyelles <span style="color:var(--danger);font-weight:800;">(5 PO / occurrence)</span></div>
+            <div class="vowel-cost-note">Le coût est de 5 pièces d'or par occurrence de la voyelle dans l'expression. Le solde peut devenir négatif.</div>
+            <div class="keyboard-grid" id="vowelGrid"></div>
+        </section>
 
-    const canvas = document.getElementById("wheel");
-    const ctx = canvas.getContext("2d");
-    const radius = canvas.width / 2;
-    let startAngle = 0;
-    
-    function drawWheel() {
-        const numSegments = segments.length;
-        const arcSize = (2 * Math.PI) / numSegments;
-        
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.save();
-        ctx.translate(radius, radius);
-        ctx.rotate(startAngle);
+        <section class="actions-section">
+            <button class="action-btn" id="guessBtn" disabled aria-label="Proposer la solution">
+                <i class="fas fa-lightbulb" aria-hidden="true"></i> Proposer la solution
+            </button>
+            <button class="action-btn" id="newGameBtn" aria-label="Nouvelle partie">
+                <i class="fas fa-redo" aria-hidden="true"></i> Nouvelle partie
+            </button>
+        </section>
 
-        for (let i = 0; i < numSegments; i++) {
-            const angle = i * arcSize;
-            
+        <!-- LIGNE DU BAS : placée AVANT le bouton retour -->
+        <div class="info-line" id="infoLine" aria-live="polite">Tournez la roue pour commencer !</div>
+
+        <!-- BOUTON RETOUR AU VILLAGE -->
+        <button class="back-btn" id="backBtn" aria-label="Retour au village">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i> Retour au village
+        </button>
+    </main>
+
+    <script>
+        /* ============================================
+           DONNÉES DU JEU
+        ============================================ */
+        const phrases = [
+            { text: "LE CHEVALIER NOIR", cat: "Personnage" },
+            { text: "UNE NUIT ETOILEE", cat: "Nature" },
+            { text: "LE TRESOR DU VIEUX PIRATE", cat: "Aventure" },
+            { text: "LA FONTAINE MAGIQUE", cat: "Lieu fictif" },
+            { text: "UN RENARD DANS LE JARDIN", cat: "Animaux" },
+            { text: "LES TROIS PETITS COCHONS", cat: "Conte" },
+            { text: "LE PHARE SUR LA COLLINE", cat: "Paysage" },
+            { text: "LE VIEUX CHATEAU FORT", cat: "Monument" },
+            { text: "LA FLEUR DE LOTUS", cat: "Botanique" },
+            { text: "UN REPAS DE FETE", cat: "Gastronomie" },
+            { text: "LE VOYAGE EN ORIENT", cat: "Exploration" },
+            { text: "UNE JOURNEE DE PLUIE", cat: "Meteo" },
+            { text: "LA REINE DES NEIGES", cat: "Conte" },
+            { text: "UN PORTRAIT MYSTERIEUX", cat: "Objet" },
+            { text: "LE MASQUE DE VENISE", cat: "Culture" },
+            { text: "LE LABYRINTHE GEANT", cat: "Lieu fictif" },
+            { text: "UNE ETOILE FILANTE", cat: "Astronomie" },
+            { text: "LE DERNIER DRAGON", cat: "Legende" },
+            { text: "LA CLE DU MYSTERE", cat: "Objet" },
+            { text: "UN PONT SUSPENDU", cat: "Architecture" }
+        ];
+
+        const wheelSegments = [
+            { value: 100,  color: "#c0392b", label: "100" },
+            { value: 200,  color: "#e67e22", label: "200" },
+            { value: 300,  color: "#f1c40f", label: "300" },
+            { value: 400,  color: "#27ae60", label: "400" },
+            { value: 500,  color: "#1abc9c", label: "500" },
+            { value: 600,  color: "#d35400", label: "600" },
+            { value: 700,  color: "#16a085", label: "700" },
+            { value: 800,  color: "#e74c3c", label: "800" },
+            { value: 900,  color: "#f39c12", label: "900" },
+            { value: 1000, color: "#2ecc71", label: "1000" },
+            { value: 1500, color: "#e67e22", label: "1500" },
+            { value: 2000, color: "#c0392b", label: "2000" },
+            { value: "BANQUEROUTE", color: "#1a1a1a", label: "BANQUEROUTE" },
+            { value: "PERD TOUR",    color: "#34495e", label: "PERD TOUR" }
+        ];
+
+        const VOWELS = ["A", "E", "I", "O", "U", "Y"];
+        const VOWEL_COST_PER_OCCURRENCE = 5;
+
+        /* ============================================
+           ÉTAT DU JEU
+        ============================================ */
+        let currentPhrase = "";
+        let currentCategory = "";
+        let revealedLetters = new Set();
+        let usedLetters = new Set();
+        let goldBalance = 0;
+        let currentWheelValue = null; // nombre ou null
+        let isSpinning = false;
+        let canChooseConsonant = false;
+        let gameWon = false;
+        let wheelAngle = 0;
+        let spinVelocity = 0;
+
+        /* ============================================
+           RÉFÉRENCES DOM
+        ============================================ */
+        const goldDisplayEl    = document.getElementById("goldDisplay");
+        const categoryDisplayEl = document.getElementById("categoryDisplay");
+        const phraseContainerEl = document.getElementById("phraseContainer");
+        const spinBtnEl        = document.getElementById("spinBtn");
+        const wheelResultEl    = document.getElementById("wheelResult");
+        const consonantGridEl  = document.getElementById("consonantGrid");
+        const vowelGridEl      = document.getElementById("vowelGrid");
+        const guessBtnEl       = document.getElementById("guessBtn");
+        const newGameBtnEl     = document.getElementById("newGameBtn");
+        const infoLineEl       = document.getElementById("infoLine");
+        const backBtnEl        = document.getElementById("backBtn");
+        const canvasEl         = document.getElementById("wheelCanvas");
+        const ctx              = canvasEl.getContext("2d");
+        const toastContainerEl = document.getElementById("toastContainer");
+        const modalOverlayEl   = document.getElementById("modalOverlay");
+        const modalTitleEl     = document.getElementById("modalTitle");
+        const modalContentEl   = document.getElementById("modalContent");
+        const modalActionsEl   = document.getElementById("modalActions");
+
+        /* ============================================
+           GUIRLANDES — 4 CÔTÉS
+        ============================================ */
+        function createGarlands() {
+            const bulbColors = [
+                "#ff4444", "#ffdd44", "#44ff88", "#ff8844",
+                "#44ddff", "#ff66aa", "#aaff44", "#ffaa22"
+            ];
+            const sides = ["top", "bottom", "left", "right"];
+
+            sides.forEach(side => {
+                const container = document.createElement("div");
+                container.className = "garland garland-" + side;
+                container.setAttribute("aria-hidden", "true");
+
+                // Nombre d'ampoules selon la dimension
+                let count;
+                if (side === "top" || side === "bottom") {
+                    count = Math.max(8, Math.floor(window.innerWidth / 30));
+                } else {
+                    count = Math.max(6, Math.floor(window.innerHeight / 30));
+                }
+
+                for (let i = 0; i < count; i++) {
+                    const bulb = document.createElement("div");
+                    bulb.className = "garland-bulb";
+                    const col = bulbColors[i % bulbColors.length];
+                    bulb.style.backgroundColor = col;
+                    bulb.style.boxShadow = "0 0 5px 2px " + col + ", 0 0 12px 4px " + col + "44";
+                    // Décalage d'animation pour un scintillement organique
+                    bulb.style.animationDelay = (i * 0.18 % 2).toFixed(2) + "s";
+                    bulb.style.animationDuration = (1.8 + (i % 3) * 0.4).toFixed(1) + "s";
+                    container.appendChild(bulb);
+                }
+
+                document.body.appendChild(container);
+            });
+        }
+
+        /* ============================================
+           ROUE — DESSIN
+        ============================================ */
+        const segCount = wheelSegments.length;
+        const segAngle = (2 * Math.PI) / segCount;
+
+        function drawWheel() {
+            const w = canvasEl.width;
+            const h = canvasEl.height;
+            const cx = w / 2;
+            const cy = h / 2;
+            const radius = Math.max(10, Math.min(cx, cy) - 22);
+
+            ctx.clearRect(0, 0, w, h);
+
+            // Anneau extérieur décoratif
             ctx.beginPath();
-            ctx.arc(0, 0, radius - 5, angle, angle + arcSize);
-            ctx.lineTo(0, 0);
-            ctx.closePath();
-            ctx.fillStyle = colors[i];
-            ctx.fill();
-            ctx.strokeStyle = "#FFD700";
-            ctx.lineWidth = 3;
+            ctx.arc(cx, cy, radius + 14, 0, 2 * Math.PI);
+            ctx.strokeStyle = "#d4a017";
+            ctx.lineWidth = 4;
             ctx.stroke();
 
-            ctx.save();
-            ctx.rotate(angle + arcSize / 2);
-            ctx.textAlign = "right";
-            ctx.fillStyle = "#fff";
-            ctx.font = "bold 22px Georgia";
-            ctx.shadowColor = "black";
-            ctx.shadowBlur = 4;
-            ctx.fillText(segments[i], radius - 25, 8);
-            ctx.restore();
-        }
-        ctx.restore();
-    }
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius + 8, 0, 2 * Math.PI);
+            ctx.strokeStyle = "#8b6914";
+            ctx.lineWidth = 2;
+            ctx.stroke();
 
-    function spinWheel() {
-        if (isSpinning || gameWon || isProposing) return;
-        isSpinning = true;
-        canGuess = false;
-        document.getElementById("spin-btn").disabled = true;
-        document.getElementById("propose-btn").disabled = true;
-        document.getElementById("message").innerText = "La roue tourne...";
-        
-        document.getElementById("mobile-input").blur();
+            // Dessiner chaque segment
+            for (let i = 0; i < segCount; i++) {
+                const start = wheelAngle + i * segAngle;
+                const end = start + segAngle;
+                const seg = wheelSegments[i];
 
-        let spinVelocity = Math.random() * 0.3 + 0.3; 
-        const friction = 0.988;
+                // Remplissage du segment
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, radius, start, end);
+                ctx.closePath();
+                ctx.fillStyle = seg.color;
+                ctx.fill();
 
-        function animate() {
-            spinVelocity *= friction;
-            startAngle += spinVelocity;
-            drawWheel();
+                // Ligne de séparation
+                ctx.strokeStyle = "rgba(0,0,0,0.35)";
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
 
-            if (spinVelocity > 0.002) {
-                requestAnimationFrame(animate);
-            } else {
-                isSpinning = false;
-                determinePrize();
-            }
-        }
-        animate();
-    }
+                // Texte du segment
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(start + segAngle / 2);
+                ctx.textAlign = "right";
+                ctx.textBaseline = "middle";
 
-    function determinePrize() {
-        const numSegments = segments.length;
-        const arcSize = (2 * Math.PI) / numSegments;
-        
-        let pointerAngleInWheelFrame = (-Math.PI / 2 - startAngle) % (2 * Math.PI);
-        if (pointerAngleInWheelFrame < 0) pointerAngleInWheelFrame += 2 * Math.PI;
-        
-        const index = Math.floor(pointerAngleInWheelFrame / arcSize);
-        currentWheelValue = segments[index];
-
-        if (currentWheelValue === "X") {
-            score = 0;
-            updateScoreDisplay();
-            document.getElementById("message").innerText = "Banqueroute ! Vous perdez tout.";
-            enableTurnButtons();
-        } else {
-            document.getElementById("message").innerHTML = `Valeur : ${currentWheelValue} pièce(s).<br><span style="font-size:0.8em; color:#ccc;">Touchez l'expression pour taper une lettre</span>`;
-            canGuess = true;
-            document.getElementById("propose-btn").disabled = false;
-        }
-    }
-
-    function normalizeString(str) {
-        return str.toLowerCase()
-                  .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
-                  .replace(/ç/g, "c")
-                  .trim();
-    }
-
-    function initGame() {
-        currentExpression = expressions[Math.floor(Math.random() * expressions.length)];
-        normalizedExpression = normalizeString(currentExpression);
-        revealedLetters = new Array(currentExpression.length).fill(false);
-        score = 0;
-        gameWon = false;
-        canGuess = false;
-        isProposing = false;
-        currentWheelValue = 0;
-        
-        updateScoreDisplay();
-        renderPhrase();
-        drawWheel();
-        turnOffGarland();
-        cancelProposal();
-        
-        document.getElementById("message").innerText = 'Appuyez sur "Tourner" !';
-        enableTurnButtons();
-        document.getElementById("mobile-input").value = "";
-        document.getElementById("mobile-input").blur();
-    }
-
-    function enableTurnButtons() {
-        document.getElementById("spin-btn").disabled = false;
-        document.getElementById("propose-btn").disabled = false;
-    }
-
-    function renderPhrase() {
-        const container = document.getElementById("phrase-display");
-        container.innerHTML = "";
-        
-        let currentWordWrapper = document.createElement("div");
-        currentWordWrapper.className = "word-wrapper";
-        
-        for (let i = 0; i < currentExpression.length; i++) {
-            const char = currentExpression[i];
-            
-            if (char === " ") {
-                container.appendChild(currentWordWrapper);
-                currentWordWrapper = document.createElement("div");
-                currentWordWrapper.className = "word-wrapper";
-            } else {
-                const box = document.createElement("div");
-                box.className = "letter-box";
-                if (revealedLetters[i]) {
-                    box.innerText = char.toUpperCase(); 
+                if (seg.value === "BANQUEROUTE") {
+                    ctx.font = "bold 20px Cinzel, serif";
+                    ctx.fillStyle = "#ff4444";
+                    ctx.fillText("BANQUEROUTE", radius - 18, 0);
+                } else if (seg.value === "PERD TOUR") {
+                    ctx.font = "bold 22px Cinzel, serif";
+                    ctx.fillStyle = "#cccccc";
+                    ctx.fillText("PERD TOUR", radius - 18, 0);
+                } else {
+                    ctx.font = "bold 34px Cinzel, serif";
+                    ctx.fillStyle = "#ffffff";
+                    ctx.shadowColor = "rgba(0,0,0,0.5)";
+                    ctx.shadowBlur = 4;
+                    ctx.fillText(seg.label, radius - 22, 0);
+                    ctx.shadowBlur = 0;
                 }
-                currentWordWrapper.appendChild(box);
+
+                ctx.restore();
             }
-        }
-        container.appendChild(currentWordWrapper);
-    }
 
-    function guessLetter(letter) {
-        if (!canGuess || gameWon || isProposing) return;
+            // Effet de profondeur (assombrir les bords)
+            const depthGrad = ctx.createRadialGradient(cx, cy, radius * 0.2, cx, cy, radius);
+            depthGrad.addColorStop(0, "rgba(255,255,255,0.07)");
+            depthGrad.addColorStop(0.6, "rgba(0,0,0,0)");
+            depthGrad.addColorStop(1, "rgba(0,0,0,0.25)");
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = depthGrad;
+            ctx.fill();
 
-        letter = letter.toLowerCase();
-        if (!/^[a-z]$/.test(letter)) return; 
-
-        const isVowel = voyelles.includes(letter);
-        let countInPhrase = 0;
-
-        if (isVowel) {
-            if (score < 5) {
-                document.getElementById("message").innerText = "Il faut 5 pièces pour une voyelle !";
-                return;
+            // Points dorés entre les segments (rivets)
+            for (let i = 0; i < segCount; i++) {
+                const a = wheelAngle + i * segAngle;
+                const dx = cx + Math.cos(a) * (radius - 3);
+                const dy = cy + Math.sin(a) * (radius - 3);
+                ctx.beginPath();
+                ctx.arc(dx, dy, 5, 0, 2 * Math.PI);
+                ctx.fillStyle = "#d4a017";
+                ctx.fill();
+                ctx.strokeStyle = "#8b6914";
+                ctx.lineWidth = 1;
+                ctx.stroke();
             }
-            score -= 5;
-            updateScoreDisplay();
+
+            // Centre : moyeu décoratif
+            const hubGrad = ctx.createRadialGradient(cx - 5, cy - 5, 0, cx, cy, 34);
+            hubGrad.addColorStop(0, "#f5c842");
+            hubGrad.addColorStop(0.6, "#d4a017");
+            hubGrad.addColorStop(1, "#8b6914");
+            ctx.beginPath();
+            ctx.arc(cx, cy, 32, 0, 2 * Math.PI);
+            ctx.fillStyle = hubGrad;
+            ctx.fill();
+            ctx.strokeStyle = "#6b4f10";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Point central
+            ctx.beginPath();
+            ctx.arc(cx, cy, 6, 0, 2 * Math.PI);
+            ctx.fillStyle = "#1a1510";
+            ctx.fill();
         }
 
-        for (let i = 0; i < normalizedExpression.length; i++) {
-            if (normalizedExpression[i] === letter && !revealedLetters[i]) {
-                revealedLetters[i] = true;
-                countInPhrase++;
+        /* Déterminer le segment gagnant (le pointeur est en haut, angle -PI/2) */
+        function getWinningSegment() {
+            const pointerAngle = -Math.PI / 2;
+            let norm = (pointerAngle - wheelAngle) % (2 * Math.PI);
+            if (norm < 0) norm += 2 * Math.PI;
+            const idx = Math.floor(norm / segAngle) % segCount;
+            return wheelSegments[idx];
+        }
+
+        /* ============================================
+           ROUE — ANIMATION DE ROTATION
+        ============================================ */
+        function spinWheel() {
+            if (isSpinning || gameWon) return;
+            isSpinning = true;
+            canChooseConsonant = false;
+            spinBtnEl.disabled = true;
+            guessBtnEl.disabled = true;
+            wheelResultEl.textContent = "";
+            wheelResultEl.className = "wheel-result";
+            infoLineEl.textContent = "La roue tourne...";
+
+            // Vitesse initiale aléatoire
+            spinVelocity = 0.22 + Math.random() * 0.22;
+
+            function animate() {
+                wheelAngle += spinVelocity;
+                spinVelocity *= 0.984; // friction
+                drawWheel();
+
+                if (spinVelocity > 0.001) {
+                    requestAnimationFrame(animate);
+                } else {
+                    // Arrêt complet
+                    isSpinning = false;
+                    handleWheelResult(getWinningSegment());
+                }
             }
+
+            requestAnimationFrame(animate);
         }
 
-        if (countInPhrase > 0) {
-            if (!isVowel) {
-                const gain = countInPhrase * currentWheelValue;
-                score += gain;
-                updateScoreDisplay();
-                document.getElementById("message").innerText = `Trouvé ${countInPhrase} fois ! +${gain} pièces.`;
+        function handleWheelResult(segment) {
+            currentWheelValue = segment.value;
+
+            if (segment.value === "BANQUEROUTE") {
+                goldBalance = 0;
+                updateGoldDisplay();
+                wheelResultEl.textContent = "Banqueroute ! Solde remis a zero.";
+                wheelResultEl.className = "wheel-result negative";
+                showToast("Banqueroute ! Toutes vos pieces perdues.", "error");
+                infoLineEl.textContent = "Banqueroute ! Tournez la roue a nouveau.";
+                currentWheelValue = null;
+                spinBtnEl.disabled = false;
+
+            } else if (segment.value === "PERD TOUR") {
+                wheelResultEl.textContent = "Perd votre tour !";
+                wheelResultEl.className = "wheel-result negative";
+                showToast("Vous perdez votre tour.", "error");
+                infoLineEl.textContent = "Tour perdu ! Tournez la roue a nouveau.";
+                currentWheelValue = null;
+                spinBtnEl.disabled = false;
+
             } else {
-                document.getElementById("message").innerText = `Voyelle (-5 pcs). Trouvé ${countInPhrase} fois.`;
+                wheelResultEl.textContent = segment.value + " pieces d'or ! Choisissez une consonne.";
+                wheelResultEl.className = "wheel-result positive";
+                infoLineEl.textContent = "Roue : " + segment.value + " PO. Choisissez une consonne.";
+                canChooseConsonant = true;
             }
-        } else {
-            document.getElementById("message").innerText = `Pas de "${letter.toUpperCase()}".`;
+
+            updateKeyboard();
         }
 
-        renderPhrase();
-        checkWin();
-        
-        canGuess = false;
-        document.getElementById("mobile-input").value = "";
-        
-        if (!gameWon) {
-            enableTurnButtons();
-            document.getElementById("mobile-input").blur(); 
+        /* ============================================
+           AFFICHAGE DE LA PHRASE (cases à bordure fine)
+        ============================================ */
+        function renderPhrase() {
+            phraseContainerEl.innerHTML = "";
+            for (const char of currentPhrase) {
+                if (char === " ") {
+                    // Espace visible comme un gap entre les mots
+                    const gap = document.createElement("span");
+                    gap.className = "space-gap";
+                    phraseContainerEl.appendChild(gap);
+                } else {
+                    const box = document.createElement("span");
+                    box.className = "letter-box";
+                    if (revealedLetters.has(char)) {
+                        box.classList.add("revealed");
+                        box.textContent = char;
+                    }
+                    if (gameWon) {
+                        box.classList.add("won");
+                        box.textContent = char;
+                    }
+                    phraseContainerEl.appendChild(box);
+                }
+            }
         }
-    }
 
-    function checkWin() {
-        const isFullyRevealed = normalizedExpression.split("").every((char, index) => {
-            return char === " " || revealedLetters[index] === true;
+        /* ============================================
+           CLAVIER VIRTUEL
+        ============================================ */
+        function buildKeyboard() {
+            consonantGridEl.innerHTML = "";
+            vowelGridEl.innerHTML = "";
+
+            // Consonnes
+            "BCDFGHJKLMNPQRSTVWXZ".split("").forEach(letter => {
+                const btn = document.createElement("button");
+                btn.className = "key-btn";
+                btn.textContent = letter;
+                btn.dataset.letter = letter;
+                btn.disabled = true;
+                btn.setAttribute("aria-label", "Consonne " + letter);
+                btn.addEventListener("click", () => chooseConsonant(letter));
+                consonantGridEl.appendChild(btn);
+            });
+
+            // Voyelles
+            VOWELS.forEach(letter => {
+                const btn = document.createElement("button");
+                btn.className = "key-btn vowel";
+                btn.textContent = letter;
+                btn.dataset.letter = letter;
+                btn.disabled = true;
+                btn.setAttribute("aria-label", "Voyelle " + letter);
+                btn.addEventListener("click", () => chooseVowel(letter));
+                vowelGridEl.appendChild(btn);
+            });
+        }
+
+        function updateKeyboard() {
+            // Consonnes : activées uniquement si on peut choisir ET valeur roue est un nombre
+            consonantGridEl.querySelectorAll(".key-btn").forEach(btn => {
+                const l = btn.dataset.letter;
+                if (usedLetters.has(l)) {
+                    btn.disabled = true;
+                    btn.classList.remove("vowel");
+                    btn.classList.add(revealedLetters.has(l) ? "used-correct" : "used-wrong");
+                } else {
+                    btn.disabled = !(canChooseConsonant && typeof currentWheelValue === "number");
+                    btn.classList.remove("used-correct", "used-wrong");
+                }
+            });
+
+            // Voyelles : activées si pas en spin et pas gagné (peuvent rendre le solde négatif)
+            vowelGridEl.querySelectorAll(".key-btn").forEach(btn => {
+                const l = btn.dataset.letter;
+                if (usedLetters.has(l)) {
+                    btn.disabled = true;
+                    btn.classList.add(revealedLetters.has(l) ? "used-correct" : "used-wrong");
+                } else {
+                    btn.disabled = isSpinning || gameWon;
+                    btn.classList.remove("used-correct", "used-wrong");
+                }
+            });
+
+            // Boutons
+            guessBtnEl.disabled = isSpinning || gameWon;
+            spinBtnEl.disabled = isSpinning || canChooseConsonant || gameWon;
+        }
+
+        /* ============================================
+           CHOIX D'UNE CONSONNE
+        ============================================ */
+        function chooseConsonant(letter) {
+            if (!canChooseConsonant || usedLetters.has(letter) || typeof currentWheelValue !== "number") return;
+
+            usedLetters.add(letter);
+            const count = countInPhrase(letter);
+
+            if (count > 0) {
+                revealedLetters.add(letter);
+                const earned = currentWheelValue * count;
+                goldBalance += earned;
+                updateGoldDisplay();
+                showToast(count + " \"" + letter + "\" trouve(s) ! +" + earned + " PO", "success");
+                infoLineEl.textContent = "+" + earned + " PO gagnes ! Continuez.";
+                renderPhrase();
+                checkWin();
+                // Le joueur garde le droit de choisir une autre consonne avec la même valeur
+            } else {
+                showToast("Pas de \"" + letter + "\" dans la phrase.", "error");
+                infoLineEl.textContent = "Pas de \"" + letter + "\". Tournez la roue a nouveau.";
+                canChooseConsonant = false;
+                currentWheelValue = null;
+            }
+
+            updateKeyboard();
+        }
+
+        /* ============================================
+           CHOIX D'UNE VOYELLE — coût = occurrences × 5 PO
+        ============================================ */
+        function chooseVowel(letter) {
+            if (usedLetters.has(letter) || isSpinning || gameWon) return;
+
+            const count = countInPhrase(letter);
+            const cost = count * VOWEL_COST_PER_OCCURRENCE;
+
+            usedLetters.add(letter);
+            goldBalance -= cost; // Peut devenir négatif
+            updateGoldDisplay();
+
+            if (count > 0) {
+                revealedLetters.add(letter);
+                renderPhrase();
+                if (count === 1) {
+                    showToast("1 \"" + letter + "\" trouve. Cout : " + cost + " PO", "info");
+                } else {
+                    showToast(count + " \"" + letter + "\" trouves. Cout : " + cost + " PO", "info");
+                }
+                infoLineEl.textContent = "Voyelle \"" + letter + "\" revelee. Cout : " + cost + " PO.";
+                checkWin();
+            } else {
+                showToast("Pas de \"" + letter + "\". Cout : " + cost + " PO.", "error");
+                infoLineEl.textContent = "Pas de \"" + letter + "\". " + cost + " PO depenses.";
+            }
+
+            // Après achat d'une voyelle, le droit de consonne est perdu
+            canChooseConsonant = false;
+            currentWheelValue = null;
+            updateKeyboard();
+        }
+
+        /* Compter les occurrences d'une lettre dans la phrase */
+        function countInPhrase(letter) {
+            let n = 0;
+            for (const ch of currentPhrase) {
+                if (ch === letter) n++;
+            }
+            return n;
+        }
+
+        /* ============================================
+           VÉRIFICATION DE VICTOIRE
+        ============================================ */
+        function checkWin() {
+            const allRevealed = [...currentPhrase].every(ch => ch === " " || revealedLetters.has(ch));
+            if (!allRevealed) return;
+
+            gameWon = true;
+            canChooseConsonant = false;
+            renderPhrase();
+            updateKeyboard();
+
+            // Bonus de victoire
+            goldBalance += 500;
+            updateGoldDisplay();
+
+            setTimeout(() => {
+                showModal(
+                    "Bravo !",
+                    '<p style="margin-bottom:12px;color:var(--fg);">Vous avez trouve :</p>' +
+                    '<p style="font-family:Cinzel,serif;font-size:1.3rem;color:var(--accent-glow);margin-bottom:14px;letter-spacing:1px;">"' + currentPhrase + '"</p>' +
+                    '<p style="color:var(--muted);">Bonus de victoire : +500 PO</p>' +
+                    '<p style="font-size:1.2rem;font-weight:800;margin-top:10px;color:var(--accent);">Solde final : ' + goldBalance + ' PO</p>',
+                    [{ text: "Nouvelle partie", cls: "primary", action: startNewGame }]
+                );
+            }, 600);
+        }
+
+        /* ============================================
+           PROPOSER LA SOLUTION
+        ============================================ */
+        function openGuessModal() {
+            showModal(
+                "Proposez votre solution",
+                '<input type="text" class="modal-input" id="guessInput" placeholder="Tapez votre reponse..." autocomplete="off">',
+                [
+                    { text: "Valider", cls: "primary", action: submitGuess },
+                    { text: "Annuler", cls: "secondary", action: closeModal }
+                ]
+            );
+            setTimeout(() => {
+                const inp = document.getElementById("guessInput");
+                if (inp) inp.focus();
+            }, 120);
+        }
+
+        function submitGuess() {
+            const inp = document.getElementById("guessInput");
+            if (!inp) return;
+            // Normaliser : majuscules, un seul espace entre les mots
+            const guess = inp.value.trim().toUpperCase().replace(/\s+/g, " ");
+            closeModal();
+
+            if (guess === currentPhrase) {
+                // Victoire par proposition
+                gameWon = true;
+                canChooseConsonant = false;
+                for (const ch of currentPhrase) {
+                    if (ch !== " ") revealedLetters.add(ch);
+                }
+                renderPhrase();
+                updateKeyboard();
+
+                goldBalance += 500;
+                updateGoldDisplay();
+
+                setTimeout(() => {
+                    showModal(
+                        "Bravo !",
+                        '<p style="margin-bottom:12px;color:var(--fg);">Vous avez trouve :</p>' +
+                        '<p style="font-family:Cinzel,serif;font-size:1.3rem;color:var(--accent-glow);margin-bottom:14px;letter-spacing:1px;">"' + currentPhrase + '"</p>' +
+                        '<p style="color:var(--muted);">Bonus de victoire : +500 PO</p>' +
+                        '<p style="font-size:1.2rem;font-weight:800;margin-top:10px;color:var(--accent);">Solde final : ' + goldBalance + ' PO</p>',
+                        [{ text: "Nouvelle partie", cls: "primary", action: startNewGame }]
+                    );
+                }, 400);
+            } else {
+                showToast("Mauvaise reponse !", "error");
+                infoLineEl.textContent = "Mauvaise reponse. Continuez a jouer !";
+                canChooseConsonant = false;
+                currentWheelValue = null;
+                updateKeyboard();
+            }
+        }
+
+        /* ============================================
+           MODAL
+        ============================================ */
+        function showModal(title, contentHTML, buttons) {
+            modalTitleEl.textContent = title;
+            modalContentEl.innerHTML = contentHTML;
+            modalActionsEl.innerHTML = "";
+            buttons.forEach(b => {
+                const el = document.createElement("button");
+                el.className = "modal-btn " + (b.cls || "");
+                el.textContent = b.text;
+                el.addEventListener("click", b.action);
+                modalActionsEl.appendChild(el);
+            });
+            modalOverlayEl.classList.add("active");
+        }
+
+        function closeModal() {
+            modalOverlayEl.classList.remove("active");
+        }
+
+        /* ============================================
+           TOASTS
+        ============================================ */
+        function showToast(message, type) {
+            type = type || "info";
+            const t = document.createElement("div");
+            t.className = "toast " + type;
+            t.textContent = message;
+            toastContainerEl.appendChild(t);
+            setTimeout(() => { if (t.parentNode) t.remove(); }, 3200);
+        }
+
+        /* ============================================
+           AFFICHAGE DES PIÈCES D'OR
+        ============================================ */
+        function updateGoldDisplay() {
+            goldDisplayEl.textContent = goldBalance;
+            goldDisplayEl.className = "gold-amount" + (goldBalance < 0 ? " negative" : "");
+        }
+
+        /* ============================================
+           NOUVELLE PARTIE
+        ============================================ */
+        function startNewGame() {
+            closeModal();
+            const entry = phrases[Math.floor(Math.random() * phrases.length)];
+            currentPhrase = entry.text;
+            currentCategory = entry.cat;
+            revealedLetters = new Set();
+            usedLetters = new Set();
+            currentWheelValue = null;
+            canChooseConsonant = false;
+            gameWon = false;
+            isSpinning = false;
+
+            categoryDisplayEl.textContent = currentCategory;
+            wheelResultEl.textContent = "";
+            wheelResultEl.className = "wheel-result";
+            infoLineEl.textContent = "Tournez la roue pour commencer !";
+
+            renderPhrase();
+            buildKeyboard();
+            updateKeyboard();
+            drawWheel();
+        }
+
+        /* ============================================
+           ÉVÉNEMENTS
+        ============================================ */
+        spinBtnEl.addEventListener("click", spinWheel);
+        guessBtnEl.addEventListener("click", openGuessModal);
+        newGameBtnEl.addEventListener("click", startNewGame);
+
+        backBtnEl.addEventListener("click", () => {
+            showModal(
+                "Retour au village",
+                '<p style="color:var(--muted);">Voulez-vous vraiment quitter la partie en cours ?</p>',
+                [
+                    { text: "Quitter", cls: "primary", action: () => { closeModal(); window.location.href = "#"; } },
+                    { text: "Rester", cls: "secondary", action: closeModal }
+                ]
+            );
         });
 
-        if (isFullyRevealed) {
-            triggerWin();
-        }
-    }
+        // Raccourcis clavier dans le modal
+        document.addEventListener("keydown", e => {
+            if (!modalOverlayEl.classList.contains("active")) return;
+            if (e.key === "Enter") {
+                const inp = document.getElementById("guessInput");
+                if (inp && document.activeElement === inp) submitGuess();
+            }
+            if (e.key === "Escape") closeModal();
+        });
 
-    function triggerWin() {
-        gameWon = true;
-        revealedLetters.fill(true);
-        renderPhrase();
-        document.getElementById("message").innerText = "FÉLICITATIONS ! Vous avez trouvé !";
-        document.getElementById("spin-btn").disabled = true;
-        document.getElementById("propose-btn").disabled = true;
-        document.getElementById("mobile-input").blur();
-        document.getElementById("proposal-group").style.display = "none";
-        animateGarland();
-    }
+        // Fermer modal en cliquant le fond
+        modalOverlayEl.addEventListener("click", e => {
+            if (e.target === modalOverlayEl) closeModal();
+        });
 
-    function startProposal() {
-        if (gameWon || isSpinning) return;
-        isProposing = true;
-        canGuess = false;
-        
-        document.getElementById("spin-btn").disabled = true;
-        document.getElementById("propose-btn").disabled = true;
-        document.getElementById("proposal-group").style.display = "flex";
-        document.getElementById("proposal-input").value = "";
-        document.getElementById("message").innerText = "Tapez votre solution :";
-        
-        setTimeout(() => document.getElementById("proposal-input").focus(), 100);
-    }
-
-    function cancelProposal() {
-        isProposing = false;
-        document.getElementById("proposal-group").style.display = "none";
-        document.getElementById("proposal-input").blur();
-        if (!gameWon && !isSpinning) {
-            enableTurnButtons();
-            document.getElementById("message").innerText = "Tournez la roue ou proposez une solution.";
-        }
-    }
-
-    function submitProposal() {
-        const inputElement = document.getElementById("proposal-input");
-        const playerGuess = normalizeString(inputElement.value);
-
-        if (playerGuess === "") {
-            document.getElementById("message").innerText = "Veuillez taper une expression.";
-            return;
-        }
-
-        if (playerGuess === normalizedExpression) {
-            triggerWin();
-        } else {
-            document.getElementById("message").innerText = "Mauvaise réponse ! Vous pouvez retenter.";
-            cancelProposal();
-        }
-    }
-
-    document.getElementById("proposal-input").addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            submitProposal();
-        }
-    });
-
-    function updateScoreDisplay() {
-        document.getElementById("score-display").innerText = `Pièces : ${score}`;
-    }
-
-    const mobileInput = document.getElementById("mobile-input");
-    
-    mobileInput.addEventListener("input", (e) => {
-        const val = e.target.value;
-        if (val.length > 0) {
-            const lastChar = val[val.length - 1]; 
-            const normalizedKey = normalizeString(lastChar);
-            guessLetter(normalizedKey);
-        }
-    });
-
-    mobileInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") e.preventDefault();
-    });
-
-    document.getElementById("right-panel").addEventListener("click", function() {
-        if (canGuess && !gameWon && !isProposing) {
-            mobileInput.focus();
-        }
-    });
-
-    function createGarland() {
-        const garland = document.getElementById("garland");
-        const colors = ['', 'red', 'green', 'blue'];
-        for (let i = 0; i < 20; i++) {
-            const bulb = document.createElement("div");
-            bulb.className = `bulb ${colors[i % colors.length]}`;
-            garland.appendChild(bulb);
-        }
-    }
-
-    function turnOffGarland() {
-        document.querySelectorAll('.bulb').forEach(b => b.classList.remove('on'));
-    }
-
-    function animateGarland() {
-        const bulbs = document.querySelectorAll('.bulb');
-        let index = 0;
-        const interval = setInterval(() => {
-            turnOffGarland();
-            bulbs[index].classList.add('on');
-            bulbs[(index + 5) % bulbs.length].classList.add('on');
-            index = (index + 1) % bulbs.length;
-        }, 100);
-
-        setTimeout(() => {
-            clearInterval(interval);
-            bulbs.forEach(b => b.classList.add('on'));
-        }, 3000);
-    }
-
-    createGarland();
-    initGame();
-
-</script>
+        /* ============================================
+           INITIALISATION
+        ============================================ */
+        createGarlands();
+        startNewGame();
+    </script>
 </body>
 </html>
