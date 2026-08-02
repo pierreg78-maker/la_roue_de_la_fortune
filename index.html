@@ -757,6 +757,7 @@
                 else { b.disabled = isSpinning || gameWon; b.classList.remove("used-correct", "used-wrong"); }
             });
             guessBtnEl.disabled = isSpinning || gameWon;
+            /* Spin bloqué tant qu'on doit jouer sa consonne */
             spinBtnEl.disabled = isSpinning || canChooseConsonant || gameWon;
         }
 
@@ -769,13 +770,15 @@
                 const earned = currentWheelValue * count;
                 goldBalance += earned; updateGoldDisplay();
                 showToast(count + " \"" + letter + "\" trouve" + (count > 1 ? "s" : "") + " ! +" + earned + " PO", "success");
-                infoLineEl.textContent = "+" + earned + " PO gagnes ! Continuez.";
+                infoLineEl.textContent = "+" + earned + " PO gagnes ! Faites tourner la roue.";
                 renderPhrase(); checkWin();
             } else {
                 showToast("Pas de \"" + letter + "\" dans l'expression.", "error");
                 infoLineEl.textContent = "Pas de \"" + letter + "\". Faites tourner la roue.";
-                canChooseConsonant = false; currentWheelValue = null;
             }
+            /* Dans tous les cas, le tour est fini : on doit relancer */
+            canChooseConsonant = false;
+            currentWheelValue = null;
             updateKeyboard();
         }
 
@@ -788,11 +791,11 @@
             if (count > 0) {
                 revealedLetters.add(letter); renderPhrase();
                 showToast(count + " \"" + letter + "\" trouve" + (count > 1 ? "s" : "") + ". Cout : " + cost + " PO", "info");
-                infoLineEl.textContent = "Voyelle \"" + letter + "\" revelee. Cout : " + cost + " PO.";
+                infoLineEl.textContent = "Voyelle \"" + letter + "\" revelee. Cout : " + cost + " PO. Faites tourner la roue.";
                 checkWin();
             } else {
                 showToast("Pas de \"" + letter + "\". Cout : " + cost + " PO.", "error");
-                infoLineEl.textContent = "Pas de \"" + letter + "\". " + cost + " PO depenses.";
+                infoLineEl.textContent = "Pas de \"" + letter + "\". " + cost + " PO depenses. Faites tourner la roue.";
             }
             canChooseConsonant = false; currentWheelValue = null; updateKeyboard();
         }
@@ -846,7 +849,7 @@
                 }, 400);
             } else {
                 showToast("Mauvaise reponse !", "error");
-                infoLineEl.textContent = "Mauvaise reponse. Continuez a jouer !";
+                infoLineEl.textContent = "Mauvaise reponse. Faites tourner la roue.";
                 canChooseConsonant = false; currentWheelValue = null; updateKeyboard();
             }
         }
