@@ -69,7 +69,6 @@
         .mode-card .check-mark{position:absolute;top:8px;right:10px;color:var(--success);font-size:.9rem;opacity:0;transform:scale(.5);transition:all .3s}
         .mode-card.selected .check-mark{opacity:1;transform:scale(1)}
 
-        /* Noms joueurs */
         .player-names{max-height:0;overflow:hidden;transition:max-height .45s ease,opacity .35s ease;opacity:0}
         .player-names.open{max-height:200px;opacity:1}
         .pn-row{display:flex;align-items:flex-end;gap:12px;justify-content:center}
@@ -82,8 +81,8 @@
         .start-btn{display:inline-flex;align-items:center;gap:8px;margin-top:28px;padding:13px 40px;background:linear-gradient(135deg,#d4a017,#b8860b);color:#1a1510;border:none;border-radius:30px;font-family:'Cinzel',serif;font-weight:700;font-size:1rem;cursor:pointer;transition:all .3s ease;text-transform:uppercase;letter-spacing:1px}
         .start-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,160,23,.35)}
         .start-btn:disabled{opacity:.3;cursor:not-allowed}
-        .home-back{display:inline-block;margin-top:18px;background:none;border:none;color:var(--pink-l);font-family:'Nunito',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;transition:color .2s;letter-spacing:.5px}
-        .home-back:hover{color:#fff}
+        .home-back{display:inline-block;margin-top:18px;background:none;border:1px solid var(--pink);color:var(--pink-l);font-family:'Nunito',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;transition:all .3s ease;letter-spacing:.5px;padding:9px 22px;border-radius:8px;text-decoration:none}
+        .home-back:hover{background:rgba(232,67,147,.12);border-color:var(--pink-l);color:#fff;box-shadow:0 0 16px rgba(232,67,147,.25)}
         .home-back i{margin-right:5px}
 
         /* ========== PLAYER BAR (2P) ========== */
@@ -145,9 +144,13 @@
         .act-btn:disabled{opacity:.25;cursor:not-allowed}
         .act-btn i{margin-right:5px}
         .info-line{text-align:center;font-size:.82rem;color:var(--muted);margin-bottom:10px;min-height:18px;line-height:1.4}
-        .back-btn{display:block;width:100%;max-width:280px;margin:0 auto;padding:11px;background:transparent;border:1px solid var(--pink);color:var(--pink-l);font-family:'Nunito',sans-serif;font-weight:700;font-size:.88rem;border-radius:8px;cursor:pointer;transition:all .3s ease;text-align:center}
-        .back-btn:hover{background:rgba(232,67,147,.12);border-color:var(--pink-l);color:#fff;box-shadow:0 0 16px rgba(232,67,147,.25)}
-        .back-btn i{margin-right:6px}
+
+        .bottom-btns{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}
+        .menu-btn{display:inline-flex;align-items:center;gap:6px;padding:11px 22px;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Nunito',sans-serif;font-weight:700;font-size:.85rem;border-radius:8px;cursor:pointer;transition:all .3s ease;text-decoration:none}
+        .menu-btn:hover{border-color:var(--fg);color:var(--fg);background:rgba(253,246,227,.05)}
+        .village-btn{display:inline-flex;align-items:center;gap:6px;padding:11px 22px;background:transparent;border:1px solid var(--pink);color:var(--pink-l);font-family:'Nunito',sans-serif;font-weight:700;font-size:.85rem;border-radius:8px;cursor:pointer;transition:all .3s ease;text-decoration:none}
+        .village-btn:hover{background:rgba(232,67,147,.12);border-color:var(--pink-l);color:#fff;box-shadow:0 0 16px rgba(232,67,147,.25)}
+        .village-btn i{margin-right:2px}
 
         /* ========== TOAST ========== */
         .toast-c{position:fixed;top:44px;left:50%;transform:translateX(-50%);z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none;width:90%;max-width:420px}
@@ -188,6 +191,8 @@
             .home-wheel-wrap{width:140px;height:140px}
             .p-card{padding:8px 10px}.p-card .p-name{font-size:.75rem}.p-card .p-gold{font-size:.92rem}
             .player-bar{gap:8px;padding:12px 12px 0}
+            .bottom-btns{flex-direction:column;align-items:stretch}
+            .menu-btn,.village-btn{justify-content:center}
         }
         @media(min-width:481px) and (max-width:600px){
             .lb{width:27px;height:35px;font-size:.9rem}.lb.apos{width:14px;font-size:.8rem}.word-grp{gap:2px}.sp-gap{width:10px}
@@ -254,9 +259,9 @@
             <i class="fas fa-play"></i> Commencer le jeu
         </button>
         <br>
-        <button class="home-back" id="homeBackBtn">
+        <a href="https://pierreg78-maker.github.io/village/" class="home-back">
             <i class="fas fa-arrow-left"></i> Retour au Village
-        </button>
+        </a>
     </div>
 </div>
 
@@ -309,7 +314,10 @@
             <button class="act-btn" id="newBtn"><i class="fas fa-redo" aria-hidden="true"></i> Nouvelle expression</button>
         </section>
         <div class="info-line" id="infoLine" aria-live="polite"></div>
-        <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left" aria-hidden="true"></i> Retour au menu</button>
+        <div class="bottom-btns">
+            <button class="menu-btn" id="menuBtn"><i class="fas fa-home"></i> Menu principal</button>
+            <a href="https://pierreg78-maker.github.io/village/" class="village-btn"><i class="fas fa-arrow-left"></i> Retour au Village</a>
+        </div>
     </main>
 </div>
 
@@ -377,7 +385,6 @@ const phrases=[
     {text:"Chateau de Chambord",cat:"Monuments francais"},{text:"Abbaye de Fontenay",cat:"Monuments francais"}
 ];
 
-/* Phrases avec accents pour l'affichage final (victoire) */
 const phrasesDisplay={
     "Avoir le cafard":"Avoir le cafard","Se creuser la cervelle":"Se creuser la cervelle",
     "Avoir un chat dans la gorge":"Avoir un chat dans la gorge","Couter les yeux de la tete":"Coûter les yeux de la tête",
@@ -465,7 +472,7 @@ const playerBar=$("playerBar"),singleGold=$("singleGold"),goldDisp=$("goldDisp")
 const catDisp=$("catDisp"),phraseBox=$("phraseBox");
 const spinBtn=$("spinBtn"),guessBtn=$("guessBtn"),newBtn=$("newBtn");
 const wheelRes=$("wheelRes"),conGrid=$("conGrid"),vowGrid=$("vowGrid");
-const infoLine=$("infoLine"),backBtn=$("backBtn");
+const infoLine=$("infoLine"),menuBtn=$("menuBtn");
 const canvas=$("wheelCanvas"),ctx=canvas.getContext("2d");
 const modeCards=$("modeCards"),playerNames=$("playerNames"),startBtn=$("startBtn");
 const hpCanvas=$("homeParticles"),hpCtx=hpCanvas.getContext("2d");
@@ -483,12 +490,10 @@ function pPrefix(){return gameMode===2?players[curP].name+" — ":""}
 /* ==================== PARTICULES ACCUEIL ==================== */
 let particles=[];
 function initParticles(){
-    hpCanvas.width=window.innerWidth;hpCanvas.height=window.innerHeight;
-    particles=[];
+    hpCanvas.width=window.innerWidth;hpCanvas.height=window.innerHeight;particles=[];
     for(let i=0;i<60;i++){
         particles.push({x:Math.random()*hpCanvas.width,y:Math.random()*hpCanvas.height,
-            sz:Math.random()*2.2+.6,vy:Math.random()*.4+.15,phase:Math.random()*Math.PI*2,
-            op:Math.random()*.5+.15});
+            sz:Math.random()*2.2+.6,vy:Math.random()*.4+.15,phase:Math.random()*Math.PI*2,op:Math.random()*.5+.15});
     }
 }
 function animParticles(){
@@ -507,44 +512,28 @@ function stopParticles(){if(homeAnim){cancelAnimationFrame(homeAnim);homeAnim=nu
 function selectMode(m){
     selMode=m;
     document.querySelectorAll(".mode-card").forEach(c=>{
-        const cm=parseInt(c.dataset.mode);
-        c.classList.toggle("selected",cm===m);
-        c.classList.toggle("dimmed",cm!==m);
+        const cm=parseInt(c.dataset.mode);c.classList.toggle("selected",cm===m);c.classList.toggle("dimmed",cm!==m);
     });
     if(m===2){playerNames.classList.add("open");modeCards.classList.add("has-names")}
     else{playerNames.classList.remove("open");modeCards.classList.remove("has-names")}
     startBtn.disabled=false;
 }
 function startGame(){
-    if(!selMode)return;
-    gameMode=selMode;
+    if(!selMode)return;gameMode=selMode;
     if(gameMode===2){
-        const n1=$("p1Name").value.trim()||"Joueur 1";
-        const n2=$("p2Name").value.trim()||"Joueur 2";
+        const n1=$("p1Name").value.trim()||"Joueur 1",n2=$("p2Name").value.trim()||"Joueur 2";
         players=[{name:n1,gold:0},{name:n2,gold:0}];curP=0;
         playerBar.style.display="flex";singleGold.style.display="none";
         $("pName0").textContent=n1;$("pName1").textContent=n2;
-    }else{
-        playerBar.style.display="none";singleGold.style.display="inline-flex";
-        goldBalance=0;
-    }
-    usedPhraseIndices.clear();
-    stopParticles();
+    }else{playerBar.style.display="none";singleGold.style.display="inline-flex";goldBalance=0}
+    usedPhraseIndices.clear();stopParticles();
     homeScreen.classList.add("leaving");
-    setTimeout(()=>{
-        homeScreen.style.display="none";
-        gameScreen.style.display="block";
-        createGarlands();
-        initGame();
-    },500);
+    setTimeout(()=>{homeScreen.style.display="none";gameScreen.style.display="block";createGarlands();initGame()},500);
 }
 function goHome(){
     if(celebInt){clearInterval(celebInt);celebInt=null}
-    document.body.classList.remove("celebrating");
-    removeGarlands();
-    gameScreen.style.display="none";
-    homeScreen.style.display="flex";
-    homeScreen.classList.remove("leaving");
+    document.body.classList.remove("celebrating");removeGarlands();
+    gameScreen.style.display="none";homeScreen.style.display="flex";homeScreen.classList.remove("leaving");
     initParticles();animParticles();
 }
 
@@ -555,12 +544,10 @@ function createGarlands(){
         const c=document.createElement("div");c.className="garland garland-"+side;c.setAttribute("aria-hidden","true");
         let cnt=(side==="top"||side==="bottom")?Math.max(8,Math.floor(window.innerWidth/30)):Math.max(6,Math.floor(window.innerHeight/30));
         for(let i=0;i<cnt;i++){
-            const b=document.createElement("div");b.className="gb";
-            const col=cols[i%cols.length];
+            const b=document.createElement("div");b.className="gb";const col=cols[i%cols.length];
             b.style.backgroundColor=col;b.style.boxShadow="0 0 5px 2px "+col+",0 0 12px 4px "+col+"44";
             b.style.animationDelay=(i*.18%2).toFixed(2)+"s";b.style.animationDuration=(1.8+(i%3)*.4).toFixed(1)+"s";
-            b.dataset.oc=col;b.dataset.os="0 0 5px 2px "+col+",0 0 12px 4px "+col+"44";
-            c.appendChild(b);
+            b.dataset.oc=col;b.dataset.os="0 0 5px 2px "+col+",0 0 12px 4px "+col+"44";c.appendChild(b);
         }
         document.body.appendChild(c);
     });
@@ -579,10 +566,8 @@ function startCelebration(){
 function drawWheel(){
     const w=canvas.width,h=canvas.height,cx=w/2,cy=h/2,r=Math.max(10,Math.min(cx,cy)-22);
     ctx.clearRect(0,0,w,h);
-    /* Bordure exterieure */
     ctx.beginPath();ctx.arc(cx,cy,r+14,0,2*Math.PI);ctx.strokeStyle="#d4a017";ctx.lineWidth=4;ctx.stroke();
     ctx.beginPath();ctx.arc(cx,cy,r+8,0,2*Math.PI);ctx.strokeStyle="#8b6914";ctx.lineWidth=2;ctx.stroke();
-    /* Segments */
     for(let i=0;i<segCount;i++){
         const s=wheelAngle+i*segAngle,e=s+segAngle,seg=wheelSegs[i];
         ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.closePath();
@@ -592,13 +577,10 @@ function drawWheel(){
         else{ctx.font="bold 32px Cinzel,serif";ctx.fillStyle="#fff";ctx.shadowColor="rgba(0,0,0,.5)";ctx.shadowBlur=4;ctx.fillText(seg.label,r-20,0);ctx.shadowBlur=0}
         ctx.restore();
     }
-    /* Reflet */
     const dg=ctx.createRadialGradient(cx,cy,r*.2,cx,cy,r);
     dg.addColorStop(0,"rgba(255,255,255,.07)");dg.addColorStop(.6,"rgba(0,0,0,0)");dg.addColorStop(1,"rgba(0,0,0,.25)");
     ctx.beginPath();ctx.arc(cx,cy,r,0,2*Math.PI);ctx.fillStyle=dg;ctx.fill();
-    /* Clous */
     for(let i=0;i<segCount;i++){const a=wheelAngle+i*segAngle;ctx.beginPath();ctx.arc(cx+Math.cos(a)*(r-3),cy+Math.sin(a)*(r-3),4,0,2*Math.PI);ctx.fillStyle="#d4a017";ctx.fill();ctx.strokeStyle="#8b6914";ctx.lineWidth=1;ctx.stroke()}
-    /* Centre */
     const hg=ctx.createRadialGradient(cx-5,cy-5,0,cx,cy,34);
     hg.addColorStop(0,"#f5c842");hg.addColorStop(.6,"#d4a017");hg.addColorStop(1,"#8b6914");
     ctx.beginPath();ctx.arc(cx,cy,32,0,2*Math.PI);ctx.fillStyle=hg;ctx.fill();ctx.strokeStyle="#6b4f10";ctx.lineWidth=2;ctx.stroke();
@@ -617,17 +599,15 @@ function spinWheel(){
 function handleResult(seg){
     curWheelVal=seg.value;
     if(seg.value==="BANQ"){
-        if(getGold()>0)setGold(0);
-        updateGoldUI();drawWheel();
+        if(getGold()>0)setGold(0);updateGoldUI();drawWheel();
         wheelRes.textContent="Banqueroute ! Solde positif efface.";wheelRes.className="wheel-res neg";
         showToast("Banqueroute !","error");
         infoLine.textContent=pPrefix()+"Banqueroute ! Faites tourner la roue.";
         curWheelVal=null;
-        if(gameMode===2)switchPlayer(); else spinBtn.disabled=false;
+        if(gameMode===2)switchPlayer();else spinBtn.disabled=false;
     }else{
         wheelRes.textContent=seg.value+" pieces ! Choisissez une consonne.";wheelRes.className="wheel-res pos";
-        infoLine.textContent=pPrefix()+"Roue : "+seg.value+" PO. Choisissez une consonne.";
-        canChoose=true;
+        infoLine.textContent=pPrefix()+"Roue : "+seg.value+" PO. Choisissez une consonne.";canChoose=true;
     }
     updateKB();
 }
@@ -636,32 +616,23 @@ function handleResult(seg){
 function loadPhrase(){
     if(usedPhraseIndices.size>=phrases.length)usedPhraseIndices.clear();
     let idx;do{idx=Math.floor(Math.random()*phrases.length)}while(usedPhraseIndices.has(idx));
-    usedPhraseIndices.add(idx);
-    const p=phrases[idx];curPhrase=p.text;curCategory=p.cat;
+    usedPhraseIndices.add(idx);const p=phrases[idx];curPhrase=p.text;curCategory=p.cat;
     revealed=new Set();used=new Set();curWheelVal=null;canChoose=false;won=false;spinning=false;
-    wheelRes.textContent="";wheelRes.className="wheel-res";
-    catDisp.textContent=curCategory;
+    wheelRes.textContent="";wheelRes.className="wheel-res";catDisp.textContent=curCategory;
     renderPhrase();buildKB();updateKB();updateGoldUI();updatePlayerBar();
     spinBtn.disabled=false;guessBtn.disabled=false;
-    infoLine.textContent=pPrefix()+"Faites tourner la roue pour commencer !";
-    drawWheel();
+    infoLine.textContent=pPrefix()+"Faites tourner la roue pour commencer !";drawWheel();
 }
 function renderPhrase(){
-    phraseBox.innerHTML="";
-    const words=curPhrase.split(" ");
-    const dispWords=getDisplay().split(" ");
+    phraseBox.innerHTML="";const words=curPhrase.split(" "),dispWords=getDisplay().split(" ");
     words.forEach((word,wi)=>{
-        const wg=document.createElement("span");wg.className="word-grp";
-        const dw=dispWords[wi]||word;
-        let di=0;
+        const wg=document.createElement("span");wg.className="word-grp";const dw=dispWords[wi]||word;let di=0;
         for(const ch of word){
             if(ch==="'"){const b=document.createElement("span");b.className="lb apos";b.textContent="'";wg.appendChild(b);di++}
-            else{
-                const n=norm(ch);const b=document.createElement("span");b.className="lb";
+            else{const n=norm(ch);const b=document.createElement("span");b.className="lb";
                 if(revealed.has(n)){b.classList.add("rev");b.textContent=dw[di]||ch}
                 if(won){b.classList.add("won");b.textContent=dw[di]||ch}
-                wg.appendChild(b);di++;
-            }
+                wg.appendChild(b);di++}
         }
         phraseBox.appendChild(wg);
         if(wi<words.length-1){const s=document.createElement("span");s.className="sp-gap";phraseBox.appendChild(s)}
@@ -691,8 +662,7 @@ function updateKB(){
         if(used.has(l)){b.disabled=true;b.classList.add(revealed.has(l)?"uc":"uw")}
         else{b.disabled=spinning||won;b.classList.remove("uc","uw")}
     });
-    guessBtn.disabled=spinning||won;
-    spinBtn.disabled=spinning||canChoose||won;
+    guessBtn.disabled=spinning||won;spinBtn.disabled=spinning||canChoose||won;
 }
 function chooseCon(letter){
     if(!canChoose||used.has(letter)||typeof curWheelVal!=="number")return;
@@ -700,13 +670,10 @@ function chooseCon(letter){
     if(cnt>0){
         revealed.add(letter);const earned=curWheelVal*cnt;addGold(earned);updateGoldUI();updatePlayerBar();
         showToast(cnt+" \""+letter+"\" trouve"+(cnt>1?"s":"")+" ! +"+earned+" PO","success");
-        infoLine.textContent=pPrefix()+"+"+earned+" PO ! Faites tourner la roue.";
-        renderPhrase();checkWin();
+        infoLine.textContent=pPrefix()+"+"+earned+" PO ! Faites tourner la roue.";renderPhrase();checkWin();
     }else{
-        showToast("Pas de \""+letter+"\" dans l'expression.","error");
-        infoLine.textContent=pPrefix()+"Pas de \""+letter+"\".";
-        if(gameMode===2)switchPlayer();
-        else infoLine.textContent+=" Faites tourner la roue.";
+        showToast("Pas de \""+letter+"\" dans l'expression.","error");infoLine.textContent=pPrefix()+"Pas de \""+letter+"\".";
+        if(gameMode===2)switchPlayer();else infoLine.textContent+=" Faites tourner la roue.";
     }
     canChoose=false;curWheelVal=null;updateKB();
 }
@@ -717,13 +684,10 @@ function chooseVow(letter){
     if(cnt>0){
         revealed.add(letter);
         showToast(cnt+" \""+letter+"\" trouve"+(cnt>1?"s":"")+" ! Cout : "+cost+" PO","success");
-        infoLine.textContent=pPrefix()+"Voyelle trouvee ! Cout : "+cost+" PO.";
-        renderPhrase();checkWin();
+        infoLine.textContent=pPrefix()+"Voyelle trouvee ! Cout : "+cost+" PO.";renderPhrase();checkWin();
     }else{
-        showToast("Pas de \""+letter+"\". Aucun cout.","error");
-        infoLine.textContent=pPrefix()+"Pas de \""+letter+"\".";
-        if(gameMode===2)switchPlayer();
-        else infoLine.textContent+=" Faites tourner la roue ou achetez une voyelle.";
+        showToast("Pas de \""+letter+"\". Aucun cout.","error");infoLine.textContent=pPrefix()+"Pas de \""+letter+"\".";
+        if(gameMode===2)switchPlayer();else infoLine.textContent+=" Faites tourner la roue ou achetez une voyelle.";
     }
     updateKB();
 }
@@ -738,33 +702,16 @@ function openGuess(){
     setTimeout(()=>{const inp=$("guessInp");if(inp)inp.focus()},100);
 }
 function submitGuess(){
-    const inp=$("guessInp");if(!inp)return;
-    const guess=inp.value.trim();
+    const inp=$("guessInp");if(!inp)return;const guess=inp.value.trim();
     if(!guess){showToast("Saisissez une proposition.","error");return}
     const ng=guess.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[''\u2019]/g,"'").toUpperCase();
     const np=curPhrase.toUpperCase();
     if(ng===np){
-        won=true;revealed=new Set();
-        for(const ch of curPhrase)if(isAlpha(ch))revealed.add(norm(ch));
+        won=true;revealed=new Set();for(const ch of curPhrase)if(isAlpha(ch))revealed.add(norm(ch));
         renderPhrase();startCelebration();updateKB();
-        const pn=gameMode===2?players[curP].name+" ":"";
-        let html='<p style="font-size:1rem;margin-bottom:12px;color:var(--muted)">L\'expression etait :</p>';
-        html+='<p style="font-family:Cinzel,serif;font-size:1.25rem;color:var(--glow);margin-bottom:18px">'+getDisplay()+'</p>';
-        if(gameMode===2){
-            html+='<div style="display:flex;gap:16px;justify-content:center;margin-bottom:18px">';
-            html+='<div style="flex:1;padding:10px;background:rgba(0,0,0,.3);border-radius:8px;border:1px solid var(--border)"><div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">'+players[0].name+'</div><div style="font-weight:800;font-size:1.1rem;color:'+(players[0].gold>=0?'var(--glow)':'var(--danger)')+'">'+players[0].gold+' PO</div></div>';
-            html+='<div style="flex:1;padding:10px;background:rgba(0,0,0,.3);border-radius:8px;border:1px solid var(--border)"><div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">'+players[1].name+'</div><div style="font-weight:800;font-size:1.1rem;color:'+(players[1].gold>=0?'var(--glow)':'var(--danger)')+'">'+players[1].gold+' PO</div></div>';
-            html+='</div>';
-        }else{
-            html+='<p style="margin-bottom:16px;font-weight:800;font-size:1.1rem;color:var(--glow)">Total : '+getGold()+' PO</p>';
-        }
-        showModal("Bravo "+pn+"!",html,[
-            {text:"Expression suivante",cls:"pri",action:"next"},
-            {text:"Retour au menu",cls:"sec",action:"home"}
-        ]);
+        showWinModal();
     }else{
-        hideModal();
-        showToast("Mauvaise proposition !","error");
+        hideModal();showToast("Mauvaise proposition !","error");
         if(gameMode===2){switchPlayer();infoLine.textContent=pPrefix()+"Mauvaise proposition ! Faites tourner la roue."}
         else infoLine.textContent="Mauvaise proposition ! Faites tourner la roue.";
     }
@@ -772,30 +719,28 @@ function submitGuess(){
 
 /* ==================== VICTOIRE ==================== */
 function checkWin(){
-    for(const ch of curPhrase){if(isAlpha(ch)&&!revealed.has(norm(ch)))return}
-    /* Toutes les lettres revelees */
-    won=true;renderPhrase();startCelebration();updateKB();
+    for(const ch of curPhrase)if(isAlpha(ch)&&!revealed.has(norm(ch)))return;
+    won=true;renderPhrase();startCelebration();updateKB();showWinModal();
+}
+function showWinModal(){
     const pn=gameMode===2?players[curP].name+" ":"";
-    let html='<p style="font-size:1rem;margin-bottom:12px;color:var(--muted)">Toutes les lettres revelees !</p>';
+    let html='<p style="font-size:1rem;margin-bottom:12px;color:var(--muted)">L\'expression etait :</p>';
     html+='<p style="font-family:Cinzel,serif;font-size:1.25rem;color:var(--glow);margin-bottom:18px">'+getDisplay()+'</p>';
     if(gameMode===2){
         html+='<div style="display:flex;gap:16px;justify-content:center;margin-bottom:18px">';
         html+='<div style="flex:1;padding:10px;background:rgba(0,0,0,.3);border-radius:8px;border:1px solid var(--border)"><div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">'+players[0].name+'</div><div style="font-weight:800;font-size:1.1rem;color:'+(players[0].gold>=0?'var(--glow)':'var(--danger)')+'">'+players[0].gold+' PO</div></div>';
         html+='<div style="flex:1;padding:10px;background:rgba(0,0,0,.3);border-radius:8px;border:1px solid var(--border)"><div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">'+players[1].name+'</div><div style="font-weight:800;font-size:1.1rem;color:'+(players[1].gold>=0?'var(--glow)':'var(--danger)')+'">'+players[1].gold+' PO</div></div>';
         html+='</div>';
-    }else{
-        html+='<p style="margin-bottom:16px;font-weight:800;font-size:1.1rem;color:var(--glow)">Total : '+getGold()+' PO</p>';
-    }
+    }else{html+='<p style="margin-bottom:16px;font-weight:800;font-size:1.1rem;color:var(--glow)">Total : '+getGold()+' PO</p>'}
     showModal("Bravo "+pn+"!",html,[
         {text:"Expression suivante",cls:"pri",action:"next"},
-        {text:"Retour au menu",cls:"sec",action:"home"}
+        {text:"Retour au Village",cls:"sec",action:"village"}
     ]);
 }
 
 /* ==================== 2 JOUEURS ==================== */
 function switchPlayer(){
     curP=1-curP;updatePlayerBar();updateGoldUI();updateKB();
-    /* Flash visuel du tour */
     const flash=turnFlash;
     flash.style.background=curP===0?"linear-gradient(90deg,#d4a017,transparent)":"linear-gradient(-90deg,#d4a017,transparent)";
     flash.classList.remove("show");void flash.offsetWidth;flash.classList.add("show");
@@ -803,20 +748,16 @@ function switchPlayer(){
 }
 function updatePlayerBar(){
     if(gameMode!==2)return;
-    $("pCard0").classList.toggle("active",curP===0);
-    $("pCard1").classList.toggle("active",curP===1);
-    const g0=players[0].gold,g1=players[1].gold;
-    $("pGold0").textContent=g0;$("pGold1").textContent=g1;
-    $("pGold0").parentElement.classList.toggle("neg",g0<0);
-    $("pGold1").parentElement.classList.toggle("neg",g1<0);
+    $("pCard0").classList.toggle("active",curP===0);$("pCard1").classList.toggle("active",curP===1);
+    $("pGold0").textContent=players[0].gold;$("pGold1").textContent=players[1].gold;
+    $("pGold0").parentElement.classList.toggle("neg",players[0].gold<0);
+    $("pGold1").parentElement.classList.toggle("neg",players[1].gold<0);
 }
 
 /* ==================== UI ==================== */
 function updateGoldUI(){
-    if(gameMode===1){
-        goldDisp.textContent=goldBalance;
-        goldDisp.classList.toggle("negative",goldBalance<0);
-    }else{updatePlayerBar()}
+    if(gameMode===1){goldDisp.textContent=goldBalance;goldDisp.classList.toggle("negative",goldBalance<0)}
+    else updatePlayerBar();
 }
 function showToast(msg,type){
     const t=document.createElement("div");t.className="toast"+(type?" "+type:"");t.textContent=msg;
@@ -839,9 +780,8 @@ modalActs.addEventListener("click",e=>{
     if(a==="submit")submitGuess();
     else if(a==="cancel")hideModal();
     else if(a==="next"){hideModal();loadPhrase()}
-    else if(a==="home"){hideModal();goHome()}
+    else if(a==="village"){hideModal();window.location.href="https://pierreg78-maker.github.io/village/"}
 });
-/* Enter dans l'input de proposition */
 modalOv.addEventListener("keydown",e=>{if(e.key==="Enter"&&$("guessInp"))submitGuess()});
 
 /* ==================== INIT JEU ==================== */
@@ -851,17 +791,14 @@ function initGame(){loadPhrase()}
 spinBtn.addEventListener("click",spinWheel);
 guessBtn.addEventListener("click",openGuess);
 newBtn.addEventListener("click",()=>{if(!won){loadPhrase();showToast("Nouvelle expression !","info")}else loadPhrase()});
-backBtn.addEventListener("click",goHome);
+menuBtn.addEventListener("click",goHome);
 
-/* Accueil */
 document.querySelectorAll(".mode-card").forEach(c=>{
     c.addEventListener("click",()=>selectMode(parseInt(c.dataset.mode)));
     c.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();selectMode(parseInt(c.dataset.mode))}});
 });
 startBtn.addEventListener("click",startGame);
- $("homeBackBtn").addEventListener("click",()=>showToast("Fonction non disponible en mode standalone.","info"));
 
-/* Resize particules */
 window.addEventListener("resize",()=>{if(homeScreen.style.display!=="none"){hpCanvas.width=window.innerWidth;hpCanvas.height=window.innerHeight}});
 
 /* ==================== DEMARRAGE ==================== */
