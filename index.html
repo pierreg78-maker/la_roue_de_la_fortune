@@ -171,7 +171,6 @@
         .turn-flash.show{opacity:1;animation:flashPulse 1.2s ease-out forwards}
         @keyframes flashPulse{0%{opacity:1;transform:scaleX(1)}100%{opacity:0;transform:scaleX(.3)}}
 
-        /* Indicateur de chargement audio */
         .sound-status{position:fixed;bottom:8px;right:12px;z-index:900;font-size:.65rem;color:var(--muted);opacity:.5;display:flex;align-items:center;gap:4px}
         .sound-status i{font-size:.7rem}
         .sound-status.loaded{color:var(--success);opacity:.7}
@@ -212,7 +211,6 @@
     </div>
 </div>
 
-<!-- ==================== HOME SCREEN ==================== -->
 <div id="homeScreen">
     <canvas id="homeParticles"></canvas>
     <div class="home-content">
@@ -261,7 +259,6 @@
     </div>
 </div>
 
-<!-- ==================== GAME SCREEN ==================== -->
 <div id="gameScreen" style="display:none">
     <div class="player-bar" id="playerBar" style="display:none">
         <div class="p-card active" id="pCard0">
@@ -460,11 +457,12 @@ const SFX={
     wheelGain:null,
     ready:false,
 
-    /* URLs des sons */
+    /* URLs des sons — banqueroute ajouté */
     urls:{
         wheel:"https://raw.githubusercontent.com/pierreg78-maker/AtelierMemo-Assets/main/assets/sons/roue/380788__laspaziale__bike-rear-wheel-spinning.wav",
         ok:"https://raw.githubusercontent.com/pierreg78-maker/AtelierMemo-Assets/main/assets/sons/roue/lettre_OK.wav",
         nok:"https://raw.githubusercontent.com/pierreg78-maker/AtelierMemo-Assets/main/assets/sons/roue/lettre_nok.wav",
+        banq:"https://raw.githubusercontent.com/pierreg78-maker/AtelierMemo-Assets/main/assets/sons/roue/banqueroute.wav",
         gain:"https://raw.githubusercontent.com/pierreg78-maker/AtelierMemo-Assets/main/assets/sons/pieces-or/gain-01.mp3",
         jackpot:"https://raw.githubusercontent.com/pierreg78-maker/AtelierMemo-Assets/main/assets/sons/pieces-or/jackpot.wav",
         applause:"https://raw.githubusercontent.com/pierreg78-maker/AtelierMemo-Assets/main/assets/sons/applause/324323__kwahmah_02__huge-applause.wav"
@@ -493,7 +491,7 @@ const SFX={
         if(this.ctx&&this.ctx.state==="suspended")this.ctx.resume();
     },
 
-    /* Joue un son simple (lettre OK/NOK, gain, jackpot, applaudissements) */
+    /* Joue un son simple */
     play(key,opts={}){
         if(!this.ctx||!this.buffers[key])return;
         this.resume();
@@ -509,7 +507,6 @@ const SFX={
 
     /* --- Son de la roue : contrôle dynamique du pitch et du volume --- */
 
-    /* Démarre le son de roue en boucle */
     startWheel(){
         if(!this.ctx||!this.buffers.wheel)return;
         this.resume();
@@ -524,19 +521,13 @@ const SFX={
         this.wheelSrc.start();
     },
 
-    /* Adapte le pitch ET le volume en fonction de la vitesse de rotation.
-       spinVel varie de ~0.44 (lancement) à ~0.001 (arrêt) */
     updateWheel(spinVel){
         if(!this.wheelSrc||!this.wheelGain)return;
-        /* Normalisation : 0 quand arrêté, 1 à vitesse max */
         const t=Math.min(spinVel/0.44,1);
-        /* Pitch : de 0.25 (très lent) à 2.2 (très rapide) */
         this.wheelSrc.playbackRate.value=0.25+t*1.95;
-        /* Volume : de 0.08 (presque muet à l'arrêt) à 0.38 (fort au lancement) */
         this.wheelGain.gain.value=0.08+t*0.30;
     },
 
-    /* Arrête le son de roue avec un fondu sortant de 350ms */
     stopWheel(){
         if(this.wheelGain&&this.wheelSrc){
             const g=this.wheelGain,s=this.wheelSrc;
@@ -649,7 +640,6 @@ function removeGarlands(){document.querySelectorAll(".garland").forEach(g=>g.rem
 function restoreBulbs(){document.querySelectorAll(".gb").forEach(b=>{b.style.backgroundColor=b.dataset.oc;b.style.boxShadow=b.dataset.os})}
 function startCelebration(){
     document.body.classList.add("celebrating");
-    /* Son d'applaudissements */
     SFX.play("applause",{volume:0.75});
     const cols=["#ff0044","#ffdd00","#00ff88","#ff6600","#00ccff","#ff00cc","#aaff00","#ffaa00","#ffffff"];
     const bulbs=document.querySelectorAll(".gb");let t=0;
@@ -693,21 +683,16 @@ function spinWheel(){
     wheelRes.textContent="";wheelRes.className="wheel-res";
     spinVel=.22+Math.random()*.22;
 
-    /* Démarrage du son de roue */
     SFX.startWheel();
 
     (function anim(){
         wheelAngle+=spinVel;spinVel*=.984;
-
-        /* Adaptation dynamique du son à la vitesse */
         SFX.updateWheel(spinVel);
-
         drawWheel();
         if(spinVel>.001){
             requestAnimationFrame(anim);
         }else{
             spinning=false;
-            /* Arrêt du son de roue avec fondu */
             SFX.stopWheel();
             handleResult(getWinSeg());
         }
@@ -717,6 +702,9 @@ function spinWheel(){
 function handleResult(seg){
     curWheelVal=seg.value;
     if(seg.value==="BANQ"){
+        /* Son de banqueroute ! */
+        SFX.play("banq",{volume:0.75});
+
         if(getGold()>0)setGold(0);updateGoldUI();drawWheel();
         wheelRes.textContent="Banqueroute ! Solde positif efface.";wheelRes.className="wheel-res neg";
         showToast("Banqueroute !","error");
@@ -764,42 +752,28 @@ function chooseLetter(letter,isVowel){
     const btn=document.querySelector('.key-btn[data-letter="'+letter+'"]');
 
     if(count>0){
-        /* ---- LETTRE TROUVÉE ---- */
         btn.className="key-btn uc";
         revealed.add(letter);
         revealLetters(letter);
-
-        /* Son : lettre correcte */
         SFX.play("ok",{volume:0.65});
 
         if(!isVowel&&curWheelVal&&typeof curWheelVal==="number"){
-            /* Consonne : gain de pièces */
             const gain=curWheelVal*count;
             addGold(gain);
             updateGoldUI();
-
-            /* Son de gain avec un léger décalage pour bien le distinguer */
             setTimeout(()=>{
-                if(gain>=1000){
-                    SFX.play("jackpot",{volume:0.7});
-                }else{
-                    SFX.play("gain",{volume:0.6});
-                }
+                if(gain>=1000){SFX.play("jackpot",{volume:0.7})}
+                else{SFX.play("gain",{volume:0.6})}
             },220);
-
             showToast("+"+gain+" pieces d'or !","success");
         }else if(isVowel){
-            /* Voyelle : coût déduit */
             const cost=VOWEL_COST*count;
             addGold(-cost);
             updateGoldUI();
             showToast("-"+cost+" pieces d'or ("+VOWEL_COST+" x "+count+")","info");
         }
 
-        /* Vérification de la victoire */
         if(checkWin()){handleWin();return}
-
-        /* Le joueur continue : peut tourner, choisir consonne, ou acheter voyelle */
         canChoose=true;
         enableConsonnes();
         enableVowels();
@@ -807,25 +781,18 @@ function chooseLetter(letter,isVowel){
         spinBtn.disabled=false;
         infoLine.textContent=pPrefix()+"Bravo ! Continuez : tournez la roue ou choisissez une lettre.";
     }else{
-        /* ---- LETTRE ABSENTE ---- */
         btn.className="key-btn uw";
-
-        /* Son : lettre incorrecte */
         SFX.play("nok",{volume:0.5});
-
         showToast('Pas de "'+letter+'" dans l\'expression',"error");
-        curWheelVal=null;
-        canChoose=false;
-        disableAllKeys();
-        guessBtn.disabled=true;
+        curWheelVal=null;canChoose=false;
+        disableAllKeys();guessBtn.disabled=true;
 
         if(gameMode===2){
             infoLine.textContent=pPrefix()+'Pas de "'+letter+'". Tour perdu.';
             switchPlayer();
         }else{
             infoLine.textContent='Pas de "'+letter+'". Faites tourner la roue.';
-            spinBtn.disabled=false;
-            enableVowels();
+            spinBtn.disabled=false;enableVowels();
         }
     }
 }
@@ -861,7 +828,6 @@ function revealLetters(letter){
             if(norm(ch)===letter&&boxes[idx]){
                 boxes[idx].textContent=ch;
                 boxes[idx].classList.add("rev");
-                /* Décalage d'animation pour un effet cascade */
                 boxes[idx].style.animationDelay=(idx*0.06)+"s";
             }
             idx++;
@@ -896,10 +862,7 @@ function handleWin(){
     disableAllKeys();spinBtn.disabled=true;guessBtn.disabled=true;
     wheelRes.textContent="";infoLine.textContent="";
     revealAll();
-
-    /* Lancement de la célébration avec sons */
     setTimeout(()=>{startCelebration()},400);
-
     showToast(pPrefix()+"Bravo ! Expression trouvee !","success");
 }
 
@@ -923,12 +886,10 @@ function submitGuess(){
     closeModal();
     if(!guess){showToast("Proposition vide !","error");return}
     if(guess===target){
-        /* Bonne proposition : on révèle tout et on gagne */
         for(const ch of curPhrase)if(isAlpha(ch))revealed.add(norm(ch));
         renderPhrase();
         handleWin();
     }else{
-        /* Mauvaise proposition */
         SFX.play("nok",{volume:0.5});
         showToast("Mauvaise proposition !","error");
         curWheelVal=null;canChoose=false;
@@ -950,7 +911,6 @@ function switchPlayer(){
     disableAllKeys();guessBtn.disabled=true;
     updatePlayerUI();
     spinBtn.disabled=false;enableVowels();
-    /* Flash visuel du changement de tour */
     turnFlash.style.background=curP===0?"var(--accent)":"var(--pink)";
     turnFlash.classList.remove("show");void turnFlash.offsetWidth;turnFlash.classList.add("show");
     infoLine.textContent=pPrefix()+"A vous de jouer ! Faites tourner la roue.";
@@ -995,20 +955,16 @@ function initGame(){
     if(gameMode===1)goldBalance=0;
     else{players[0].gold=0;players[1].gold=0;curP=0}
     updateGoldUI();updatePlayerUI();
-
-    /* Choix d'une phrase non encore utilisée */
     let idx;
     if(usedPhraseIndices.size>=phrases.length)usedPhraseIndices.clear();
     do{idx=Math.floor(Math.random()*phrases.length)}while(usedPhraseIndices.has(idx));
     usedPhraseIndices.add(idx);
     const p=phrases[idx];
     curPhrase=p.text;curCategory=p.cat;
-
     catDisp.textContent=curCategory;
     wheelRes.textContent="";wheelRes.className="wheel-res";
     spinBtn.disabled=false;guessBtn.disabled=true;
     infoLine.textContent=pPrefix()+"Faites tourner la roue !";
-
     buildKeyboard();renderPhrase();drawWheel();
 }
 
@@ -1019,7 +975,6 @@ document.querySelectorAll(".mode-card").forEach(c=>{
 });
 startBtn.addEventListener("click",()=>{
     SFX.resume();
-    /* Initialisation des sons au premier clic (nécessaire pour le navigateur) */
     if(!SFX.ctx)SFX.init();
     startGame();
 });
@@ -1028,7 +983,6 @@ guessBtn.addEventListener("click",openGuess);
 newBtn.addEventListener("click",newPhrase);
 menuBtn.addEventListener("click",goHome);
 
-/* Saisie clavier physique pendant le jeu */
 document.addEventListener("keydown",e=>{
     if(gameScreen.style.display==="none"||modalOv.classList.contains("active"))return;
     if(won||spinning)return;
@@ -1042,7 +996,6 @@ document.addEventListener("keydown",e=>{
     }
 });
 
-/* Redimensionnement du canvas de particules */
 window.addEventListener("resize",()=>{if(homeScreen.style.display!=="none"){hpCanvas.width=window.innerWidth;hpCanvas.height=window.innerHeight}});
 
 /* ==================== DÉMARRAGE ==================== */
