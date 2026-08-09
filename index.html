@@ -17,7 +17,6 @@
         body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--fg);min-height:100vh;overflow-x:hidden}
         body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(212,160,23,.05) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(192,57,43,.04) 0%,transparent 50%),radial-gradient(ellipse at 50% 85%,rgba(39,174,96,.03) 0%,transparent 50%);pointer-events:none;z-index:0}
 
-        /* ========== GARLANDS ========== */
         .garland{position:fixed;z-index:1000;pointer-events:none}
         .garland-top::after,.garland-bottom::after{content:'';position:absolute;left:0;right:0;height:1px;background:rgba(120,100,60,.5);transition:all .3s}
         .garland-top::after{top:9px}.garland-bottom::after{bottom:9px}
@@ -42,7 +41,6 @@
         @keyframes wireH{from{background-position:0% 0%}to{background-position:300% 0%}}
         @keyframes wireV{from{background-position:0% 0%}to{background-position:0% 300%}}
 
-        /* ========== HOME SCREEN ========== */
         #homeScreen{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;transition:opacity .5s ease,transform .5s ease}
         #homeScreen.leaving{opacity:0;transform:scale(1.04);pointer-events:none}
         #homeParticles{position:absolute;inset:0;z-index:0}
@@ -68,7 +66,6 @@
         .mode-card-desc{font-size:.72rem;color:var(--muted);line-height:1.4;position:relative;z-index:1}
         .mode-card .check-mark{position:absolute;top:8px;right:10px;color:var(--success);font-size:.9rem;opacity:0;transform:scale(.5);transition:all .3s}
         .mode-card.selected .check-mark{opacity:1;transform:scale(1)}
-
         .player-names{max-height:0;overflow:hidden;transition:max-height .45s ease,opacity .35s ease;opacity:0}
         .player-names.open{max-height:200px;opacity:1}
         .pn-row{display:flex;align-items:flex-end;gap:12px;justify-content:center}
@@ -77,7 +74,6 @@
         .pn-input{width:100%;padding:9px 12px;background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:8px;color:var(--fg);font-family:'Nunito',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s}
         .pn-input:focus{border-color:var(--accent)}
         .vs-badge{font-family:'Cinzel',serif;font-weight:900;font-size:1rem;color:var(--danger);padding-bottom:10px;flex-shrink:0}
-
         .start-btn{display:inline-flex;align-items:center;gap:8px;margin-top:28px;padding:13px 40px;background:linear-gradient(135deg,#d4a017,#b8860b);color:#1a1510;border:none;border-radius:30px;font-family:'Cinzel',serif;font-weight:700;font-size:1rem;cursor:pointer;transition:all .3s ease;text-transform:uppercase;letter-spacing:1px}
         .start-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,160,23,.35)}
         .start-btn:disabled{opacity:.3;cursor:not-allowed}
@@ -85,7 +81,6 @@
         .home-back:hover{background:rgba(232,67,147,.12);border-color:var(--pink-l);color:#fff;box-shadow:0 0 16px rgba(232,67,147,.25)}
         .home-back i{margin-right:5px}
 
-        /* ========== PLAYER BAR (2P) ========== */
         .player-bar{display:flex;gap:12px;justify-content:center;padding:16px 20px 0;max-width:880px;margin:0 auto;position:relative;z-index:10}
         .p-card{flex:1;max-width:200px;padding:10px 14px;background:var(--card);border:2px solid var(--border);border-radius:12px;text-align:center;transition:all .4s ease;opacity:.4}
         .p-card.active{opacity:1;border-color:var(--accent);box-shadow:0 0 20px rgba(212,160,23,.18)}
@@ -96,7 +91,6 @@
         .p-card.active .p-turn{opacity:1}
         .p-card .p-turn i{margin-right:3px}
 
-        /* ========== GAME CONTAINER ========== */
         .game-container{max-width:880px;margin:0 auto;padding:20px 20px 80px;position:relative;z-index:10}
         .game-header{text-align:center;margin-bottom:18px}
         .game-title{font-family:'Cinzel',serif;font-weight:900;font-size:clamp(1.3rem,4.5vw,2.2rem);color:var(--accent);text-shadow:0 0 30px rgba(212,160,23,.2);letter-spacing:2px;margin-bottom:8px}
@@ -152,7 +146,6 @@
         .village-btn:hover{background:rgba(232,67,147,.12);border-color:var(--pink-l);color:#fff;box-shadow:0 0 16px rgba(232,67,147,.25)}
         .village-btn i{margin-right:2px}
 
-        /* ========== TOAST ========== */
         .toast-c{position:fixed;top:44px;left:50%;transform:translateX(-50%);z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none;width:90%;max-width:420px}
         .toast{background:rgba(20,18,14,.95);border:1px solid var(--border);color:var(--fg);padding:11px 20px;border-radius:10px;font-weight:600;font-size:.84rem;text-align:center;animation:tIn .35s ease-out,tOut .4s ease-in forwards;animation-delay:0s,2.6s;box-shadow:0 8px 28px rgba(0,0,0,.6);line-height:1.35}
         .toast.success{border-color:var(--success);color:#5dde9e}
@@ -161,7 +154,6 @@
         @keyframes tIn{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
         @keyframes tOut{from{opacity:1}to{opacity:0;transform:translateY(-10px)}}
 
-        /* ========== MODAL ========== */
         .modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:1500;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
         .modal-ov.active{display:flex}
         .modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:460px;width:90%;text-align:center;animation:mIn .3s ease-out}
@@ -175,12 +167,15 @@
         .m-btn.sec{background:transparent;border:1px solid var(--border);color:var(--muted)}
         .m-btn:hover{transform:translateY(-1px)}
 
-        /* ========== TURN FLASH ========== */
         .turn-flash{position:fixed;top:0;left:0;right:0;height:4px;z-index:1100;pointer-events:none;opacity:0;transition:opacity .3s}
         .turn-flash.show{opacity:1;animation:flashPulse 1.2s ease-out forwards}
         @keyframes flashPulse{0%{opacity:1;transform:scaleX(1)}100%{opacity:0;transform:scaleX(.3)}}
 
-        /* ========== RESPONSIVE ========== */
+        /* Indicateur de chargement audio */
+        .sound-status{position:fixed;bottom:8px;right:12px;z-index:900;font-size:.65rem;color:var(--muted);opacity:.5;display:flex;align-items:center;gap:4px}
+        .sound-status i{font-size:.7rem}
+        .sound-status.loaded{color:var(--success);opacity:.7}
+
         @media(max-width:480px){
             .lb{width:22px;height:30px;font-size:.75rem}.lb.apos{width:12px;font-size:.7rem}.word-grp{gap:2px}.sp-gap{width:8px}
             .key-btn{width:30px;height:34px;font-size:.78rem}
@@ -207,6 +202,7 @@
 
 <div class="toast-c" id="toastC"></div>
 <div class="turn-flash" id="turnFlash"></div>
+<div class="sound-status" id="soundStatus"><i class="fas fa-volume-mute"></i> Sons</div>
 
 <div class="modal-ov" id="modalOv" role="dialog" aria-modal="true">
     <div class="modal-box">
@@ -387,58 +383,58 @@ const phrases=[
 
 const phrasesDisplay={
     "Avoir le cafard":"Avoir le cafard","Se creuser la cervelle":"Se creuser la cervelle",
-    "Avoir un chat dans la gorge":"Avoir un chat dans la gorge","Couter les yeux de la tete":"Coûter les yeux de la tête",
+    "Avoir un chat dans la gorge":"Avoir un chat dans la gorge","Couter les yeux de la tete":"Co\u00fbter les yeux de la t\u00eate",
     "Avoir le vent en poupe":"Avoir le vent en poupe","Mettre les pieds dans le plat":"Mettre les pieds dans le plat",
-    "Perdre la boule":"Perdre la boule","Avoir le coeur sur la main":"Avoir le cœur sur la main",
+    "Perdre la boule":"Perdre la boule","Avoir le coeur sur la main":"Avoir le c\u0153ur sur la main",
     "Tourner autour du pot":"Tourner autour du pot","Avoir la frite":"Avoir la frite",
-    "Poser un lapin":"Poser un lapin","Avoir d'autres chats a fouetter":"Avoir d'autres chats à fouetter",
-    "Revenir a ses moutons":"Revenir à ses moutons","Avaler des couleuvres":"Avaler des couleuvres",
+    "Poser un lapin":"Poser un lapin","Avoir d'autres chats a fouetter":"Avoir d'autres chats \u00e0 fouetter",
+    "Revenir a ses moutons":"Revenir \u00e0 ses moutons","Avaler des couleuvres":"Avaler des couleuvres",
     "Faire l'autruche":"Faire l'autruche","Avoir une faim de loup":"Avoir une faim de loup",
-    "Etre un cordon-bleu":"Être un cordon-bleu","Chanter comme une casserole":"Chanter comme une casserole",
-    "Poule mouillee":"Poule mouillée","Quand les poules auront des dents":"Quand les poules auront des dents",
-    "Voir la vie en rose":"Voir la vie en rose","Etre blanc comme neige":"Être blanc comme neige",
-    "Raconter des salades":"Raconter des salades","Pedaler dans la choucroute":"Pédaler dans la choucroute",
+    "Etre un cordon-bleu":"\u00catre un cordon-bleu","Chanter comme une casserole":"Chanter comme une casserole",
+    "Poule mouillee":"Poule mouill\u00e9e","Quand les poules auront des dents":"Quand les poules auront des dents",
+    "Voir la vie en rose":"Voir la vie en rose","Etre blanc comme neige":"\u00catre blanc comme neige",
+    "Raconter des salades":"Raconter des salades","Pedaler dans la choucroute":"P\u00e9daler dans la choucroute",
     "C'est la fin des haricots":"C'est la fin des haricots","Haut comme trois pommes":"Haut comme trois pommes",
-    "Etre dans de beaux draps":"Être dans de beaux draps","Vendre la meche":"Vendre la mèche",
+    "Etre dans de beaux draps":"\u00catre dans de beaux draps","Vendre la meche":"Vendre la m\u00e8che",
     "Mettre de l'eau dans son vin":"Mettre de l'eau dans son vin","Appeler un chat un chat":"Appeler un chat un chat",
     "Battre le fer tant qu'il est chaud":"Battre le fer tant qu'il est chaud","Avoir le pain sur la planche":"Avoir le pain sur la planche",
-    "Prendre le taureau par les cornes":"Prendre le taureau par les cornes","Jeter l'eponge":"Jeter l'éponge",
-    "Ne pas etre ne de la derniere pluie":"Ne pas être né de la dernière pluie","Faire d'une pierre deux coups":"Faire d'une pierre deux coups",
-    "Mettre la main a la pate":"Mettre la main à la pâte","Broyer du noir":"Broyer du noir",
-    "Passer l'eponge":"Passer l'éponge","Tirer les vers du nez":"Tirer les vers du nez",
-    "C'est la mer a boire":"C'est la mer à boire","Se mettre le doigt dans l'oeil":"Se mettre le doigt dans l'œil",
+    "Prendre le taureau par les cornes":"Prendre le taureau par les cornes","Jeter l'eponge":"Jeter l'\u00e9ponge",
+    "Ne pas etre ne de la derniere pluie":"Ne pas \u00eatre n\u00e9 de la derni\u00e8re pluie","Faire d'une pierre deux coups":"Faire d'une pierre deux coups",
+    "Mettre la main a la pate":"Mettre la main \u00e0 la p\u00e2te","Broyer du noir":"Broyer du noir",
+    "Passer l'eponge":"Passer l'\u00e9ponge","Tirer les vers du nez":"Tirer les vers du nez",
+    "C'est la mer a boire":"C'est la mer \u00e0 boire","Se mettre le doigt dans l'oeil":"Se mettre le doigt dans l'\u0153il",
     "Avoir le dos large":"Avoir le dos large","Tomber des nues":"Tomber des nues",
-    "Vivre d'amour et d'eau fraiche":"Vivre d'amour et d'eau fraîche","Avoir un poil dans la main":"Avoir un poil dans la main",
-    "Chercher midi a quatorze heures":"Chercher midi à quatorze heures","Courir plusieurs lievres a la fois":"Courir plusieurs lièvres à la fois",
-    "Crier sur tous les toits":"Crier sur tous les toits","Etre loge a la meme enseigne":"Être logé à la même enseigne",
-    "Qui trop embrasse mal etreint":"Qui trop embrasse mal étreint","Les murs ont des oreilles":"Les murs ont des oreilles",
-    "Mieux vaut tard que jamais":"Mieux vaut tard que jamais","A bon entendeur salut":"À bon entendeur salut",
-    "Pierre qui roule n'amasse pas mousse":"Pierre qui roule n'amasse pas mousse","Loin des yeux loin du coeur":"Loin des yeux loin du cœur",
-    "Toute verite n'est pas bonne a dire":"Toute vérité n'est pas bonne à dire","Le temps c'est de l'argent":"Le temps c'est de l'argent",
-    "Nul n'est prophete en son pays":"Nul n'est prophète en son pays","L'habit ne fait pas le moine":"L'habit ne fait pas le moine",
+    "Vivre d'amour et d'eau fraiche":"Vivre d'amour et d'eau fra\u00eeche","Avoir un poil dans la main":"Avoir un poil dans la main",
+    "Chercher midi a quatorze heures":"Chercher midi \u00e0 quatorze heures","Courir plusieurs lievres a la fois":"Courir plusieurs li\u00e8vres \u00e0 la fois",
+    "Crier sur tous les toits":"Crier sur tous les toits","Etre loge a la meme enseigne":"\u00catre log\u00e9 \u00e0 la m\u00eame enseigne",
+    "Qui trop embrasse mal etreint":"Qui trop embrasse mal \u00e9treint","Les murs ont des oreilles":"Les murs ont des oreilles",
+    "Mieux vaut tard que jamais":"Mieux vaut tard que jamais","A bon entendeur salut":"\u00c0 bon entendeur salut",
+    "Pierre qui roule n'amasse pas mousse":"Pierre qui roule n'amasse pas mousse","Loin des yeux loin du coeur":"Loin des yeux loin du c\u0153ur",
+    "Toute verite n'est pas bonne a dire":"Toute v\u00e9rit\u00e9 n'est pas bonne \u00e0 dire","Le temps c'est de l'argent":"Le temps c'est de l'argent",
+    "Nul n'est prophete en son pays":"Nul n'est proph\u00e8te en son pays","L'habit ne fait pas le moine":"L'habit ne fait pas le moine",
     "Casablanca":"Casablanca","Les enfants du paradis":"Les enfants du paradis",
     "La grande vadrouille":"La grande vadrouille","Autant en emporte le vent":"Autant en emporte le vent",
     "La vie est belle":"La vie est belle","Ratatouille":"Ratatouille",
-    "Le fabuleux destin d'Amelie Poulain":"Le fabuleux destin d'Amélie Poulain","L'armee des ombres":"L'armée des ombres",
+    "Le fabuleux destin d'Amelie Poulain":"Le fabuleux destin d'Am\u00e9lie Poulain","L'armee des ombres":"L'arm\u00e9e des ombres",
     "Un homme et une femme":"Un homme et une femme","Le vieux fusil":"Le vieux fusil",
     "La vie en rose":"La vie en rose","Non je ne regrette rien":"Non, je ne regrette rien",
     "Comme d'habitude":"Comme d'habitude","Le temps des cerises":"Le temps des cerises",
-    "La derniere danse":"La dernière danse","Milord":"Milord",
+    "La derniere danse":"La derni\u00e8re danse","Milord":"Milord",
     "La javanaise":"La javanaise","Ne me quitte pas":"Ne me quitte pas",
     "Les copains d'abord":"Les copains d'abord","La mer":"La mer",
     "Paris":"Paris","Lyon":"Lyon","Marseille":"Marseille","Toulouse":"Toulouse","Bordeaux":"Bordeaux",
     "Nice":"Nice","Strasbourg":"Strasbourg","Reims":"Reims","Avignon":"Avignon","Angers":"Angers",
     "Coq au vin":"Coq au vin","Cassoulet":"Cassoulet","Bouillabaisse":"Bouillabaisse",
     "Tarte Tatin":"Tarte Tatin","Quiche lorraine":"Quiche lorraine","Pot au feu":"Pot-au-feu",
-    "Blanquette de veau":"Blanquette de veau","Creme brulee":"Crème brûlée",
-    "Gratin dauphinois":"Gratin dauphinois","Soupe a l'oignon":"Soupe à l'oignon",
-    "Jeanne d'Arc":"Jeanne d'Arc","Napoleon Bonaparte":"Napoléon Bonaparte","Louis XIV":"Louis XIV",
+    "Blanquette de veau":"Blanquette de veau","Creme brulee":"Cr\u00e8me br\u00fbl\u00e9e",
+    "Gratin dauphinois":"Gratin dauphinois","Soupe a l'oignon":"Soupe \u00e0 l'oignon",
+    "Jeanne d'Arc":"Jeanne d'Arc","Napoleon Bonaparte":"Napol\u00e9on Bonaparte","Louis XIV":"Louis XIV",
     "Charlemagne":"Charlemagne","Marie-Antoinette":"Marie-Antoinette","Henri IV":"Henri IV",
-    "Robespierre":"Robespierre","Lafayette":"Lafayette","Richelieu":"Richelieu","Clemenceau":"Clémenceau",
+    "Robespierre":"Robespierre","Lafayette":"Lafayette","Richelieu":"Richelieu","Clemenceau":"Cl\u00e9menceau",
     "Tour Eiffel":"Tour Eiffel","Notre-Dame de Chartres":"Notre-Dame de Chartres",
-    "Chateau de Versailles":"Château de Versailles","Mont-Saint-Michel":"Mont-Saint-Michel",
-    "Sacre-Coeur":"Sacré-Cœur","Arc de Triomphe":"Arc de Triomphe","Pont d'Avignon":"Pont d'Avignon",
-    "Cathedrale de Reims":"Cathédrale de Reims","Chateau de Chambord":"Château de Chambord","Abbaye de Fontenay":"Abbaye de Fontenay"
+    "Chateau de Versailles":"Ch\u00e2teau de Versailles","Mont-Saint-Michel":"Mont-Saint-Michel",
+    "Sacre-Coeur":"Sacr\u00e9-C\u0153ur","Arc de Triomphe":"Arc de Triomphe","Pont d'Avignon":"Pont d'Avignon",
+    "Cathedrale de Reims":"Cath\u00e9drale de Reims","Chateau de Chambord":"Ch\u00e2teau de Chambord","Abbaye de Fontenay":"Abbaye de Fontenay"
 };
 
 const wheelSegs=[
@@ -456,7 +452,104 @@ const VOWEL_COST=1000;
 const segCount=wheelSegs.length;
 const segAngle=2*Math.PI/segCount;
 
-/* ==================== ETAT ==================== */
+/* ==================== GESTIONNAIRE DE SONS ==================== */
+const SFX={
+    ctx:null,
+    buffers:{},
+    wheelSrc:null,
+    wheelGain:null,
+    ready:false,
+
+    /* URLs des sons */
+    urls:{
+        wheel:"https://raw.githubusercontent.com/pierreg78-maker/AtelierMemo-Assets/main/assets/sons/roue/380788__laspaziale__bike-rear-wheel-spinning.wav",
+        ok:"https://raw.githubusercontent.com/pierreg78-maker/AtelierMemo-Assets/main/assets/sons/roue/lettre_OK.wav",
+        nok:"https://raw.githubusercontent.com/pierreg78-maker/AtelierMemo-Assets/main/assets/sons/roue/lettre_nok.wav",
+        gain:"https://raw.githubusercontent.com/pierreg78-maker/AtelierMemo-Assets/main/assets/sons/pieces-or/gain-01.mp3",
+        jackpot:"https://raw.githubusercontent.com/pierreg78-maker/AtelierMemo-Assets/main/assets/sons/pieces-or/jackpot.wav",
+        applause:"https://raw.githubusercontent.com/pierreg78-maker/AtelierMemo-Assets/main/assets/sons/applause/324323__kwahmah_02__huge-applause.wav"
+    },
+
+    /* Initialisation asynchrone : crée le contexte et charge tous les buffers */
+    async init(){
+        try{
+            this.ctx=new(window.AudioContext||window.webkitAudioContext)();
+            const promises=Object.entries(this.urls).map(async([key,url])=>{
+                try{
+                    const r=await fetch(url);
+                    const ab=await r.arrayBuffer();
+                    this.buffers[key]=await this.ctx.decodeAudioData(ab);
+                }catch(e){console.warn("Son non charge:",key,e)}
+            });
+            await Promise.all(promises);
+            this.ready=true;
+            const st=document.getElementById("soundStatus");
+            if(st){st.innerHTML='<i class="fas fa-volume-up"></i> Sons';st.classList.add("loaded")}
+        }catch(e){console.warn("AudioContext non disponible",e)}
+    },
+
+    /* Réveille le contexte audio (nécessaire après interaction utilisateur) */
+    resume(){
+        if(this.ctx&&this.ctx.state==="suspended")this.ctx.resume();
+    },
+
+    /* Joue un son simple (lettre OK/NOK, gain, jackpot, applaudissements) */
+    play(key,opts={}){
+        if(!this.ctx||!this.buffers[key])return;
+        this.resume();
+        const src=this.ctx.createBufferSource();
+        src.buffer=this.buffers[key];
+        if(opts.rate)src.playbackRate.value=opts.rate;
+        const g=this.ctx.createGain();
+        g.gain.value=opts.volume!==undefined?opts.volume:0.55;
+        src.connect(g);g.connect(this.ctx.destination);
+        src.start();
+        return src;
+    },
+
+    /* --- Son de la roue : contrôle dynamique du pitch et du volume --- */
+
+    /* Démarre le son de roue en boucle */
+    startWheel(){
+        if(!this.ctx||!this.buffers.wheel)return;
+        this.resume();
+        this.stopWheel();
+        this.wheelSrc=this.ctx.createBufferSource();
+        this.wheelSrc.buffer=this.buffers.wheel;
+        this.wheelSrc.loop=true;
+        this.wheelGain=this.ctx.createGain();
+        this.wheelGain.gain.value=0.35;
+        this.wheelSrc.connect(this.wheelGain);
+        this.wheelGain.connect(this.ctx.destination);
+        this.wheelSrc.start();
+    },
+
+    /* Adapte le pitch ET le volume en fonction de la vitesse de rotation.
+       spinVel varie de ~0.44 (lancement) à ~0.001 (arrêt) */
+    updateWheel(spinVel){
+        if(!this.wheelSrc||!this.wheelGain)return;
+        /* Normalisation : 0 quand arrêté, 1 à vitesse max */
+        const t=Math.min(spinVel/0.44,1);
+        /* Pitch : de 0.25 (très lent) à 2.2 (très rapide) */
+        this.wheelSrc.playbackRate.value=0.25+t*1.95;
+        /* Volume : de 0.08 (presque muet à l'arrêt) à 0.38 (fort au lancement) */
+        this.wheelGain.gain.value=0.08+t*0.30;
+    },
+
+    /* Arrête le son de roue avec un fondu sortant de 350ms */
+    stopWheel(){
+        if(this.wheelGain&&this.wheelSrc){
+            const g=this.wheelGain,s=this.wheelSrc;
+            const now=this.ctx.currentTime;
+            g.gain.setValueAtTime(g.gain.value,now);
+            g.gain.linearRampToValueAtTime(0,now+0.35);
+            try{s.stop(now+0.4)}catch(e){}
+            this.wheelSrc=null;this.wheelGain=null;
+        }
+    }
+};
+
+/* ==================== ÉTAT ==================== */
 let gameMode=1,players=[{name:"Joueur",gold:0},{name:"Joueur 2",gold:0}],curP=0;
 let curPhrase="",curCategory="",revealed=new Set(),used=new Set();
 let goldBalance=0,curWheelVal=null,spinning=false,canChoose=false,won=false;
@@ -485,7 +578,7 @@ function getGold(){return gameMode===1?goldBalance:players[curP].gold}
 function setGold(v){if(gameMode===1)goldBalance=v;else players[curP].gold=v}
 function addGold(v){setGold(getGold()+v)}
 function getDisplay(){return phrasesDisplay[curPhrase]||curPhrase}
-function pPrefix(){return gameMode===2?players[curP].name+" — ":""}
+function pPrefix(){return gameMode===2?players[curP].name+" \u2014 ":""}
 
 /* ==================== PARTICULES ACCUEIL ==================== */
 let particles=[];
@@ -556,6 +649,8 @@ function removeGarlands(){document.querySelectorAll(".garland").forEach(g=>g.rem
 function restoreBulbs(){document.querySelectorAll(".gb").forEach(b=>{b.style.backgroundColor=b.dataset.oc;b.style.boxShadow=b.dataset.os})}
 function startCelebration(){
     document.body.classList.add("celebrating");
+    /* Son d'applaudissements */
+    SFX.play("applause",{volume:0.75});
     const cols=["#ff0044","#ffdd00","#00ff88","#ff6600","#00ccff","#ff00cc","#aaff00","#ffaa00","#ffffff"];
     const bulbs=document.querySelectorAll(".gb");let t=0;
     celebInt=setInterval(()=>{t++;bulbs.forEach((b,i)=>{const c=cols[(i+t)%cols.length];b.style.backgroundColor=c;b.style.boxShadow="0 0 12px 5px "+c+",0 0 30px 10px "+c+"88"})},100);
@@ -587,15 +682,38 @@ function drawWheel(){
     ctx.beginPath();ctx.arc(cx,cy,6,0,2*Math.PI);ctx.fillStyle="#1a1510";ctx.fill();
 }
 function getWinSeg(){let n=(-Math.PI/2-wheelAngle)%(2*Math.PI);if(n<0)n+=2*Math.PI;return wheelSegs[Math.floor(n/segAngle)%segCount]}
+
 function spinWheel(){
     if(spinning||won)return;
+    SFX.resume();
     if(canChoose){canChoose=false;curWheelVal=null;infoLine.textContent=pPrefix()+"Valeur perdue. La roue tourne..."}
     else infoLine.textContent=pPrefix()+"La roue tourne...";
     spinning=true;spinBtn.disabled=true;guessBtn.disabled=true;
+    disableAllKeys();
     wheelRes.textContent="";wheelRes.className="wheel-res";
     spinVel=.22+Math.random()*.22;
-    (function anim(){wheelAngle+=spinVel;spinVel*=.984;drawWheel();if(spinVel>.001)requestAnimationFrame(anim);else{spinning=false;handleResult(getWinSeg())}})();
+
+    /* Démarrage du son de roue */
+    SFX.startWheel();
+
+    (function anim(){
+        wheelAngle+=spinVel;spinVel*=.984;
+
+        /* Adaptation dynamique du son à la vitesse */
+        SFX.updateWheel(spinVel);
+
+        drawWheel();
+        if(spinVel>.001){
+            requestAnimationFrame(anim);
+        }else{
+            spinning=false;
+            /* Arrêt du son de roue avec fondu */
+            SFX.stopWheel();
+            handleResult(getWinSeg());
+        }
+    })();
 }
+
 function handleResult(seg){
     curWheelVal=seg.value;
     if(seg.value==="BANQ"){
@@ -607,201 +725,327 @@ function handleResult(seg){
         if(gameMode===2)switchPlayer();else spinBtn.disabled=false;
     }else{
         wheelRes.textContent=seg.value+" pieces ! Choisissez une consonne.";wheelRes.className="wheel-res pos";
-        infoLine.textContent=pPrefix()+"Roue : "+seg.value+" PO. Choisissez une consonne.";canChoose=true;
+        canChoose=true;
+        enableConsonnes();
+        enableVowels();
+        guessBtn.disabled=false;
+        infoLine.textContent=pPrefix()+"Choisissez une consonne ou achetez une voyelle.";
     }
-    updateKB();
-}
-
-/* ==================== PHRASE ==================== */
-function loadPhrase(){
-    if(usedPhraseIndices.size>=phrases.length)usedPhraseIndices.clear();
-    let idx;do{idx=Math.floor(Math.random()*phrases.length)}while(usedPhraseIndices.has(idx));
-    usedPhraseIndices.add(idx);const p=phrases[idx];curPhrase=p.text;curCategory=p.cat;
-    revealed=new Set();used=new Set();curWheelVal=null;canChoose=false;won=false;spinning=false;
-    wheelRes.textContent="";wheelRes.className="wheel-res";catDisp.textContent=curCategory;
-    renderPhrase();buildKB();updateKB();updateGoldUI();updatePlayerBar();
-    spinBtn.disabled=false;guessBtn.disabled=false;
-    infoLine.textContent=pPrefix()+"Faites tourner la roue pour commencer !";drawWheel();
-}
-function renderPhrase(){
-    phraseBox.innerHTML="";const words=curPhrase.split(" "),dispWords=getDisplay().split(" ");
-    words.forEach((word,wi)=>{
-        const wg=document.createElement("span");wg.className="word-grp";const dw=dispWords[wi]||word;let di=0;
-        for(const ch of word){
-            if(ch==="'"){const b=document.createElement("span");b.className="lb apos";b.textContent="'";wg.appendChild(b);di++}
-            else{const n=norm(ch);const b=document.createElement("span");b.className="lb";
-                if(revealed.has(n)){b.classList.add("rev");b.textContent=dw[di]||ch}
-                if(won){b.classList.add("won");b.textContent=dw[di]||ch}
-                wg.appendChild(b);di++}
-        }
-        phraseBox.appendChild(wg);
-        if(wi<words.length-1){const s=document.createElement("span");s.className="sp-gap";phraseBox.appendChild(s)}
-    });
 }
 
 /* ==================== CLAVIER ==================== */
-function buildKB(){
+function buildKeyboard(){
     conGrid.innerHTML="";vowGrid.innerHTML="";
     "BCDFGHJKLMNPQRSTVWXZ".split("").forEach(l=>{
-        const b=document.createElement("button");b.className="key-btn";b.textContent=l;b.dataset.l=l;b.disabled=true;
-        b.setAttribute("aria-label","Consonne "+l);b.addEventListener("click",()=>chooseCon(l));conGrid.appendChild(b);
+        const b=document.createElement("button");b.className="key-btn";b.textContent=l;b.dataset.letter=l;b.disabled=true;
+        b.addEventListener("click",()=>chooseLetter(l,false));conGrid.appendChild(b);
     });
     VOWELS.forEach(l=>{
-        const b=document.createElement("button");b.className="key-btn vowel";b.textContent=l;b.dataset.l=l;b.disabled=true;
-        b.setAttribute("aria-label","Voyelle "+l);b.addEventListener("click",()=>chooseVow(l));vowGrid.appendChild(b);
+        const b=document.createElement("button");b.className="key-btn vowel";b.textContent=l;b.dataset.letter=l;b.disabled=true;
+        b.addEventListener("click",()=>chooseLetter(l,true));vowGrid.appendChild(b);
     });
 }
-function updateKB(){
-    conGrid.querySelectorAll(".key-btn").forEach(b=>{
-        const l=b.dataset.l;
-        if(used.has(l)){b.disabled=true;b.classList.remove("vowel");b.classList.add(revealed.has(l)?"uc":"uw")}
-        else{b.disabled=!(canChoose&&typeof curWheelVal==="number");b.classList.remove("uc","uw")}
-    });
-    vowGrid.querySelectorAll(".key-btn").forEach(b=>{
-        const l=b.dataset.l;
-        if(used.has(l)){b.disabled=true;b.classList.add(revealed.has(l)?"uc":"uw")}
-        else{b.disabled=spinning||won;b.classList.remove("uc","uw")}
-    });
-    guessBtn.disabled=spinning||won;spinBtn.disabled=spinning||canChoose||won;
+function enableConsonnes(){
+    document.querySelectorAll("#conGrid .key-btn").forEach(b=>{if(!used.has(b.dataset.letter))b.disabled=false});
 }
-function chooseCon(letter){
-    if(!canChoose||used.has(letter)||typeof curWheelVal!=="number")return;
-    used.add(letter);const cnt=countIn(letter);
-    if(cnt>0){
-        revealed.add(letter);const earned=curWheelVal*cnt;addGold(earned);updateGoldUI();updatePlayerBar();
-        showToast(cnt+" \""+letter+"\" trouve"+(cnt>1?"s":"")+" ! +"+earned+" PO","success");
-        infoLine.textContent=pPrefix()+"+"+earned+" PO ! Faites tourner la roue.";renderPhrase();checkWin();
-    }else{
-        showToast("Pas de \""+letter+"\" dans l'expression.","error");infoLine.textContent=pPrefix()+"Pas de \""+letter+"\".";
-        if(gameMode===2)switchPlayer();else infoLine.textContent+=" Faites tourner la roue.";
-    }
-    canChoose=false;curWheelVal=null;updateKB();
+function enableVowels(){
+    document.querySelectorAll("#vowGrid .key-btn").forEach(b=>{if(!used.has(b.dataset.letter))b.disabled=false});
 }
-function chooseVow(letter){
-    if(used.has(letter)||spinning||won)return;
-    const cnt=countIn(letter);const cost=cnt*VOWEL_COST;used.add(letter);
-    addGold(-cost);updateGoldUI();updatePlayerBar();
-    if(cnt>0){
-        revealed.add(letter);
-        showToast(cnt+" \""+letter+"\" trouve"+(cnt>1?"s":"")+" ! Cout : "+cost+" PO","success");
-        infoLine.textContent=pPrefix()+"Voyelle trouvee ! Cout : "+cost+" PO.";renderPhrase();checkWin();
-    }else{
-        showToast("Pas de \""+letter+"\". Aucun cout.","error");infoLine.textContent=pPrefix()+"Pas de \""+letter+"\".";
-        if(gameMode===2)switchPlayer();else infoLine.textContent+=" Faites tourner la roue ou achetez une voyelle.";
-    }
-    updateKB();
+function disableAllKeys(){
+    document.querySelectorAll(".key-btn").forEach(b=>b.disabled=true);
 }
 
-/* ==================== PROPOSITION ==================== */
-function openGuess(){
-    if(spinning||won)return;
-    modalTitle.textContent="Faire une proposition";
-    modalContent.innerHTML='<input type="text" class="modal-input" id="guessInp" placeholder="Votre proposition..." autocomplete="off" maxlength="80">';
-    modalActs.innerHTML='<button class="m-btn pri" data-action="submit">Valider</button><button class="m-btn sec" data-action="cancel">Annuler</button>';
-    modalOv.classList.add("active");
-    setTimeout(()=>{const inp=$("guessInp");if(inp)inp.focus()},100);
-}
-function submitGuess(){
-    const inp=$("guessInp");if(!inp)return;const guess=inp.value.trim();
-    if(!guess){showToast("Saisissez une proposition.","error");return}
-    const ng=guess.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[''\u2019]/g,"'").toUpperCase();
-    const np=curPhrase.toUpperCase();
-    if(ng===np){
-        won=true;revealed=new Set();for(const ch of curPhrase)if(isAlpha(ch))revealed.add(norm(ch));
-        renderPhrase();startCelebration();updateKB();
-        showWinModal();
+/* ==================== CHOIX DE LETTRE ==================== */
+function chooseLetter(letter,isVowel){
+    if(spinning||won||used.has(letter))return;
+    SFX.resume();
+    used.add(letter);
+    const count=countIn(letter);
+    const btn=document.querySelector('.key-btn[data-letter="'+letter+'"]');
+
+    if(count>0){
+        /* ---- LETTRE TROUVÉE ---- */
+        btn.className="key-btn uc";
+        revealed.add(letter);
+        revealLetters(letter);
+
+        /* Son : lettre correcte */
+        SFX.play("ok",{volume:0.65});
+
+        if(!isVowel&&curWheelVal&&typeof curWheelVal==="number"){
+            /* Consonne : gain de pièces */
+            const gain=curWheelVal*count;
+            addGold(gain);
+            updateGoldUI();
+
+            /* Son de gain avec un léger décalage pour bien le distinguer */
+            setTimeout(()=>{
+                if(gain>=1000){
+                    SFX.play("jackpot",{volume:0.7});
+                }else{
+                    SFX.play("gain",{volume:0.6});
+                }
+            },220);
+
+            showToast("+"+gain+" pieces d'or !","success");
+        }else if(isVowel){
+            /* Voyelle : coût déduit */
+            const cost=VOWEL_COST*count;
+            addGold(-cost);
+            updateGoldUI();
+            showToast("-"+cost+" pieces d'or ("+VOWEL_COST+" x "+count+")","info");
+        }
+
+        /* Vérification de la victoire */
+        if(checkWin()){handleWin();return}
+
+        /* Le joueur continue : peut tourner, choisir consonne, ou acheter voyelle */
+        canChoose=true;
+        enableConsonnes();
+        enableVowels();
+        guessBtn.disabled=false;
+        spinBtn.disabled=false;
+        infoLine.textContent=pPrefix()+"Bravo ! Continuez : tournez la roue ou choisissez une lettre.";
     }else{
-        hideModal();showToast("Mauvaise proposition !","error");
-        if(gameMode===2){switchPlayer();infoLine.textContent=pPrefix()+"Mauvaise proposition ! Faites tourner la roue."}
-        else infoLine.textContent="Mauvaise proposition ! Faites tourner la roue.";
+        /* ---- LETTRE ABSENTE ---- */
+        btn.className="key-btn uw";
+
+        /* Son : lettre incorrecte */
+        SFX.play("nok",{volume:0.5});
+
+        showToast('Pas de "'+letter+'" dans l\'expression',"error");
+        curWheelVal=null;
+        canChoose=false;
+        disableAllKeys();
+        guessBtn.disabled=true;
+
+        if(gameMode===2){
+            infoLine.textContent=pPrefix()+'Pas de "'+letter+'". Tour perdu.';
+            switchPlayer();
+        }else{
+            infoLine.textContent='Pas de "'+letter+'". Faites tourner la roue.';
+            spinBtn.disabled=false;
+            enableVowels();
+        }
+    }
+}
+
+/* ==================== AFFICHAGE DES LETTRES ==================== */
+function renderPhrase(){
+    phraseBox.innerHTML="";
+    const display=getDisplay();
+    const words=display.split(" ");
+    words.forEach((w,wi)=>{
+        if(wi>0){const g=document.createElement("span");g.className="sp-gap";phraseBox.appendChild(g)}
+        const grp=document.createElement("span");grp.className="word-grp";
+        for(const ch of w){
+            const b=document.createElement("span");
+            if(ch==="-"||ch==="'"||ch==="\u2019"){
+                b.className="lb apos";b.textContent=ch;
+            }else if(isAlpha(ch)){
+                const n=norm(ch);
+                if(revealed.has(n)){b.className="lb rev";b.textContent=ch}
+                else{b.className="lb";b.textContent=""}
+            }else{b.className="lb apos";b.textContent=ch}
+            grp.appendChild(b);
+        }
+        phraseBox.appendChild(grp);
+    });
+}
+function revealLetters(letter){
+    const display=getDisplay();
+    const boxes=phraseBox.querySelectorAll(".lb:not(.apos)");
+    let idx=0;
+    for(const ch of display){
+        if(isAlpha(ch)){
+            if(norm(ch)===letter&&boxes[idx]){
+                boxes[idx].textContent=ch;
+                boxes[idx].classList.add("rev");
+                /* Décalage d'animation pour un effet cascade */
+                boxes[idx].style.animationDelay=(idx*0.06)+"s";
+            }
+            idx++;
+        }
+    }
+}
+function revealAll(){
+    phraseBox.querySelectorAll(".lb:not(.apos)").forEach(b=>{
+        if(!b.textContent){b.classList.remove("rev");b.classList.add("won")}
+    });
+    const display=getDisplay();
+    const boxes=phraseBox.querySelectorAll(".lb:not(.apos)");
+    let idx=0;
+    for(const ch of display){
+        if(isAlpha(ch)){
+            if(boxes[idx]&&!boxes[idx].textContent){
+                boxes[idx].textContent=ch;
+                boxes[idx].style.animationDelay=(idx*0.05)+"s";
+            }
+            idx++;
+        }
     }
 }
 
 /* ==================== VICTOIRE ==================== */
 function checkWin(){
-    for(const ch of curPhrase)if(isAlpha(ch)&&!revealed.has(norm(ch)))return;
-    won=true;renderPhrase();startCelebration();updateKB();showWinModal();
+    for(const ch of curPhrase){if(isAlpha(ch)&&!revealed.has(norm(ch)))return false}
+    return true;
 }
-function showWinModal(){
-    const pn=gameMode===2?players[curP].name+" ":"";
-    let html='<p style="font-size:1rem;margin-bottom:12px;color:var(--muted)">L\'expression etait :</p>';
-    html+='<p style="font-family:Cinzel,serif;font-size:1.25rem;color:var(--glow);margin-bottom:18px">'+getDisplay()+'</p>';
-    if(gameMode===2){
-        html+='<div style="display:flex;gap:16px;justify-content:center;margin-bottom:18px">';
-        html+='<div style="flex:1;padding:10px;background:rgba(0,0,0,.3);border-radius:8px;border:1px solid var(--border)"><div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">'+players[0].name+'</div><div style="font-weight:800;font-size:1.1rem;color:'+(players[0].gold>=0?'var(--glow)':'var(--danger)')+'">'+players[0].gold+' PO</div></div>';
-        html+='<div style="flex:1;padding:10px;background:rgba(0,0,0,.3);border-radius:8px;border:1px solid var(--border)"><div style="font-size:.75rem;color:var(--muted);margin-bottom:4px">'+players[1].name+'</div><div style="font-weight:800;font-size:1.1rem;color:'+(players[1].gold>=0?'var(--glow)':'var(--danger)')+'">'+players[1].gold+' PO</div></div>';
-        html+='</div>';
-    }else{html+='<p style="margin-bottom:16px;font-weight:800;font-size:1.1rem;color:var(--glow)">Total : '+getGold()+' PO</p>'}
-    showModal("Bravo "+pn+"!",html,[
-        {text:"Expression suivante",cls:"pri",action:"next"},
-        {text:"Retour au Village",cls:"sec",action:"village"}
-    ]);
+function handleWin(){
+    won=true;canChoose=false;
+    disableAllKeys();spinBtn.disabled=true;guessBtn.disabled=true;
+    wheelRes.textContent="";infoLine.textContent="";
+    revealAll();
+
+    /* Lancement de la célébration avec sons */
+    setTimeout(()=>{startCelebration()},400);
+
+    showToast(pPrefix()+"Bravo ! Expression trouvee !","success");
 }
 
-/* ==================== 2 JOUEURS ==================== */
-function switchPlayer(){
-    curP=1-curP;updatePlayerBar();updateGoldUI();updateKB();
-    const flash=turnFlash;
-    flash.style.background=curP===0?"linear-gradient(90deg,#d4a017,transparent)":"linear-gradient(-90deg,#d4a017,transparent)";
-    flash.classList.remove("show");void flash.offsetWidth;flash.classList.add("show");
-    showToast("C'est au tour de "+players[curP].name+" !","info");
+/* ==================== PROPOSITION ==================== */
+function openGuess(){
+    if(spinning||won)return;
+    SFX.resume();
+    modalTitle.textContent="Faire une proposition";
+    modalContent.innerHTML='<p style="color:var(--muted);margin-bottom:12px;font-size:.9rem">Tapez l\'expression complete :</p><input type="text" class="modal-input" id="guessInput" placeholder="Votre proposition..." autocomplete="off">';
+    modalActs.innerHTML='<button class="m-btn pri" id="guessValidate">Valider</button><button class="m-btn sec" id="guessCancel">Annuler</button>';
+    modalOv.classList.add("active");
+    setTimeout(()=>{const inp=$("guessInput");if(inp)inp.focus()},100);
+    $("guessValidate").addEventListener("click",submitGuess);
+    $("guessCancel").addEventListener("click",closeModal);
+    $("guessInput").addEventListener("keydown",e=>{if(e.key==="Enter")submitGuess();if(e.key==="Escape")closeModal()});
 }
-function updatePlayerBar(){
+function submitGuess(){
+    const inp=$("guessInput");if(!inp)return;
+    const guess=norm(inp.value).replace(/\s+/g," ").trim();
+    const target=norm(curPhrase).replace(/\s+/g," ").trim();
+    closeModal();
+    if(!guess){showToast("Proposition vide !","error");return}
+    if(guess===target){
+        /* Bonne proposition : on révèle tout et on gagne */
+        for(const ch of curPhrase)if(isAlpha(ch))revealed.add(norm(ch));
+        renderPhrase();
+        handleWin();
+    }else{
+        /* Mauvaise proposition */
+        SFX.play("nok",{volume:0.5});
+        showToast("Mauvaise proposition !","error");
+        curWheelVal=null;canChoose=false;
+        disableAllKeys();guessBtn.disabled=true;
+        if(gameMode===2){
+            infoLine.textContent=pPrefix()+"Mauvaise proposition. Tour perdu.";
+            switchPlayer();
+        }else{
+            infoLine.textContent="Mauvaise proposition. Faites tourner la roue.";
+            spinBtn.disabled=false;enableVowels();
+        }
+    }
+}
+function closeModal(){modalOv.classList.remove("active")}
+
+/* ==================== JOUEURS (2P) ==================== */
+function switchPlayer(){
+    curP=curP===0?1:0;curWheelVal=null;canChoose=false;
+    disableAllKeys();guessBtn.disabled=true;
+    updatePlayerUI();
+    spinBtn.disabled=false;enableVowels();
+    /* Flash visuel du changement de tour */
+    turnFlash.style.background=curP===0?"var(--accent)":"var(--pink)";
+    turnFlash.classList.remove("show");void turnFlash.offsetWidth;turnFlash.classList.add("show");
+    infoLine.textContent=pPrefix()+"A vous de jouer ! Faites tourner la roue.";
+}
+function updatePlayerUI(){
     if(gameMode!==2)return;
-    $("pCard0").classList.toggle("active",curP===0);$("pCard1").classList.toggle("active",curP===1);
-    $("pGold0").textContent=players[0].gold;$("pGold1").textContent=players[1].gold;
+    $("pCard0").classList.toggle("active",curP===0);
+    $("pCard1").classList.toggle("active",curP===1);
+    $("pGold0").textContent=players[0].gold;
+    $("pGold1").textContent=players[1].gold;
     $("pGold0").parentElement.classList.toggle("neg",players[0].gold<0);
     $("pGold1").parentElement.classList.toggle("neg",players[1].gold<0);
 }
 
-/* ==================== UI ==================== */
+/* ==================== OR ==================== */
 function updateGoldUI(){
-    if(gameMode===1){goldDisp.textContent=goldBalance;goldDisp.classList.toggle("negative",goldBalance<0)}
-    else updatePlayerBar();
+    if(gameMode===1){
+        goldDisp.textContent=goldBalance;
+        goldDisp.classList.toggle("negative",goldBalance<0);
+    }else{updatePlayerUI()}
 }
+
+/* ==================== TOAST ==================== */
 function showToast(msg,type){
-    const t=document.createElement("div");t.className="toast"+(type?" "+type:"");t.textContent=msg;
-    toastC.appendChild(t);setTimeout(()=>t.remove(),3200);
+    const t=document.createElement("div");t.className="toast "+(type||"");t.textContent=msg;
+    toastC.appendChild(t);setTimeout(()=>{if(t.parentNode)t.remove()},3200);
 }
-function showModal(title,html,actions){
-    modalTitle.textContent=title;modalContent.innerHTML=html;modalActs.innerHTML="";
-    actions.forEach(a=>{
-        const b=document.createElement("button");b.className="m-btn "+(a.cls||"");b.textContent=a.text;b.dataset.action=a.action;
-        modalActs.appendChild(b);
-    });
-    modalOv.classList.add("active");
+
+/* ==================== NOUVELLE EXPRESSION ==================== */
+function newPhrase(){
+    if(spinning)return;
+    SFX.stopWheel();
+    if(celebInt){clearInterval(celebInt);celebInt=null}
+    document.body.classList.remove("celebrating");restoreBulbs();
+    initGame();
 }
-function hideModal(){modalOv.classList.remove("active")}
 
-/* ==================== MODAL ACTIONS ==================== */
-modalActs.addEventListener("click",e=>{
-    const btn=e.target.closest("[data-action]");if(!btn)return;
-    const a=btn.dataset.action;
-    if(a==="submit")submitGuess();
-    else if(a==="cancel")hideModal();
-    else if(a==="next"){hideModal();loadPhrase()}
-    else if(a==="village"){hideModal();window.location.href="https://pierreg78-maker.github.io/village/"}
-});
-modalOv.addEventListener("keydown",e=>{if(e.key==="Enter"&&$("guessInp"))submitGuess()});
+/* ==================== INITIALISATION DU JEU ==================== */
+function initGame(){
+    won=false;canChoose=false;curWheelVal=null;spinning=false;
+    revealed=new Set();used=new Set();
+    if(gameMode===1)goldBalance=0;
+    else{players[0].gold=0;players[1].gold=0;curP=0}
+    updateGoldUI();updatePlayerUI();
 
-/* ==================== INIT JEU ==================== */
-function initGame(){loadPhrase()}
+    /* Choix d'une phrase non encore utilisée */
+    let idx;
+    if(usedPhraseIndices.size>=phrases.length)usedPhraseIndices.clear();
+    do{idx=Math.floor(Math.random()*phrases.length)}while(usedPhraseIndices.has(idx));
+    usedPhraseIndices.add(idx);
+    const p=phrases[idx];
+    curPhrase=p.text;curCategory=p.cat;
 
-/* ==================== EVENT LISTENERS ==================== */
-spinBtn.addEventListener("click",spinWheel);
-guessBtn.addEventListener("click",openGuess);
-newBtn.addEventListener("click",()=>{if(!won){loadPhrase();showToast("Nouvelle expression !","info")}else loadPhrase()});
-menuBtn.addEventListener("click",goHome);
+    catDisp.textContent=curCategory;
+    wheelRes.textContent="";wheelRes.className="wheel-res";
+    spinBtn.disabled=false;guessBtn.disabled=true;
+    infoLine.textContent=pPrefix()+"Faites tourner la roue !";
 
+    buildKeyboard();renderPhrase();drawWheel();
+}
+
+/* ==================== ÉVÉNEMENTS ==================== */
 document.querySelectorAll(".mode-card").forEach(c=>{
     c.addEventListener("click",()=>selectMode(parseInt(c.dataset.mode)));
     c.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();selectMode(parseInt(c.dataset.mode))}});
 });
-startBtn.addEventListener("click",startGame);
+startBtn.addEventListener("click",()=>{
+    SFX.resume();
+    /* Initialisation des sons au premier clic (nécessaire pour le navigateur) */
+    if(!SFX.ctx)SFX.init();
+    startGame();
+});
+spinBtn.addEventListener("click",spinWheel);
+guessBtn.addEventListener("click",openGuess);
+newBtn.addEventListener("click",newPhrase);
+menuBtn.addEventListener("click",goHome);
 
+/* Saisie clavier physique pendant le jeu */
+document.addEventListener("keydown",e=>{
+    if(gameScreen.style.display==="none"||modalOv.classList.contains("active"))return;
+    if(won||spinning)return;
+    const k=e.key.toUpperCase();
+    if("BCDFGHJKLMNPQRSTVWXZ".includes(k)&&!used.has(k)){
+        const btn=document.querySelector('#conGrid .key-btn[data-letter="'+k+'"]');
+        if(btn&&!btn.disabled)chooseLetter(k,false);
+    }else if(VOWELS.includes(k)&&!used.has(k)){
+        const btn=document.querySelector('#vowGrid .key-btn[data-letter="'+k+'"]');
+        if(btn&&!btn.disabled)chooseLetter(k,true);
+    }
+});
+
+/* Redimensionnement du canvas de particules */
 window.addEventListener("resize",()=>{if(homeScreen.style.display!=="none"){hpCanvas.width=window.innerWidth;hpCanvas.height=window.innerHeight}});
 
-/* ==================== DEMARRAGE ==================== */
+/* ==================== DÉMARRAGE ==================== */
 initParticles();animParticles();
 </script>
 </body>
